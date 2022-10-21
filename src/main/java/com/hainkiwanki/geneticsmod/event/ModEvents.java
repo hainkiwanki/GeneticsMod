@@ -1,22 +1,31 @@
 package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import net.minecraft.nbt.CompoundTag;
+import com.hainkiwanki.geneticsmod.mobdata.MobData;
+import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+
 @Mod.EventBusSubscriber(modid = GeneticsMod.MOD_ID)
 public class ModEvents {
+
     @SubscribeEvent
-    public static void onLivingEntitySpawnEvent(LivingSpawnEvent e) {
-        LivingEntity entity = e.getEntityLiving();
-        CompoundTag nbt = new CompoundTag();
+    public static void onAttackCapabilitiesMobData(AttachCapabilitiesEvent<Entity> e) {
+        if(!(e.getObject() instanceof LivingEntity)) return;
 
+        if(!e.getObject().getCapability(MobDataProvider.MOB_DATA).isPresent()) {
+            e.addCapability(new ResourceLocation(GeneticsMod.MOD_ID, "mobdata"), new MobDataProvider());
+        }
+    }
 
-        nbt.putString("genetics.attributes", "" + entity.getMaxHealth());
-        nbt.putString("genetics.mobname", entity.getClass().getSimpleName());
-
-    };
+    @SubscribeEvent
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent e) {
+        e.register(MobData.class);
+    }
 }

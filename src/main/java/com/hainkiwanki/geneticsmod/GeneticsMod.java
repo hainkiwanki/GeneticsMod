@@ -27,6 +27,5 @@ public class GeneticsMod
 
     private void setup(final FMLCommonSetupEvent event)
     {
-
     }
 }
