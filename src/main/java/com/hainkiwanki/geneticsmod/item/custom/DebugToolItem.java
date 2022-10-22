@@ -2,8 +2,10 @@ package com.hainkiwanki.geneticsmod.item.custom;
 
 import com.hainkiwanki.geneticsmod.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
-import com.hainkiwanki.geneticsmod.mobdata.MobDataUtils;
+import com.hainkiwanki.geneticsmod.network.ModMessages;
+import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,13 +25,15 @@ public class DebugToolItem extends Item {
         if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
             String msg = "";
 
+            CompoundTag mobNbt = new CompoundTag();
             if(Screen.hasShiftDown()) {
-                MobDataUtils.IncrementCapabilityStat(MobData.SIZE, pInteractionTarget, 0.1f);
+                pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
+                    data.setStat(MobData.SIZE, data.getStat(MobData.SIZE) + 0.1f);
+                    data.saveNBTData(mobNbt);
+                    ModMessages.sendToServer(new ChangeMobDataC2SPacket(mobNbt, pInteractionTarget.getId()));
+                    pPlayer.sendMessage(new TextComponent("Mobsize increased: " + data.getStat(MobData.SIZE)), pPlayer.getUUID());
+                });
             }
-            msg += "CLASS: " + MobDataUtils.getLivingEntityMobName(pInteractionTarget);
-            msg += ", DATA: " + MobDataUtils.getCapabilityStat(MobData.SIZE, pInteractionTarget);
-
-            pPlayer.sendMessage(new TextComponent(msg), pPlayer.getUUID());
         }
         return InteractionResult.SUCCESS;
     }

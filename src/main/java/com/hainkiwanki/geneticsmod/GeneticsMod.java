@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod;
 
 import com.hainkiwanki.geneticsmod.item.ModItems;
+import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -26,5 +27,6 @@ public class GeneticsMod
 
     private void setup(final FMLCommonSetupEvent event)
     {
+        ModMessages.register();
     }
 }
