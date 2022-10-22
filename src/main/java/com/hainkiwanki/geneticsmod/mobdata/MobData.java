@@ -2,22 +2,36 @@ package com.hainkiwanki.geneticsmod.mobdata;
 
 import net.minecraft.nbt.CompoundTag;
 
-public class MobData {
-    private int stat = 2;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
-    public int getStat() {
-        return stat;
+public class MobData {
+    public static final String SIZE = "attr_size";
+
+    private Map<String, Float> mobDataMap = new HashMap<String, Float>(){};
+
+    public float getStat(String stat) {
+        if(!mobDataMap.containsKey(stat)) {
+            setStat(stat, 1.0f);
+        }
+        return mobDataMap.get(stat);
     }
 
-    public void setStat(int i) {
-        stat = i;
+    public void setStat(String stat, float f) {
+        mobDataMap.put(stat, f);
     }
 
     public void saveNBTData(CompoundTag nbt) {
-        nbt.putInt("stat", stat);
+        for (Map.Entry<String, Float> entry : mobDataMap.entrySet()) {
+            nbt.putFloat(entry.getKey(), entry.getValue());
+        }
     }
 
     public void loadNBTData(CompoundTag nbt) {
-        stat = nbt.getInt("stat");
+        Set<String> allKeys = nbt.getAllKeys();
+        for (String key : allKeys) {
+            setStat(key, nbt.getFloat(key));
+        }
     }
 }

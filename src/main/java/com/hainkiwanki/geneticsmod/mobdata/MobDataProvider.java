@@ -33,6 +33,7 @@ public class MobDataProvider implements ICapabilityProvider, INBTSerializable<Co
         if(cap == MOB_DATA) {
             return optional.cast();
         }
+        System.out.println("Found non empty");
         return LazyOptional.empty();
     }
 

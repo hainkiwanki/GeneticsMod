@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 @Mod(GeneticsMod.MOD_ID)
 public class GeneticsMod
 {
-    // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "geneticsmod";
     public GeneticsMod()
