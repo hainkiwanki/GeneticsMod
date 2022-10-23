@@ -1,4 +1,4 @@
-package com.hainkiwanki.geneticsmod.block;
+package com.hainkiwanki.geneticsmod.block.custom;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;

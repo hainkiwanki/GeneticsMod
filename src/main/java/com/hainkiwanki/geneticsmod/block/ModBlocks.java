@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.block;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.block.custom.ModFacingBlock;
 import com.hainkiwanki.geneticsmod.item.ModCreativeModeTabs;
 import com.hainkiwanki.geneticsmod.item.ModItems;
 import net.minecraft.world.item.BlockItem;
