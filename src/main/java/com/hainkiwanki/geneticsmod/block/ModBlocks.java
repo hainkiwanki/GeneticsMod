@@ -23,7 +23,10 @@ public class ModBlocks {
         BLOCKS.register(eventBus);
     }
 
-    public static final RegistryObject<Block> TERMINAL = registerBlock("terminal", () -> new Block(BlockBehaviour.Properties.of(Material.METAL)), ModCreativeModeTabs.GENETICS_TAB);
+    public static final RegistryObject<Block> TERMINAL = registerBlock("terminal", () ->
+            new ModFacingBlock(BlockBehaviour.Properties.of(Material.METAL)
+                    .strength(0.5f)
+                    .requiresCorrectToolForDrops()), ModCreativeModeTabs.GENETICS_TAB);
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
