@@ -13,6 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.network.PacketDistributor;
 
 public class DebugToolItem extends Item {
 
@@ -30,7 +31,7 @@ public class DebugToolItem extends Item {
                 pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
                     data.setStat(MobData.SIZE, data.getStat(MobData.SIZE) + 0.1f);
                     data.saveNBTData(mobNbt);
-                    ModMessages.sendToServer(new ChangeMobDataC2SPacket(mobNbt, pInteractionTarget.getId()));
+                    ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> pInteractionTarget), new ChangeMobDataC2SPacket(mobNbt, pInteractionTarget.getId()));
                     pPlayer.sendMessage(new TextComponent("Mobsize increased: " + data.getStat(MobData.SIZE)), pPlayer.getUUID());
                 });
             }
