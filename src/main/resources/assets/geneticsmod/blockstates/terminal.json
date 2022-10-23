@@ -1,6 +1,6 @@
 {
   "variants": {
-    "facing=north": { "model": "geneticsmod:block/terminal" },
+    "facing=north": { "model": "geneticsmod:block/terminal", "y": 0 },
     "facing=east": { "model": "geneticsmod:block/terminal", "y": 90 },
     "facing=south": { "model": "geneticsmod:block/terminal", "y": 180 },
     "facing=west": { "model": "geneticsmod:block/terminal", "y": 270 }

@@ -27,7 +27,6 @@ public class TerminalBlock extends BaseEntityBlock {
         super(pProperties);
         this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.NORTH));
     }
-
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
