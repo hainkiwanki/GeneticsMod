@@ -37,7 +37,5 @@ public class GeneticsMod
         event.enqueueWork(() -> {
             ModMessages.register();
         });
-
-        MenuScreens.register(ModMenuTypes.TERMINAL_MENU.get(), TerminalScreen::new);
     }
 }
