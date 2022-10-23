@@ -1,5 +1,7 @@
 {
   "item.geneticsmod.debug_tool": "Genetics Debug Tool",
 
+  "block.geneticsmod.terminal": "Terminal",
+
   "itemGroup.geneticsmodtab": "Genetics Mod"
 }
