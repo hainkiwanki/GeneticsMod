@@ -2,9 +2,12 @@ package com.hainkiwanki.geneticsmod;
 
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
 import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
+import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
+import com.hainkiwanki.geneticsmod.gui.TerminalScreen;
 import com.hainkiwanki.geneticsmod.item.ModItems;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -23,6 +26,7 @@ public class GeneticsMod
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
         ModBlockEntities.register(eventBus);
+        ModMenuTypes.register(eventBus);
 
         eventBus.addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);
@@ -30,6 +34,10 @@ public class GeneticsMod
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        ModMessages.register();
+        event.enqueueWork(() -> {
+            ModMessages.register();
+        });
+
+        MenuScreens.register(ModMenuTypes.TERMINAL_MENU.get(), TerminalScreen::new);
     }
 }

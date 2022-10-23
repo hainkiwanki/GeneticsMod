@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.block.entity;
 
 import com.hainkiwanki.geneticsmod.block.custom.TerminalBlock;
+import com.hainkiwanki.geneticsmod.gui.TerminalMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -47,7 +48,7 @@ public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return null;
+        return new TerminalMenu(pContainerId, pPlayerInventory, this);
     }
 
     @Nonnull
