@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod;
 
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
+import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.item.ModItems;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.mojang.logging.LogUtils;
@@ -19,9 +20,9 @@ public class GeneticsMod
     public GeneticsMod()
     {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
+        ModBlockEntities.register(eventBus);
 
         eventBus.addListener(this::setup);
         MinecraftForge.EVENT_BUS.register(this);

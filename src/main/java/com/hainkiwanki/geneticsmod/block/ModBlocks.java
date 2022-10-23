@@ -1,7 +1,7 @@
 package com.hainkiwanki.geneticsmod.block;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.block.custom.ModFacingBlock;
+import com.hainkiwanki.geneticsmod.block.custom.TerminalBlock;
 import com.hainkiwanki.geneticsmod.item.ModCreativeModeTabs;
 import com.hainkiwanki.geneticsmod.item.ModItems;
 import net.minecraft.world.item.BlockItem;
@@ -25,7 +25,7 @@ public class ModBlocks {
     }
 
     public static final RegistryObject<Block> TERMINAL = registerBlock("terminal", () ->
-            new ModFacingBlock(BlockBehaviour.Properties.of(Material.METAL)
+            new TerminalBlock(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(0.5f)
                     .requiresCorrectToolForDrops()), ModCreativeModeTabs.GENETICS_TAB);
 
