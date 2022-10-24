@@ -35,7 +35,6 @@ public class TerminalBlockRenderer implements BlockEntityRenderer<TerminalBlockE
         int textWidth = 128;
 
         pPoseStack.mulPose(rot);
-        Vector3f facing = facingDirOffset.get(facingDir);
         Vector3f translation;
         switch (facingDir) {
             default:
