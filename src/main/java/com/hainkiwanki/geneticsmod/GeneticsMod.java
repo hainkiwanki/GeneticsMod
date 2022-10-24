@@ -8,6 +8,7 @@ import com.hainkiwanki.geneticsmod.item.ModItems;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.world.entity.ai.sensing.AxolotlAttackablesSensor;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -18,6 +19,10 @@ import org.slf4j.Logger;
 @Mod(GeneticsMod.MOD_ID)
 public class GeneticsMod
 {
+
+    // AxolotlAttackablesSensor
+    // EntityTypeTags
+    // Minecraft > data > minecraft > tags > entity_types
     private static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "geneticsmod";
     public GeneticsMod()
