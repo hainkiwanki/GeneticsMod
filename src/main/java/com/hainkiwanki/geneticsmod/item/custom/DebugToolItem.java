@@ -4,6 +4,7 @@ import com.hainkiwanki.geneticsmod.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
+import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
@@ -26,7 +27,7 @@ public class DebugToolItem extends Item {
         if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
             String msg = "";
 
-            CompoundTag mobNbt = new CompoundTag();
+            /*CompoundTag mobNbt = new CompoundTag();
             if(Screen.hasShiftDown()) {
                 pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
                     data.setStat(MobData.SIZE, data.getStat(MobData.SIZE) + 0.1f);
@@ -34,7 +35,10 @@ public class DebugToolItem extends Item {
                     ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> pInteractionTarget), new ChangeMobDataC2SPacket(mobNbt, pInteractionTarget.getId()));
                     pPlayer.sendMessage(new TextComponent("Mobsize increased: " + data.getStat(MobData.SIZE)), pPlayer.getUUID());
                 });
-            }
+            }*/
+
+            boolean state = pInteractionTarget.getType().is(ModTags.EntityTypeTags.CAN_CLIPBONE);
+            pPlayer.sendMessage(new TextComponent("Can clipbone mob: " + state), pPlayer.getUUID());
         }
         return InteractionResult.SUCCESS;
     }

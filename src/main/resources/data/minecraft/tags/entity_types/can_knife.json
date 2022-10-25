@@ -1,0 +1,30 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:cave_spider",
+    "minecraft:cod",
+    "minecraft:creeper",
+    "minecraft:dolphin",
+    "minecraft:drowned",
+    "minecraft:enderman",
+    "minecraft:ghast",
+    "minecraft:glow_squid",
+    "minecraft:hoglin",
+    "minecraft:husk",
+    "minecraft:phantom",
+    "minecraft:piglin",
+    "minecraft:piglin_brute",
+    "minecraft:pufferfish",
+    "minecraft:salmon",
+    "minecraft:shulker",
+    "minecraft:spider",
+    "minecraft:squid",
+    "minecraft:strider",
+    "minecraft:tropical_fish",
+    "minecraft:zoglin",
+    "minecraft:zombie",
+    "minecraft:zombie_horse",
+    "minecraft:zombie_villager",
+    "minecraft:zombified_piglin"
+  ]
+}

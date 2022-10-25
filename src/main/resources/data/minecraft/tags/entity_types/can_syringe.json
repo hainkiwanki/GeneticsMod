@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:glow_squid",
+    "minecraft:magma_cube",
+    "minecraft:phantom",
+    "minecraft:slime",
+    "minecraft:squid",
+    "minecraft:vex"
+  ]
+}
