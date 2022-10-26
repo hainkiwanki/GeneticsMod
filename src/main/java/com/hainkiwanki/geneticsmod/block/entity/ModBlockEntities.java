@@ -15,6 +15,7 @@ public class ModBlockEntities {
             BLOCK_ENTITIES.register("terminal", () ->
                     BlockEntityType.Builder.of(TerminalBlockEntity::new,
                             ModBlocks.TERMINAL.get()).build(null));
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

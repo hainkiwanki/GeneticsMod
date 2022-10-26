@@ -5,6 +5,7 @@ import com.hainkiwanki.geneticsmod.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
+import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -66,6 +67,16 @@ public class ModEvents {
             CompoundTag nbt = new CompoundTag();
             data.saveNBTData(nbt);
             ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> e.getEntityLiving()), new ChangeMobDataC2SPacket(nbt, e.getEntity().getId()));
+        });
+    }
+
+    @SubscribeEvent
+    public static void onMobSizeChange(EntityEvent.Size e) {
+        if(!(e.getEntity() instanceof LivingEntity) && !e.getEntity().isAddedToWorld()) return;
+        e.getEntity().getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
+            float s = data.getStat(MobData.SIZE);
+            e.setNewSize(e.getNewSize().scale(s));
+            e.setNewEyeHeight(e.getOldEyeHeight() * s);
         });
     }
 }
