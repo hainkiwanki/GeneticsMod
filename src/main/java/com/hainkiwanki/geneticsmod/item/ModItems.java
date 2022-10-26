@@ -3,6 +3,7 @@ package com.hainkiwanki.geneticsmod.item;
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.item.custom.DebugToolItem;
 import com.hainkiwanki.geneticsmod.item.custom.DnaSamplerItem;
+import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -19,7 +20,7 @@ public class ModItems {
     public static final RegistryObject<Item> DEBUG_TOOL =
             ITEMS.register("debug_tool", () -> new DebugToolItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
 
-    public static final RegistryObject<Item> DNA_SAMPLER_TOOL =
-            ITEMS.register("dna_sampler_tool", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> DNA_SAMPLER_KNIFE =
+            ITEMS.register("dna_sampler_knife", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
 
 }
