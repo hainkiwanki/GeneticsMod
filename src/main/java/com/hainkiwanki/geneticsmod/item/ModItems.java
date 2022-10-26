@@ -22,5 +22,11 @@ public class ModItems {
 
     public static final RegistryObject<Item> DNA_SAMPLER_KNIFE =
             ITEMS.register("dna_sampler_knife", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> DNA_SAMPLER_SYRINGE =
+            ITEMS.register("dna_sampler_syringe", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> DNA_SAMPLER_SWAB =
+            ITEMS.register("dna_sampler_swab", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> DNA_SAMPLER_CLIPBONE =
+            ITEMS.register("dna_sampler_clipbone", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
 
 }
