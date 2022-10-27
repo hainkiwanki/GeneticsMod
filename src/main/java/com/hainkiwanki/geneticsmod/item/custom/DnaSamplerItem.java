@@ -1,7 +1,10 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.item.ModItems;
+import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
 import com.hainkiwanki.geneticsmod.util.Utils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -12,14 +15,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShearsItem;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Random;
 
 public class DnaSamplerItem extends Item {
-
-
     public DnaSamplerItem(Properties pProperties) {
         super(pProperties);
 
@@ -33,7 +35,7 @@ public class DnaSamplerItem extends Item {
             pPlayer.sendMessage(new TextComponent("Mob is " + ((checkEntity) ? "correct" : "incorrect")),
                     pPlayer.getUUID());
 
-            var entities = ForgeRegistries.ENTITIES;
+            /*var entities = ForgeRegistries.ENTITIES;
             int size = entities.getEntries().size();
             var typeArr = entities.getValues().toArray(new EntityType<?>[size]);
 
@@ -45,20 +47,21 @@ public class DnaSamplerItem extends Item {
                         " > " +
                         locArr[i].getPath()
                 ), pPlayer.getUUID());
-            }
-            /*for (var location : test) {
-                //pPlayer.sendMessage(new TextComponent(location.getRegistryType().toString() + " > " + location.getCategory().getName()), pPlayer.getUUID());
-                // pPlayer.sendMessage(new TextComponent(location.getPath()), pPlayer.getUUID());
             }*/
 
-            // TODO: Drop item
-            /*ItemStack item = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(GeneticsMod.MOD_ID, Utils.getItemPath(pStack))));
+            ItemStack item = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(Utils.getItemNamespace(ModItems.DNA_SAMPLER_SYRINGE.get()),
+                    Utils.getItemPath(ModItems.DNA_SAMPLER_SYRINGE.get()))));
+            pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
+                CompoundTag tag = new CompoundTag();
+                data.saveNBTData(tag);
+                item.setTag(tag);
+            });
             ItemEntity ent = pInteractionTarget.spawnAtLocation(item, 1.0f);
             Random rand = new java.util.Random();
             ent.setDeltaMovement(ent.getDeltaMovement().add(
                     (double)((rand.nextFloat() - rand.nextFloat()) * 0.1F),
                     (double)(rand.nextFloat() * 0.05F),
-                    (double)((rand.nextFloat() - rand.nextFloat()) * 0.1F)));*/
+                    (double)((rand.nextFloat() - rand.nextFloat()) * 0.1F)));
         }
         return InteractionResult.CONSUME;
     }

@@ -24,7 +24,15 @@ public class Utils {
     }
 
     public static String getItemPath(ItemStack item) {
-        return ForgeRegistries.ITEMS.getKey(item.getItem()).getPath();
+        return getItemPath(item.getItem());
+    }
+
+    public static String getItemPath(Item item) {
+        return ForgeRegistries.ITEMS.getKey(item).getPath();
+    }
+
+    public static String getItemNamespace(Item item) {
+        return ForgeRegistries.ITEMS.getKey(item).getNamespace();
     }
 
     public static String getMobName(@NotNull LivingEntity entity) {

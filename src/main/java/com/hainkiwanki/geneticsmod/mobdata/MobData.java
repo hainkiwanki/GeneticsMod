@@ -11,6 +11,11 @@ public class MobData {
 
     private Map<String, Float> mobDataMap = new HashMap<String, Float>(){};
 
+    public void initialize() {
+        if(!mobDataMap.containsKey(SIZE))
+            mobDataMap.put(SIZE, 1.0f);
+    }
+
     public float getStat(String stat) {
         if(!mobDataMap.containsKey(stat)) {
             setStat(stat, 1.0f);

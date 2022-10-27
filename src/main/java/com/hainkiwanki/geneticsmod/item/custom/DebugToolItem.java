@@ -27,7 +27,7 @@ public class DebugToolItem extends Item {
         if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
             String msg = "";
 
-            /*CompoundTag mobNbt = new CompoundTag();
+            CompoundTag mobNbt = new CompoundTag();
             if(Screen.hasShiftDown()) {
                 pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
                     data.setStat(MobData.SIZE, data.getStat(MobData.SIZE) + 0.1f);
@@ -35,7 +35,15 @@ public class DebugToolItem extends Item {
                     ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> pInteractionTarget), new ChangeMobDataC2SPacket(mobNbt, pInteractionTarget.getId()));
                     pPlayer.sendMessage(new TextComponent("Mobsize increased: " + data.getStat(MobData.SIZE)), pPlayer.getUUID());
                 });
-            }*/
+            } else
+            {
+                pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
+                    data.setStat(MobData.SIZE, data.getStat(MobData.SIZE) - 0.1f);
+                    data.saveNBTData(mobNbt);
+                    ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> pInteractionTarget), new ChangeMobDataC2SPacket(mobNbt, pInteractionTarget.getId()));
+                    pPlayer.sendMessage(new TextComponent("Mobsize decreased: " + data.getStat(MobData.SIZE)), pPlayer.getUUID());
+                });
+            }
 
             boolean state = pInteractionTarget.getType().is(ModTags.EntityTypeTags.CAN_CLIPBONE);
             pPlayer.sendMessage(new TextComponent("Can clipbone mob: " + state), pPlayer.getUUID());

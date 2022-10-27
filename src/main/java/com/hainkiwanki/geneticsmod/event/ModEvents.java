@@ -67,6 +67,7 @@ public class ModEvents {
             CompoundTag nbt = new CompoundTag();
             data.saveNBTData(nbt);
             ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> e.getEntityLiving()), new ChangeMobDataC2SPacket(nbt, e.getEntity().getId()));
+            data.initialize();
         });
     }
 
@@ -74,6 +75,7 @@ public class ModEvents {
     public static void onMobSizeChange(EntityEvent.Size e) {
         if(!(e.getEntity() instanceof LivingEntity) && !e.getEntity().isAddedToWorld()) return;
         e.getEntity().getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
+            // TODO: Fix size
             float s = data.getStat(MobData.SIZE);
             e.setNewSize(e.getNewSize().scale(s));
             e.setNewEyeHeight(e.getOldEyeHeight() * s);
