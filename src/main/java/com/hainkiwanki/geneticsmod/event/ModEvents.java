@@ -10,6 +10,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.client.event.RenderLivingEvent;
@@ -65,20 +66,20 @@ public class ModEvents {
         if(e.getEntityLiving() == null || !(e.getEntityLiving() instanceof Mob)) return;
         e.getEntityLiving().getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
             CompoundTag nbt = new CompoundTag();
+            data.initialize();
             data.saveNBTData(nbt);
             ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> e.getEntityLiving()), new ChangeMobDataC2SPacket(nbt, e.getEntity().getId()));
-            data.initialize();
         });
     }
 
     @SubscribeEvent
     public static void onMobSizeChange(EntityEvent.Size e) {
-        if(!(e.getEntity() instanceof LivingEntity) && !e.getEntity().isAddedToWorld()) return;
+        if(!(e.getEntity() instanceof Mob) && !e.getEntity().isAddedToWorld()) return;
         e.getEntity().getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
-            // TODO: Fix size
             float s = data.getStat(MobData.SIZE);
-            e.setNewSize(e.getNewSize().scale(s));
-            e.setNewEyeHeight(e.getOldEyeHeight() * s);
+            EntityDimensions dim = e.getOldSize();
+            EntityDimensions newDim = new EntityDimensions(dim.height * s, dim.width * s, false);
+            e.setNewSize(newDim);
         });
     }
 }

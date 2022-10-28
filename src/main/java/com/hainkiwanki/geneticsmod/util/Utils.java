@@ -1,8 +1,6 @@
 package com.hainkiwanki.geneticsmod.util;
 
 import com.hainkiwanki.geneticsmod.item.ModItems;
-import com.hainkiwanki.geneticsmod.mobdata.MobData;
-import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
