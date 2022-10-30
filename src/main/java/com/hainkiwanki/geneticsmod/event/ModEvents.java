@@ -72,6 +72,7 @@ public class ModEvents {
         });
     }
 
+    // TODO: Fix size change
     @SubscribeEvent
     public static void onMobSizeChange(EntityEvent.Size e) {
         if(!(e.getEntity() instanceof Mob) && !e.getEntity().isAddedToWorld()) return;
