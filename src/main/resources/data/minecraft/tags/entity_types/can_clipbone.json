@@ -1,14 +1,14 @@
-{
+  {
   "replace": false,
   "values": [
     "minecraft:blaze",
     "minecraft:cow",
+    "minecraft:creeper",
     "minecraft:elder_guardian",
     "minecraft:endermite",
     "minecraft:drowned",
     "minecraft:goat",
     "minecraft:hoglin",
-    "minecraft:horse",
     "minecraft:husk",
     "minecraft:iron_golem",
     "minecraft:mooshroom",

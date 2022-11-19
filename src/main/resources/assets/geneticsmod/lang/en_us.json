@@ -5,6 +5,13 @@
   "item.geneticsmod.dna_sampler_swab": "Surgical Swabber",
   "item.geneticsmod.dna_sampler_clipbone": "Surgical Clipper",
 
+  "item.geneticsmod.blaze_clipping": "Blaze Clipping",
+  "item.geneticsmod.cow_horn": "Cow Horn",
+  "item.geneticsmod.creeper_chunk": "Creeper Chunk",
+  "item.geneticsmod.elder_guardian_rod": "Elder Guardian Rod",
+  "item.geneticsmod.rib_bone": "Rib Bone",
+  "item.geneticsmod.hoglin_ear": "Hoglin Ear",
+
   "block.geneticsmod.terminal": "Terminal",
 
   "itemGroup.geneticsmodtab": "Genetics Mod"
