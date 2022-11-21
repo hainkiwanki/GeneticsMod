@@ -10,7 +10,15 @@
   "item.geneticsmod.creeper_chunk": "Creeper Chunk",
   "item.geneticsmod.elder_guardian_rod": "Elder Guardian Rod",
   "item.geneticsmod.rib_bone": "Rib Bone",
+  "item.geneticsmod.guardian_rod": "Guardian Rod",
   "item.geneticsmod.hoglin_ear": "Hoglin Ear",
+  "item.geneticsmod.iron_golem_chunk": "Iron Golem Chunk",
+  "item.geneticsmod.piglin_tusk": "Piglin Tusk",
+  "item.geneticsmod.pufferfish_spikes": "Pufferfish Spikes",
+  "item.geneticsmod.ravager_horn": "Ravager Horn",
+  "item.geneticsmod.silverfish_tail": "Silverfish Tail",
+  "item.geneticsmod.turtle_shell": "Turtle Shell",
+  "item.geneticsmod.wither_rib_bone": "Withered Rib Bone",
 
   "block.geneticsmod.terminal": "Terminal",
 

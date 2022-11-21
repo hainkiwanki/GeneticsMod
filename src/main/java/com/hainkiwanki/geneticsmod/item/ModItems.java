@@ -41,6 +41,22 @@ public class ModItems {
             ITEMS.register("endermite_tail", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
     public static final RegistryObject<Item> RIB_BONE =
             ITEMS.register("rib_bone", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> GUARDIAN_ROD =
+        ITEMS.register("guardian_rod", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
     public static final RegistryObject<Item> HOGLIN_EAR =
             ITEMS.register("hoglin_ear", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> IRON_GOLEM_CHUNK =
+            ITEMS.register("iron_golem_chunk", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> PIGLIN_TUSK =
+            ITEMS.register("piglin_tusk", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> PUFFERFISH_SPIKES =
+            ITEMS.register("pufferfish_spikes", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> RAVAGER_HORN =
+            ITEMS.register("ravager_horn", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SILVERFISH_TAIL =
+            ITEMS.register("silverfish_tail", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> TURTLE_SHELL =
+            ITEMS.register("turtle_shell", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> WITHER_RIB_BONE =
+            ITEMS.register("wither_rib_bone", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
 }
