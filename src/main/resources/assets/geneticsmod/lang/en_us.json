@@ -13,6 +13,7 @@
   "item.geneticsmod.guardian_rod": "Guardian Rod",
   "item.geneticsmod.hoglin_ear": "Hoglin Ear",
   "item.geneticsmod.iron_golem_chunk": "Iron Golem Chunk",
+  "item.geneticsmod.snow_golem_chunk": "Snow Golem Chunk",
   "item.geneticsmod.piglin_tusk": "Piglin Tusk",
   "item.geneticsmod.pufferfish_spikes": "Pufferfish Spikes",
   "item.geneticsmod.ravager_horn": "Ravager Horn",
@@ -43,12 +44,17 @@
   "item.geneticsmod.zombie_flesh": "Zombie Flesh",
   "item.geneticsmod.zombie_horse_meat": "Zombie Horse Meat",
 
+  "item.geneticsmod.squid_ink": "Squid Ink",
+  "item.geneticsmod.slime_blob": "Slime Blob",
+  "item.geneticsmod.magma_slime_blob": "Magma Slime Blob",
+  "item.geneticsmod.vex_ectoplasm": "Vex Ectoplasm",
+
   "block.geneticsmod.terminal": "Terminal",
 
   "itemGroup.geneticsmodtab": "Genetics Mod",
 
   "sounds.geneticsmod.clipbone_crack": "Clipbone Crack",
-  "sounds.geneticsmod.sounds.geneticsmod.knife_stab": "Knife Stab",
-  "sounds.geneticsmod.sounds.geneticsmod.swabber": "Swab",
-  "sounds.geneticsmod.sounds.geneticsmod.syringe_suck": "Syringe Suck"
+  "sounds.geneticsmod.knife_stab": "Knife Stab",
+  "sounds.geneticsmod.swabber": "Swab",
+  "sounds.geneticsmod.syringe_suck": "Syringe Suck"
 }

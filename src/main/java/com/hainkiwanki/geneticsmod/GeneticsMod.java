@@ -7,6 +7,7 @@ import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.item.ModItems;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.sound.ModSounds;
+import com.hainkiwanki.geneticsmod.util.ConfigHelper;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,14 +36,16 @@ public class GeneticsMod
         ModSounds.register(eventBus);
         ModMenuTypes.register(eventBus);
         eventBus.addListener(this::setup);
-
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, "geneticsmod-common.toml");
-
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event)
     {
+        ModItems.DNA_SAMPLER_SYRINGE.get().SetSoundEvent(ModSounds.SYRINGE_SUCK.get());
+        ModItems.DNA_SAMPLER_SWAB.get().SetSoundEvent(ModSounds.SWAB.get());
+        ModItems.DNA_SAMPLER_KNIFE.get().SetSoundEvent(ModSounds.KNIFE_STAB.get());
+        ModItems.DNA_SAMPLER_CLIPBONE.get().SetSoundEvent(ModSounds.CLIPBONE_CRACK.get());
+
         event.enqueueWork(() -> {
             ModMessages.register();
         });

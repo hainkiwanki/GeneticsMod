@@ -1,14 +1,18 @@
 package com.hainkiwanki.geneticsmod.item;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.item.custom.DebugToolItem;
-import com.hainkiwanki.geneticsmod.item.custom.DnaSamplerItem;
+import com.hainkiwanki.geneticsmod.item.custom.*;
+import com.hainkiwanki.geneticsmod.sound.ModSounds;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
+import com.mojang.blaze3d.platform.TextureUtil;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.PotionItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.apache.logging.log4j.util.PropertiesUtil;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, GeneticsMod.MOD_ID);
@@ -16,18 +20,25 @@ public class ModItems {
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
-
     public static final RegistryObject<Item> DEBUG_TOOL =
             ITEMS.register("debug_tool", () -> new DebugToolItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
 
-    public static final RegistryObject<Item> DNA_SAMPLER_KNIFE =
-            ITEMS.register("dna_sampler_knife", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
-    public static final RegistryObject<Item> DNA_SAMPLER_SYRINGE =
-            ITEMS.register("dna_sampler_syringe", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
-    public static final RegistryObject<Item> DNA_SAMPLER_SWAB =
-            ITEMS.register("dna_sampler_swab", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
-    public static final RegistryObject<Item> DNA_SAMPLER_CLIPBONE =
-            ITEMS.register("dna_sampler_clipbone", () -> new DnaSamplerItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
+    public static final RegistryObject<ClipboneItem> DNA_SAMPLER_CLIPBONE = ITEMS.register("dna_sampler_clipbone",
+            () -> new ClipboneItem(ModTags.EntityTypeTags.CAN_CLIPBONE,
+                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
+
+    public static final RegistryObject<KnifeItem> DNA_SAMPLER_KNIFE = ITEMS.register("dna_sampler_knife",
+            () -> new KnifeItem(ModTags.EntityTypeTags.CAN_KNIFE,
+                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
+
+    public static final RegistryObject<SyringeItem> DNA_SAMPLER_SYRINGE = ITEMS.register("dna_sampler_syringe",
+            () -> new SyringeItem(ModTags.EntityTypeTags.CAN_SYRINGE,
+                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
+
+    public static final RegistryObject<SwabItem> DNA_SAMPLER_SWAB = ITEMS.register("dna_sampler_swab",
+            () -> new SwabItem(ModTags.EntityTypeTags.CAN_SWAB,
+                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
+
 
     public static final RegistryObject<Item> BLAZE_CLIPPING = ITEMS.register("blaze_clipping", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
     public static final RegistryObject<Item> GUARDIAN_ROD = ITEMS.register("guardian_rod", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
@@ -75,6 +86,8 @@ public class ModItems {
     public static final RegistryObject<Item> SCALES_TROPICAL_FISH = ITEMS.register("scales_tropical_fish", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
     public static final RegistryObject<Item> TURTLE_SHELL = ITEMS.register("turtle_shell", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
 
-
-
+    public static final RegistryObject<Item> SQUID_INK = ITEMS.register("squid_ink", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SLIME_BLOB = ITEMS.register("slime_blob", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> MAGMA_SLIME_BLOB = ITEMS.register("magma_slime_blob", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> VEX_ECTOPLASM = ITEMS.register("vex_ectoplasm", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
 }

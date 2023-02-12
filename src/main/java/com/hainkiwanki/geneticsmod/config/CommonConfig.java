@@ -1,21 +1,19 @@
 package com.hainkiwanki.geneticsmod.config;
 
+import com.hainkiwanki.geneticsmod.util.ConfigHelper;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CommonConfig {
-    public static ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static ForgeConfigSpec SPEC;
 
-    public static ForgeConfigSpec.ConfigValue<Boolean> GENETICS_TOOL_DROPS;
+    //ConfigValue<HashMap<String>>
 
-    static {
-        BUILDER.push("Genetics Mod Common Config File");
-        GENETICS_TOOL_DROPS = BUILDER.comment("Item Drop per Tool per Mob").define("Droptable", false);
+    public CommonConfig(ForgeConfigSpec.Builder builder) {
+        builder.push("Mob Drops");
 
-        BUILDER.pop();
-        SPEC = BUILDER.build();
+
     }
 }
