@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "minecraft:blaze",
+    "minecraft:cave_spider",
     "minecraft:cow",
     "minecraft:creeper",
     "minecraft:elder_guardian",
@@ -13,7 +14,6 @@
     "minecraft:husk",
     "minecraft:iron_golem",
     "minecraft:mooshroom",
-    "minecraft:phantom",
     "minecraft:piglin",
     "minecraft:piglin_brute",
     "minecraft:pufferfish",
@@ -22,6 +22,7 @@
     "minecraft:skeleton",
     "minecraft:skeleton_horse",
     "minecraft:snow_golem",
+    "minecraft:spider",
     "minecraft:stray",
     "minecraft:turtle",
     "minecraft:wither_skeleton",

@@ -59,4 +59,50 @@ public class ModItems {
             ITEMS.register("turtle_shell", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
     public static final RegistryObject<Item> WITHER_RIB_BONE =
             ITEMS.register("wither_rib_bone", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> CAVE_SPIDER_LEG =
+            ITEMS.register("cave_spider_leg", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SPIDER_LEG =
+            ITEMS.register("spider_leg", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+
+    public static final RegistryObject<Item> CAVE_SPIDER_SKIN =
+            ITEMS.register("cave_spider_skin", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SCALES_COD =
+            ITEMS.register("scales_cod", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> CREEPER_SKIN =
+            ITEMS.register("creeper_skin", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> DOLPHIN_FLESH =
+            ITEMS.register("dolphin_flesh", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> DROWNED_FLESH =
+            ITEMS.register("drowned_flesh", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> ENDERMAN_FLESH =
+            ITEMS.register("enderman_flesh", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> GHAST_TENTACLE =
+            ITEMS.register("ghast_tentacle", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> GLOW_SQUID_TENTACLE =
+            ITEMS.register("glow_squid_tentacle", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> HOLGIN_HAIR =
+            ITEMS.register("hoglin_hair", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> HUSK_FLESH =
+            ITEMS.register("husk_flesh", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> PHANTOM_FLESH =
+            ITEMS.register("phantom_flesh", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SCALES_PUFFERFISH =
+            ITEMS.register("scales_pufferfish", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SCALES_SLAMON =
+            ITEMS.register("scales_salmon", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SHULKER_FRAGMENT =
+            ITEMS.register("shulker_fragment", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SPIDER_SKIN =
+            ITEMS.register("spider_skin", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SQUID_TENTACLE =
+            ITEMS.register("squid_tentacle", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> STRIDER_HAIR =
+            ITEMS.register("strider_hair", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> SCALES_TROPICAL_FISH =
+            ITEMS.register("scales_tropical_fish", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> ZOMBIE_FLESH =
+            ITEMS.register("zombie_flesh", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> ZOMBIE_HORSE_MEAT =
+            ITEMS.register("zombie_horse_meat", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+
 }

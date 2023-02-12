@@ -20,7 +20,35 @@
   "item.geneticsmod.turtle_shell": "Turtle Shell",
   "item.geneticsmod.wither_rib_bone": "Withered Rib Bone",
 
+  "item.geneticsmod.cave_spider_leg": "Cave Spider Leg",
+  "item.geneticsmod.spider_leg": "Spider Leg",
+  "item.geneticsmod.cave_spider_skin": "Cave Spider Skin",
+  "item.geneticsmod.scales_cod": "Spider Skin",
+  "item.geneticsmod.creeper_skin": "Creeper Skin",
+  "item.geneticsmod.dolphin_flesh": "Doplhin Flesh",
+  "item.geneticsmod.drowned_flesh": "Drowned Flesh",
+  "item.geneticsmod.enderman_flesh": "Enderman Flesh",
+  "item.geneticsmod.ghast_tentacle": "Ghast Tentacle",
+  "item.geneticsmod.glow_squid_tentacle": "Glowing Squid Tentacle",
+  "item.geneticsmod.hoglin_hair": "Hoglin Hair",
+  "item.geneticsmod.husk_flesh": "Husk Flesh",
+  "item.geneticsmod.phantom_flesh": "Phantom Flesh",
+  "item.geneticsmod.scales_pufferfish": "Pufferfish Scales",
+  "item.geneticsmod.scales_salmon": "Salmon Scales",
+  "item.geneticsmod.shulker_fragment": "Shulker Fragment",
+  "item.geneticsmod.spider_skin": "Spider Skin",
+  "item.geneticsmod.squid_tentacle": "Squid Tentacle",
+  "item.geneticsmod.strider_hair": "Strider Hair",
+  "item.geneticsmod.scales_tropical_fish": "Tropical Scales",
+  "item.geneticsmod.zombie_flesh": "Zombie Flesh",
+  "item.geneticsmod.zombie_horse_meat": "Zombie Horse Meat",
+
   "block.geneticsmod.terminal": "Terminal",
 
-  "itemGroup.geneticsmodtab": "Genetics Mod"
+  "itemGroup.geneticsmodtab": "Genetics Mod",
+
+  "sounds.geneticsmod.clipbone_crack": "Clipbone Crack",
+  "sounds.geneticsmod.sounds.geneticsmod.knife_stab": "Knife Stab",
+  "sounds.geneticsmod.sounds.geneticsmod.swabber": "Swab",
+  "sounds.geneticsmod.sounds.geneticsmod.syringe_suck": "Syringe Suck"
 }

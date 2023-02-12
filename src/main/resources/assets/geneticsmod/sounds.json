@@ -1,0 +1,26 @@
+{
+  "clipbone_crack": {
+    "subtitle": "sounds.geneticsmod.clipbone_crack",
+    "sounds": [
+      "geneticsmod:clipbone_crack"
+    ]
+  },
+  "knife_stab": {
+    "subtitle": "sounds.geneticsmod.knife_stab",
+    "sounds": [
+      "geneticsmod:knife_stab"
+    ]
+  },
+  "swabber": {
+    "subtitle": "sounds.geneticsmod.swabber",
+    "sounds": [
+      "geneticsmod:swabber"
+    ]
+  },
+  "syringe_suck": {
+    "subtitle": "sounds.geneticsmod.syringe_suck",
+    "sounds": [
+      "geneticsmod:syringe_suck"
+    ]
+  }
+}
