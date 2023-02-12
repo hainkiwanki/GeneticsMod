@@ -1,11 +1,8 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.sound.ModSounds;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
 
@@ -49,5 +46,6 @@ public class ClipboneItem extends DnaSamplerItem {
 
     public ClipboneItem(TagKey<EntityType<?>> tagList, Properties pProperties) {
         super(tagList, entityDrops, pProperties);
+        damageDealt = 4.0f;
     }
 }

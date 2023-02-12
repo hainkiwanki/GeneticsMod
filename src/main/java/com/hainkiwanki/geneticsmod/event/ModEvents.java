@@ -26,34 +26,10 @@ import net.minecraftforge.network.PacketDistributor;
 
 @Mod.EventBusSubscriber(modid = GeneticsMod.MOD_ID)
 public class ModEvents {
-
-    @SubscribeEvent
-    public static void onPreLivingRender(RenderLivingEvent.Pre<LivingEntity, EntityModel<LivingEntity>> e) {
-        if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
-        e.getEntity().getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
-            float s = data.getStat(MobData.SIZE);
-            e.getPoseStack().pushPose();
-            e.getPoseStack().scale(s, s, s);
-        });
-    }
-
-    @SubscribeEvent
-    public static void onPostLivingRender(RenderLivingEvent.Post<LivingEntity, EntityModel<LivingEntity>> e) {
-        if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
-        e.getPoseStack().popPose();
-    }
-
-    @SubscribeEvent
-    public static void onSizeChange(EntityEvent.Size e) {
-        if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
-    }
-
     @SubscribeEvent
     public static void onAttackCapabilitiesMobData(AttachCapabilitiesEvent<Entity> e) {
         if(!(e.getObject() instanceof Mob)) return;
-        if(!e.getObject().getCapability(MobDataProvider.MOB_DATA).isPresent()) {
             e.addCapability(new ResourceLocation(GeneticsMod.MOD_ID, "mobdata"), new MobDataProvider());
-        }
     }
 
     @SubscribeEvent
@@ -72,15 +48,16 @@ public class ModEvents {
         });
     }
 
-    // TODO: Fix size change
     @SubscribeEvent
     public static void onMobSizeChange(EntityEvent.Size e) {
-        if(!(e.getEntity() instanceof Mob) && !e.getEntity().isAddedToWorld()) return;
-        e.getEntity().getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
-            float s = data.getStat(MobData.SIZE);
-            EntityDimensions dim = e.getOldSize();
-            EntityDimensions newDim = new EntityDimensions(dim.height * s, dim.width * s, false);
-            e.setNewSize(newDim);
+        if(!(e.getEntity() instanceof LivingEntity)) return;
+
+        LivingEntity livingEntity = (LivingEntity)e.getEntity();
+        livingEntity.getCapability(MobDataProvider.MOB_DATA).ifPresent(mobData -> {
+            if(mobData.hasStat(MobData.SIZE)) {
+                e.setNewSize(e.getNewSize().scale(mobData.getStat(MobData.SIZE)));
+                e.setNewEyeHeight(e.getNewEyeHeight() * mobData.getStat(MobData.SIZE));
+            }
         });
     }
 }

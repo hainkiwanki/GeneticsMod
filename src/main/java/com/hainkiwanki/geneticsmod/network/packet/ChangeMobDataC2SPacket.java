@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -37,9 +38,10 @@ public class ChangeMobDataC2SPacket {
             ClientLevel world = Minecraft.getInstance().level;
             if(world == null) return;
             Entity entity = world.getEntity(entityID);
-            if(entity == null || !(entity instanceof Mob)) return;
+            if(entity == null || !(entity instanceof LivingEntity)) return;
             entity.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
                 data.loadNBTData(statNbt);
+                entity.refreshDimensions();
             });
         });
         return true;

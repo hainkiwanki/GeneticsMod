@@ -25,19 +25,19 @@ public class ModItems {
 
     public static final RegistryObject<ClipboneItem> DNA_SAMPLER_CLIPBONE = ITEMS.register("dna_sampler_clipbone",
             () -> new ClipboneItem(ModTags.EntityTypeTags.CAN_CLIPBONE,
-                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
+                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1).durability(64)));
 
     public static final RegistryObject<KnifeItem> DNA_SAMPLER_KNIFE = ITEMS.register("dna_sampler_knife",
             () -> new KnifeItem(ModTags.EntityTypeTags.CAN_KNIFE,
-                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
+                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1).durability(64)));
 
     public static final RegistryObject<SyringeItem> DNA_SAMPLER_SYRINGE = ITEMS.register("dna_sampler_syringe",
             () -> new SyringeItem(ModTags.EntityTypeTags.CAN_SYRINGE,
-                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
+                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1).durability(128)));
 
     public static final RegistryObject<SwabItem> DNA_SAMPLER_SWAB = ITEMS.register("dna_sampler_swab",
             () -> new SwabItem(ModTags.EntityTypeTags.CAN_SWAB,
-                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
+                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1).durability(32)));
 
 
     public static final RegistryObject<Item> BLAZE_CLIPPING = ITEMS.register("blaze_clipping", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));

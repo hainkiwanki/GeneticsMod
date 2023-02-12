@@ -2,9 +2,12 @@ package com.hainkiwanki.geneticsmod.item.custom;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.sound.ModSounds;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
 
@@ -50,5 +53,10 @@ public class SwabItem extends DnaSamplerItem {
 
     public SwabItem(TagKey<EntityType<?>> tagList, Properties pProperties) {
         super(tagList, entityDrops, pProperties);
+    }
+
+    @Override
+    public void OnUseCorrectTool(LivingEntity pInteractionTarget, Player pPlayer) {
+        pPlayer.sendMessage(new TextComponent("Nothing happens"), pPlayer.getUUID());
     }
 }

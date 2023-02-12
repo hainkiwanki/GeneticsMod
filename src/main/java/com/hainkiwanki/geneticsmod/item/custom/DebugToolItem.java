@@ -25,8 +25,6 @@ public class DebugToolItem extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
         if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
-            String msg = "";
-
             CompoundTag mobNbt = new CompoundTag();
             if(Screen.hasShiftDown()) {
                 pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
@@ -44,9 +42,6 @@ public class DebugToolItem extends Item {
                     pPlayer.sendMessage(new TextComponent("Mobsize decreased: " + data.getStat(MobData.SIZE)), pPlayer.getUUID());
                 });
             }
-
-            boolean state = pInteractionTarget.getType().is(ModTags.EntityTypeTags.CAN_CLIPBONE);
-            pPlayer.sendMessage(new TextComponent("Can clipbone mob: " + state), pPlayer.getUUID());
         }
         return InteractionResult.SUCCESS;
     }

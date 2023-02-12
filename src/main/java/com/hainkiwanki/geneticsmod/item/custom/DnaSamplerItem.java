@@ -1,8 +1,6 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
-import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
-import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -27,6 +26,8 @@ public class DnaSamplerItem extends Item {
     protected TagKey<EntityType<?>> ENTITY_CAN_USE_CLIPBONE;
     protected HashMap<String, String> DROP_BY_ENTITY;
 
+    protected float damageDealt = 0.0f;
+
     public DnaSamplerItem(TagKey<EntityType<?>> tagList, HashMap<String, String> entityDropList, Properties pProperties) {
         super(pProperties);
         this.ENTITY_CAN_USE_CLIPBONE = tagList;
@@ -37,24 +38,32 @@ public class DnaSamplerItem extends Item {
         this.SOUNDEVENT = pSoundEvent;
     }
 
+    public void OnUseCorrectTool(LivingEntity pInteractionTarget, Player pPlayer) {
+        var entityType = pInteractionTarget.getType();
+        var mobPath = ForgeRegistries.ENTITIES.getKey(entityType).toString();
+        if (DROP_BY_ENTITY.containsKey(mobPath)) {
+            ItemStack item = CreateItemStack(DROP_BY_ENTITY.get(mobPath));
+            AddNbtToItem(pInteractionTarget, item);
+            SpawnSampledItem(pInteractionTarget, item);
+        }
+    }
+
     @Override
     public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
         if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
             boolean usedCorrectSampler = pInteractionTarget.getType().is(ENTITY_CAN_USE_CLIPBONE);
 
             if(usedCorrectSampler) {
-                var entityType = pInteractionTarget.getType();
-                var mobPath = ForgeRegistries.ENTITIES.getKey(entityType).toString();
-                if(DROP_BY_ENTITY.containsKey(mobPath)) {
-                    ItemStack item = CreateItemStack(DROP_BY_ENTITY.get(mobPath));
-                    AddNbtToItem(pInteractionTarget, item);
-                    SpawnSampledItem(pInteractionTarget, item);
+                OnUseCorrectTool(pInteractionTarget, pPlayer);
 
-                    // Play Sound
-                    pPlayer.getLevel().playSound(null, pPlayer.blockPosition(), SOUNDEVENT, SoundSource.BLOCKS, 1f, 1f);
-
-                    return net.minecraft.world.InteractionResult.SUCCESS;
+                // Play Sound
+                pPlayer.getLevel().playSound(null, pPlayer.blockPosition(), SOUNDEVENT, SoundSource.BLOCKS, 1f, 1f);
+                if(damageDealt > 0) {
+                    pInteractionTarget.hurt(DamageSource.GENERIC, damageDealt);
                 }
+                pStack.hurtAndBreak(1, pPlayer, (p) -> p.broadcastBreakEvent(p.getUsedItemHand()));
+
+                return net.minecraft.world.InteractionResult.SUCCESS;
             }
             else {
                 pPlayer.sendMessage(new TextComponent("This dna sampler cannot be used on " + pInteractionTarget.getClass().getSimpleName()), pPlayer.getUUID());
@@ -72,6 +81,9 @@ public class DnaSamplerItem extends Item {
     public void AddNbtToItem(LivingEntity entity, ItemStack item) {
         entity.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
             CompoundTag tag = new CompoundTag();
+
+            tag.putInt("Fertility", 1);
+
             data.saveNBTData(tag);
             item.setTag(tag);
         });

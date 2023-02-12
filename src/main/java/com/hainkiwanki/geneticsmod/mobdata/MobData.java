@@ -23,6 +23,10 @@ public class MobData {
         return mobDataMap.get(stat);
     }
 
+    public boolean hasStat(String stat) {
+        return mobDataMap.containsKey(stat);
+    }
+
     public void setStat(String stat, float f) {
         mobDataMap.put(stat, f);
     }
