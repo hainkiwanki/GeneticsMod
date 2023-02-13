@@ -4,6 +4,7 @@ import com.hainkiwanki.geneticsmod.block.ModBlocks;
 import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.config.CommonConfig;
 import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
+import com.hainkiwanki.geneticsmod.item.ModItemProperties;
 import com.hainkiwanki.geneticsmod.item.ModItems;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.sound.ModSounds;
@@ -14,6 +15,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -35,7 +37,10 @@ public class GeneticsMod
         ModBlockEntities.register(eventBus);
         ModSounds.register(eventBus);
         ModMenuTypes.register(eventBus);
+
         eventBus.addListener(this::setup);
+        eventBus.addListener(this::clientSetup);
+
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -49,5 +54,9 @@ public class GeneticsMod
         event.enqueueWork(() -> {
             ModMessages.register();
         });
+    }
+
+    private void clientSetup(final FMLClientSetupEvent event) {
+        ModItemProperties.addCustomItemProperties();
     }
 }

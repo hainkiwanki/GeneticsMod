@@ -83,9 +83,6 @@ public class DnaSamplerItem extends Item {
         entity.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
             CompoundTag tag = new CompoundTag();
             data.saveNBTData(tag);
-            for (String key : tag.getAllKeys()) {
-                System.out.println(key + ": " + tag.getFloat(key));
-            }
             item.setTag(tag);
         });
     }

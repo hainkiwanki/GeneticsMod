@@ -1,6 +1,14 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "geneticsmod:item/dna_sampler_swab"
-  }
+    "layer0": "geneticsmod:item/dna_sampler_swab_clean"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "geneticsmod:used": 1
+      },
+      "model": "geneticsmod:item/dna_sampler_swab_used"
+    }
+  ]
 }

@@ -37,7 +37,7 @@ public class ModItems {
 
     public static final RegistryObject<SwabItem> DNA_SAMPLER_SWAB = ITEMS.register("dna_sampler_swab",
             () -> new SwabItem(ModTags.EntityTypeTags.CAN_SWAB,
-                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1).durability(32)));
+                    new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB).stacksTo(1)));
 
 
     public static final RegistryObject<Item> BLAZE_CLIPPING = ITEMS.register("blaze_clipping", () -> new Item(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));

@@ -1,13 +1,20 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
 import com.hainkiwanki.geneticsmod.sound.ModSounds;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.HashMap;
 
@@ -57,6 +64,20 @@ public class SwabItem extends DnaSamplerItem {
 
     @Override
     public void OnUseCorrectTool(LivingEntity pInteractionTarget, Player pPlayer) {
-        pPlayer.sendMessage(new TextComponent("Nothing happens"), pPlayer.getUUID());
+        pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
+            CompoundTag tag = new CompoundTag();
+            data.saveNBTData(tag);
+            ItemStack swab = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+            swab.setTag(tag);
+        });
+    }
+
+    @Override
+    public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
+        ItemStack swab = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+        if(swab.hasTag())
+            return InteractionResult.CONSUME;
+
+        return super.interactLivingEntity(pStack, pPlayer, pInteractionTarget, pUsedHand);
     }
 }
