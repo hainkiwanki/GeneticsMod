@@ -1,0 +1,15 @@
+  {
+  "replace": false,
+  "values": [
+    "minecraft:cave_spider",
+    "minecraft:chicken",
+    "minecraft:cod",
+    "minecraft:glow_squid",
+    "minecraft:parrot",
+    "minecraft:pufferfish",
+    "minecraft:salmon",
+    "minecraft:spider",
+    "minecraft:squid",
+    "minecraft:turtle"
+  ]
+}

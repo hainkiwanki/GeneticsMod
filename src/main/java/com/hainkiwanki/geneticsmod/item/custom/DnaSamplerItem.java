@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class DnaSamplerItem extends Item {
+    // test nbt ingame: /data get entity @s SelectedItem
     protected SoundEvent SOUNDEVENT;
     protected TagKey<EntityType<?>> ENTITY_CAN_USE_CLIPBONE;
     protected HashMap<String, String> DROP_BY_ENTITY;
@@ -81,10 +82,10 @@ public class DnaSamplerItem extends Item {
     public void AddNbtToItem(LivingEntity entity, ItemStack item) {
         entity.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
             CompoundTag tag = new CompoundTag();
-
-            tag.putInt("Fertility", 1);
-
             data.saveNBTData(tag);
+            for (String key : tag.getAllKeys()) {
+                System.out.println(key + ": " + tag.getFloat(key));
+            }
             item.setTag(tag);
         });
     }

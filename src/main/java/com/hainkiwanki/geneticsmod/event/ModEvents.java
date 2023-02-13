@@ -42,7 +42,7 @@ public class ModEvents {
         if(e.getEntityLiving() == null || !(e.getEntityLiving() instanceof Mob)) return;
         e.getEntityLiving().getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
             CompoundTag nbt = new CompoundTag();
-            data.initialize();
+            data.initialize(e.getEntityLiving());
             data.saveNBTData(nbt);
             ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> e.getEntityLiving()), new ChangeMobDataC2SPacket(nbt, e.getEntity().getId()));
         });
