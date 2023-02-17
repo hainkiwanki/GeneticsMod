@@ -3,12 +3,13 @@
   "item.geneticsmod.dna_sampler_knife": "Surgical Knife",
   "item.geneticsmod.dna_sampler_syringe": "Surgical Syringe",
   "item.geneticsmod.dna_sampler_swab": "Surgical Swabber",
-  "item.geneticsmod.dna_sampler_clipbone": "Surgical Clipper",
+  "item.geneticsmod.dna_sampler_clipper": "Surgical Clipper",
 
   "item.geneticsmod.blaze_clipping": "Blaze Clipping",
   "item.geneticsmod.cow_horn": "Cow Horn",
   "item.geneticsmod.creeper_chunk": "Creeper Chunk",
   "item.geneticsmod.elder_guardian_rod": "Elder Guardian Rod",
+  "item.geneticsmod.endermite_tail": "Endermite Tail",
   "item.geneticsmod.rib_bone": "Rib Bone",
   "item.geneticsmod.guardian_rod": "Guardian Rod",
   "item.geneticsmod.hoglin_ear": "Hoglin Ear",
@@ -56,5 +57,7 @@
   "sounds.geneticsmod.clipbone_crack": "Clipbone Crack",
   "sounds.geneticsmod.knife_stab": "Knife Stab",
   "sounds.geneticsmod.swabber": "Swab",
-  "sounds.geneticsmod.syringe_suck": "Syringe Suck"
+  "sounds.geneticsmod.syringe_suck": "Syringe Suck",
+
+  "tooltip.geneticsmod.genesampleritem.unidentified" : "Unidentified sample..."
 }

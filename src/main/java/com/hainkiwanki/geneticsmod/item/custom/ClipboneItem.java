@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import java.util.HashMap;
 
 
-public class ClipboneItem extends DnaSamplerItem {
+public class ClipboneItem extends GeneSamplerItem {
 
     public static HashMap<String, String> entityDrops = new HashMap<>();
 

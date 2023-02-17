@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "geneticsmod:item/dna_sampler_clipbone"
-  }
-}

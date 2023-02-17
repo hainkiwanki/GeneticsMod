@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityType;
 
 public class ModTags {
     public static class EntityTypeTags {
-        public static final TagKey<EntityType<?>> CAN_CLIPBONE = create("can_clipbone");
+        public static final TagKey<EntityType<?>> CAN_CLIP = create("can_clip");
         public static final TagKey<EntityType<?>> CAN_KNIFE = create("can_knife");
         public static final TagKey<EntityType<?>> CAN_SWAB = create("can_swab");
         public static final TagKey<EntityType<?>> CAN_SYRINGE = create("can_syringe");

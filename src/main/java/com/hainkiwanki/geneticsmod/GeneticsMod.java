@@ -49,7 +49,7 @@ public class GeneticsMod
         ModItems.DNA_SAMPLER_SYRINGE.get().SetSoundEvent(ModSounds.SYRINGE_SUCK.get());
         ModItems.DNA_SAMPLER_SWAB.get().SetSoundEvent(ModSounds.SWAB.get());
         ModItems.DNA_SAMPLER_KNIFE.get().SetSoundEvent(ModSounds.KNIFE_STAB.get());
-        ModItems.DNA_SAMPLER_CLIPBONE.get().SetSoundEvent(ModSounds.CLIPBONE_CRACK.get());
+        ModItems.DNA_SAMPLER_CLIPPER.get().SetSoundEvent(ModSounds.CLIPBONE_CRACK.get());
 
         event.enqueueWork(() -> {
             ModMessages.register();

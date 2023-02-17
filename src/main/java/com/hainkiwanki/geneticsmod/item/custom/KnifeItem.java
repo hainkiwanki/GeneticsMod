@@ -1,15 +1,13 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.sound.ModSounds;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 
 import java.util.HashMap;
 
 
-public class KnifeItem extends DnaSamplerItem {
+public class KnifeItem extends GeneSamplerItem {
 
     public static HashMap<String, String> entityDrops = new HashMap<>();
 

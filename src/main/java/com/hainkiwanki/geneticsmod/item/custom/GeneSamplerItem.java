@@ -21,7 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.HashMap;
 import java.util.Random;
 
-public class DnaSamplerItem extends Item {
+public class GeneSamplerItem extends Item {
     // test nbt ingame: /data get entity @s SelectedItem
     protected SoundEvent SOUNDEVENT;
     protected TagKey<EntityType<?>> ENTITY_CAN_USE_CLIPBONE;
@@ -29,7 +29,7 @@ public class DnaSamplerItem extends Item {
 
     protected float damageDealt = 0.0f;
 
-    public DnaSamplerItem(TagKey<EntityType<?>> tagList, HashMap<String, String> entityDropList, Properties pProperties) {
+    public GeneSamplerItem(TagKey<EntityType<?>> tagList, HashMap<String, String> entityDropList, Properties pProperties) {
         super(pProperties);
         this.ENTITY_CAN_USE_CLIPBONE = tagList;
         this.DROP_BY_ENTITY = entityDropList;
