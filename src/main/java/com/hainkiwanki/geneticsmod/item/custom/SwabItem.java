@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
 import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -84,7 +85,7 @@ public class SwabItem extends GeneSamplerItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         if(pStack.hasTag()) {
-            pTooltipComponents.add(new TranslatableComponent("tooltip.geneticsmod.genesampleritem.unidentified"));
+            pTooltipComponents.add(new TranslatableComponent("tooltip.geneticsmod.genesampleritem.unidentified").withStyle(ChatFormatting.GRAY));
         }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
