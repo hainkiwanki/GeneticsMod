@@ -1,5 +1,6 @@
-package com.hainkiwanki.geneticsmod.block.entity;
+package com.hainkiwanki.geneticsmod.block.entity.client;
 
+import com.hainkiwanki.geneticsmod.block.entity.TerminalBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;

@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -49,12 +50,13 @@ public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return new TextComponent("Terminal");
+        return new TranslatableComponent("gui.geneticsmod.terminal_block");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+        // TODO: Create Gene Analyzer Menu
         return new TerminalMenu(pContainerId, pPlayerInventory, this);
     }
 
@@ -100,7 +102,7 @@ public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, TerminalBlockEntity pBlockEntity) {
+    /*public static void tick(Level pLevel, BlockPos pPos, BlockState pState, TerminalBlockEntity pBlockEntity) {
         ItemStack item = pBlockEntity.itemHandler.extractItem(0, 1, true);
         if(currentItem == null || !item.sameItem(currentItem) && !item.is(Items.AIR)) {
             currentItem = item;
@@ -109,10 +111,10 @@ public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
         }
 
         // Custom Code
-        /*if(hasRecipe(pBlockEntity) && hasNotReachedStackLimit(pBlockEntity)) {
-            craftItem(pBlockEntity);
-        }*/
-    }
+        //if(hasRecipe(pBlockEntity) && hasNotReachedStackLimit(pBlockEntity)) {
+            //craftItem(pBlockEntity);
+        //}
+    }*/
 
     /*private static void craftItem(CobaltBlasterBlockEntity entity) {
         entity.itemHandler.extractItem(0, 1, false);

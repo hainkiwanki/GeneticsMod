@@ -2,7 +2,7 @@ package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
-import com.hainkiwanki.geneticsmod.block.entity.TerminalBlockRenderer;
+import com.hainkiwanki.geneticsmod.block.entity.client.TerminalBlockRenderer;
 import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.gui.TerminalScreen;
 import net.minecraft.client.gui.screens.MenuScreens;

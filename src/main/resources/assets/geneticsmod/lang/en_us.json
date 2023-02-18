@@ -51,6 +51,7 @@
   "item.geneticsmod.vex_ectoplasm": "Vex Ectoplasm",
 
   "block.geneticsmod.terminal": "Terminal",
+  "block.geneticsmod.gene_analyzer": "Gene Analyzer",
 
   "itemGroup.geneticsmodtab": "Genetics Mod",
 
@@ -59,5 +60,7 @@
   "sounds.geneticsmod.swabber": "Swab",
   "sounds.geneticsmod.syringe_suck": "Syringe Suck",
 
-  "tooltip.geneticsmod.genesampleritem.unidentified" : "Unidentified sample..."
+  "tooltip.geneticsmod.genesampleritem.unidentified" : "Unidentified sample...",
+  "gui.geneticsmod.terminal_block" : "Terminal",
+  "gui.geneticsmod.gene_analyzer" : "Gene Analyzer"
 }

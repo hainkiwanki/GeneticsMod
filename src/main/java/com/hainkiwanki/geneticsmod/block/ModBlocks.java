@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.block;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.block.custom.GeneAnalyzerBlock;
 import com.hainkiwanki.geneticsmod.block.custom.TerminalBlock;
 import com.hainkiwanki.geneticsmod.item.ModCreativeModeTabs;
 import com.hainkiwanki.geneticsmod.item.ModItems;
@@ -26,6 +27,11 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> TERMINAL = registerBlock("terminal", () ->
             new TerminalBlock(BlockBehaviour.Properties.of(Material.METAL)
+                    .strength(0.5f)
+                    .requiresCorrectToolForDrops()), ModCreativeModeTabs.GENETICS_TAB);
+
+    public static final RegistryObject<Block> GENE_ANALYZER = registerBlock("gene_analyzer", () ->
+            new GeneAnalyzerBlock(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(0.5f)
                     .requiresCorrectToolForDrops()), ModCreativeModeTabs.GENETICS_TAB);
 
