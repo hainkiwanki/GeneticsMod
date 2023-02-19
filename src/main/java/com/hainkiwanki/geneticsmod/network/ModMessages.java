@@ -2,6 +2,7 @@ package com.hainkiwanki.geneticsmod.network;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
+import com.hainkiwanki.geneticsmod.network.packet.EnergySyncS2CPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -32,10 +33,20 @@ public class ModMessages {
                 .encoder(ChangeMobDataC2SPacket::toBytes)
                 .consumer(ChangeMobDataC2SPacket::handle)
                 .add();
+
+        net.messageBuilder(EnergySyncS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(EnergySyncS2CPacket::new)
+                .encoder(EnergySyncS2CPacket::toBytes)
+                .consumer(EnergySyncS2CPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message) {
         INSTANCE.sendToServer(message);
+    }
+
+    public static <MSG> void sendToClients(MSG message) {
+        INSTANCE.send(PacketDistributor.ALL.noArg(), message);
     }
 
     public static void send(PacketDistributor.PacketTarget target, ChangeMobDataC2SPacket message) {

@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.block.custom;
 
 import com.hainkiwanki.geneticsmod.block.entity.GeneAnalyzerBlockEntity;
+import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.block.entity.TerminalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
@@ -11,6 +12,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
@@ -55,5 +58,11 @@ public class GeneAnalyzerBlock extends FacingEntityBlock {
         }
 
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return createTickerHelper(pBlockEntityType, ModBlockEntities.GENE_ANALYZER.get(), GeneAnalyzerBlockEntity::tick);
     }
 }

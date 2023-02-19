@@ -2,8 +2,6 @@ package com.hainkiwanki.geneticsmod.gui;
 
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
 import com.hainkiwanki.geneticsmod.block.entity.GeneAnalyzerBlockEntity;
-import com.hainkiwanki.geneticsmod.block.entity.TerminalBlockEntity;
-import com.hainkiwanki.geneticsmod.gui.slot.ModDNASlot;
 import com.hainkiwanki.geneticsmod.gui.slot.ModFuelSlot;
 import com.hainkiwanki.geneticsmod.gui.slot.ModGeneSampleSlot;
 import com.hainkiwanki.geneticsmod.gui.slot.ModResultSlot;
@@ -14,23 +12,24 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 
 public class GeneAnalyzerMenu extends AbstractContainerMenu {
-    private final GeneAnalyzerBlockEntity blockEntity;
+    public final GeneAnalyzerBlockEntity blockEntity;
     private final Level level;
-    // private final ContainerData data;
+    private final ContainerData data;
 
     public GeneAnalyzerMenu(int windowId, Inventory inv, FriendlyByteBuf extraData) {
-        this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
+        this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
     }
 
-    public GeneAnalyzerMenu(int windowId, Inventory inv, BlockEntity entity) {
+    public GeneAnalyzerMenu(int windowId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.GENE_ANALYZER_MENU.get(), windowId);
         checkContainerSize(inv, 3);
         blockEntity = ((GeneAnalyzerBlockEntity) entity);
         this.level = inv.player.level;
-        // this.data = data;
+        this.data = data;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
@@ -41,32 +40,30 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
             this.addSlot(new ModResultSlot(handler, 2, 134, 38));
         });
 
-        // addDataSlots(data);
-    }
-
-    /*public boolean isCrafting() {
-        return data.get(0) > 0;
+        addDataSlots(data);
     }
 
     public boolean hasFuel() {
+        return data.get(0) > 0;
+    }
+
+    public boolean hasFuelItemInSlot() {
         return data.get(2) > 0;
     }
 
-    public int getScaledProgress() {
-        int progress = this.data.get(0);
-        int maxProgress = this.data.get(1);  // Max Progress
-        int progressArrowSize = 26; // This is the width in pixels of your arrow
-
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+    public int getEnergyProgress() {
+        IEnergyStorage energyStorage = blockEntity.getEnergyStorage();
+        int stored = (int)(41*(energyStorage.getEnergyStored()/(float)energyStorage.getMaxEnergyStored()));
+        return stored;
     }
 
     public int getScaledFuelProgress() {
-        int fuelProgress = this.data.get(2);
-        int maxFuelProgress = this.data.get(3);
+        int fuelProgress = this.data.get(0);
+        int maxFuelProgress = this.data.get(1);
         int fuelProgressSize = 14;
 
         return maxFuelProgress != 0 ? (int)(((float)fuelProgress / (float)maxFuelProgress) * fuelProgressSize) : 0;
-    }*/
+    }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
     // must assign a slot number to each of the slots used by the GUI.

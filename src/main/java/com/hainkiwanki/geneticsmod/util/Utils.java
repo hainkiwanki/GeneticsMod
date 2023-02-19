@@ -1,19 +1,10 @@
 package com.hainkiwanki.geneticsmod.util;
 
-import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.item.ModItems;
-import com.hainkiwanki.geneticsmod.sound.ModSounds;
-import com.hainkiwanki.geneticsmod.tags.ModTags;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
 
 public class Utils {
     public static String getItemPath(ItemStack item) {
@@ -30,5 +21,20 @@ public class Utils {
 
     public static String getMobName(@NotNull LivingEntity entity) {
         return entity.getClass().getSimpleName();
+    }
+
+    public static boolean isMouseAboveArea(int pMouseX, int pMouseY, int x, int y, int offsetX, int offsetY, int width, int height) {
+        return isMouseOver(pMouseX, pMouseY, x + offsetX, y + offsetY, width, height);
+    }
+    public static boolean isMouseOver(double mouseX, double mouseY, int x, int y) {
+        return isMouseOver(mouseX, mouseY, x, y, 16);
+    }
+
+    public static boolean isMouseOver(double mouseX, double mouseY, int x, int y, int size) {
+        return isMouseOver(mouseX, mouseY, x, y, size, size);
+    }
+
+    public static boolean isMouseOver(double mouseX, double mouseY, int x, int y, int sizeX, int sizeY) {
+        return (mouseX >= x && mouseX <= x + sizeX) && (mouseY >= y && mouseY <= y + sizeY);
     }
 }
