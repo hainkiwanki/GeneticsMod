@@ -62,5 +62,5 @@
 
   "tooltip.geneticsmod.genesampleritem.unidentified" : "Unidentified sample...",
   "gui.geneticsmod.terminal_block" : "Terminal",
-  "gui.geneticsmod.gene_analyzer" : "Gene Analyzer"
+  "gui.geneticsmod.gene_analyzer_block" : "Gene Analyzer"
 }

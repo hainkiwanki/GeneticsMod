@@ -17,6 +17,9 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<TerminalMenu>> TERMINAL_MENU =
             registerMenuType(TerminalMenu::new, "terminal_menu");
 
+    public static final RegistryObject<MenuType<GeneAnalyzerMenu>> GENE_ANALYZER_MENU =
+            registerMenuType(GeneAnalyzerMenu::new, "gene_analyzer_menu");
+
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory,String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));

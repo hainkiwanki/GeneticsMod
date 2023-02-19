@@ -9,11 +9,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
-public class TerminalScreen extends AbstractContainerScreen<TerminalMenu> {
+public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu> {
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/terminal.png");
+            new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/gene_analyzer.png");
 
-    public TerminalScreen(TerminalMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+    public GeneAnalyzerScreen(GeneAnalyzerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
 
@@ -31,6 +31,8 @@ public class TerminalScreen extends AbstractContainerScreen<TerminalMenu> {
         int y = (height - imageHeight) / 2;
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
+
+
     }
 
     @Override
