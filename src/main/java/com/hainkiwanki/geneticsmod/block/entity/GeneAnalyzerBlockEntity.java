@@ -3,6 +3,7 @@ package com.hainkiwanki.geneticsmod.block.entity;
 import com.hainkiwanki.geneticsmod.gui.GeneAnalyzerMenu;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.EnergySyncS2CPacket;
+import com.hainkiwanki.geneticsmod.recipe.GeneAnalyzerRecipe;
 import com.hainkiwanki.geneticsmod.util.capabilities.EnergyStorageCapability;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,6 +21,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -36,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider {
 
@@ -137,9 +140,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
-
         tag.putInt("gene_analyzer.energyStorage", energyHandler.getEnergyStored());
-
         tag.putInt("gene_analyzer.fuelTime", fuelTime);
         tag.putInt("gene_analyzer.maxFuelTime", maxFuelTime);
         super.saveAdditional(tag);
@@ -149,9 +150,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
-
         energyHandler.setEnergy(nbt.getInt("gene_analyzer.energyStorage"));
-
         fuelTime = nbt.getInt("gene_analyzer.fuelTime");
         maxFuelTime = nbt.getInt("gene_analyzer.maxFuelTime");
     }
@@ -161,7 +160,6 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
-
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
@@ -188,23 +186,10 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     private static boolean hasEnoughEnergy(GemInfusingStationBlockEntity pEntity) {
         return pEntity.ENERGY_STORAGE.getEnergyStored() >= ENERGY_REQ * pEntity.maxProgress;
     }
-
-    private static boolean hasGemInFirstSlot(GemInfusingStationBlockEntity pEntity) {
-        return pEntity.itemHandler.getStackInSlot(0).getItem() == ModItems.ZIRCON.get();
-    }*/
-
-    private static boolean hasFuelInFuelSlot(GeneAnalyzerBlockEntity entity) {
-        return !entity.itemHandler.getStackInSlot(0).isEmpty();
-    }
-
-    private static boolean isConsumingFuel(GeneAnalyzerBlockEntity entity) {
-        return entity.fuelTime > 0;
-    }
+    */
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, GeneAnalyzerBlockEntity blockEntity) {
-        /*if(hasGemInFirstSlot(pEntity)) {
-            pEntity.ENERGY_STORAGE.receiveEnergy(64, false);
-        }*/
+        if(level.isClientSide()) return;
 
         if(hasFuelInFuelSlot(blockEntity) && !isConsumingFuel(blockEntity)) {
             blockEntity.consumeFuel();
@@ -213,8 +198,14 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
 
         if(isConsumingFuel(blockEntity)) {
             blockEntity.fuelTime--;
-            blockEntity.energyHandler.receiveEnergy(64, false);
+            blockEntity.energyHandler.receiveEnergy(256, false);
             setChanged(level, blockPos, blockState);
+        }
+
+        if(hasRecipe(blockEntity)) {
+            if(isConsumingFuel(blockEntity)) {
+
+            }
         }
 
         /*if(hasRecipe(blockEntity)) {
@@ -231,21 +222,39 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         }*/
     }
 
-    /*private static boolean hasRecipe(GeneAnalyzerBlockEntity entity) {
+
+    private static boolean hasFuelInFuelSlot(GeneAnalyzerBlockEntity entity) {
+        return !entity.itemHandler.getStackInSlot(0).isEmpty();
+    }
+
+    private static boolean isConsumingFuel(GeneAnalyzerBlockEntity entity) {
+        return entity.fuelTime > 0;
+    }
+
+    private static boolean hasRecipe(GeneAnalyzerBlockEntity entity) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
             inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
         }
 
-        Optional<CobaltBlasterRecipe> match = level.getRecipeManager()
-                .getRecipeFor(CobaltBlasterRecipe.Type.INSTANCE, inventory, level);
+        Optional<GeneAnalyzerRecipe> match = level.getRecipeManager()
+                .getRecipeFor(GeneAnalyzerRecipe.Type.INSTANCE, inventory, level);
 
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
     }
 
-    private static void craftItem(GeneAnalyzerBlockEntity entity) {
+    private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
+        return inventory.getItem(1).getItem() == output.getItem() || inventory.getItem(1).isEmpty();
+    }
+
+    private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
+        return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
+    }
+
+
+    /*private static void craftItem(GeneAnalyzerBlockEntity entity) {
         Level level = entity.level;
         SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
         for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
@@ -268,7 +277,8 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
 
     private void resetProgress() {
         this.progress = 0;
-    }*/
+    }
+    */
 
 
     //region Fix for empty energy bar after world reload

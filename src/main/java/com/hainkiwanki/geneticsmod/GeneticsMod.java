@@ -9,6 +9,7 @@ import com.hainkiwanki.geneticsmod.gui.TerminalScreen;
 import com.hainkiwanki.geneticsmod.item.ModItemProperties;
 import com.hainkiwanki.geneticsmod.item.ModItems;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
+import com.hainkiwanki.geneticsmod.recipe.ModRecipes;
 import com.hainkiwanki.geneticsmod.sound.ModSounds;
 import com.hainkiwanki.geneticsmod.util.ConfigHelper;
 import com.mojang.logging.LogUtils;
@@ -40,6 +41,7 @@ public class GeneticsMod
         ModBlockEntities.register(eventBus);
         ModSounds.register(eventBus);
         ModMenuTypes.register(eventBus);
+        ModRecipes.register(eventBus);
 
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
