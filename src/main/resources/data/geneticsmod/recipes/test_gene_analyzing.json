@@ -1,7 +1,8 @@
 {
-  "type": "minecraftcourse:gene_analyzing",
-  "sample": "geneticsmod:cow_horn",
+  "type": "geneticsmod:gene_analyzing",
+  "sample": {
+    "item": "geneticsmod:cow_horn"
+  },
   "time": 200,
-  "energy": 2048,
   "success_rate": 0.85
 }

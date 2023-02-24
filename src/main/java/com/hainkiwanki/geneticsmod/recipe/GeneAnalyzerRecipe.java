@@ -1,43 +1,45 @@
 package com.hainkiwanki.geneticsmod.recipe;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
 
 public class GeneAnalyzerRecipe implements Recipe<SimpleContainer> {
     private final ResourceLocation id;
     private final ItemStack output;
     private final int analyzeTime;
-    private final int energyConsumption;
     private final float successRate;
 
     private static final int DEFAULT_TIME = 200;
     private static final String TIME_PROPERTY = "time";
-    private static final int DEFAULT_ENERGY_CONSUMPTION = 2048;
-    private static final String ENERGY_CONSUMPTION_PROPERTY = "energy";
     private static final float DEFAULT_SUCCESS_RATE = 0.90f;
     private static final String SUCCESS_RATE_PROPERTY = "success_rate";
 
     private static final String RECIPE_TYPE = "gene_analyzing";
 
-    public GeneAnalyzerRecipe(ResourceLocation pId, ItemStack pResult, int pTime, int pEnergy, float pSuccessRate) {
+    public GeneAnalyzerRecipe(ResourceLocation pId, ItemStack pResult, int pTime, float pSuccessRate) {
         id = pId;
         output = pResult;
         analyzeTime = pTime;
-        energyConsumption = pEnergy;
         successRate = pSuccessRate;
+    }
+
+    public int getAnalyzeTime() {
+        return analyzeTime;
+    }
+
+    public float getSuccessRate() {
+        return successRate;
     }
 
     @Override
@@ -92,30 +94,24 @@ public class GeneAnalyzerRecipe implements Recipe<SimpleContainer> {
         @Override
         public GeneAnalyzerRecipe fromJson(ResourceLocation id, JsonObject json) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "sample"));
-            // JsonElement jsonElement = GsonHelper.getAsJsonObject(json, "object");
-            // Ingredient input = Ingredient.fromJson(jsonElement);
-
             int time = GsonHelper.getAsInt(json,TIME_PROPERTY, DEFAULT_TIME);
-            int energyConsumption = GsonHelper.getAsInt(json, ENERGY_CONSUMPTION_PROPERTY, DEFAULT_ENERGY_CONSUMPTION);
             float successRate = GsonHelper.getAsFloat(json, SUCCESS_RATE_PROPERTY, DEFAULT_SUCCESS_RATE);
 
-            return new GeneAnalyzerRecipe(id, output, time, energyConsumption, successRate);
+            return new GeneAnalyzerRecipe(id, output, time, successRate);
         }
 
         @Nullable
         @Override
         public GeneAnalyzerRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
             int time = buf.readInt();
-            int energy = buf.readInt();
             float successRate = buf.readFloat();
             ItemStack output = buf.readItem();
-            return new GeneAnalyzerRecipe(id, output, time, energy, successRate);
+            return new GeneAnalyzerRecipe(id, output, time, successRate);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, GeneAnalyzerRecipe recipe) {
             buf.writeInt(recipe.analyzeTime);
-            buf.writeInt(recipe.energyConsumption);
             buf.writeFloat(recipe.successRate);
             buf.writeItemStack(recipe.getResultItem(), false);
         }
