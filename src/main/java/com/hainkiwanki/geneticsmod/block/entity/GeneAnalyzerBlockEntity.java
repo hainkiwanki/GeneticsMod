@@ -43,7 +43,7 @@ import java.util.Optional;
 public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider {
 
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(3) {
+    private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -62,13 +62,11 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
 
     protected final ContainerData data;
     private int progress = 0;
-    private int maxProgress = 0;
+    private int maxProgress = 1;
     private float successRate = 0;
 
     private int fuelTime = 0;
     private int maxFuelTime = 0;
-
-
 
     public GeneAnalyzerBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.GENE_ANALYZER.get(), pPos, pBlockState);
@@ -76,26 +74,27 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
             @Override
             public int get(int pIndex) {
                 switch (pIndex) {
-                    case 0:
-                        return GeneAnalyzerBlockEntity.this.fuelTime;
-                    case 1:
-                        return GeneAnalyzerBlockEntity.this.maxFuelTime;
-                    default:
-                        return 0;
+                    case 0: return fuelTime;
+                    case 1: return maxFuelTime;
+                    case 2: return progress;
+                    case 3: return maxProgress;
+                    default: return 0;
                 }
             }
 
             @Override
             public void set(int pIndex, int pValue) {
                 switch(pIndex) {
-                    case 0: GeneAnalyzerBlockEntity.this.fuelTime = pValue; break;
-                    case 1: GeneAnalyzerBlockEntity.this.maxFuelTime = pValue; break;
+                    case 0: fuelTime = pValue; break;
+                    case 1: maxFuelTime = pValue; break;
+                    case 2: progress = pValue; break;
+                    case 3: maxProgress = pValue; break;
                 }
             }
 
             @Override
             public int getCount() {
-                return 3;
+                return 4;
             }
         };
     }
@@ -144,6 +143,8 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         tag.putInt("gene_analyzer.energyStorage", energyHandler.getEnergyStored());
         tag.putInt("gene_analyzer.fuelTime", fuelTime);
         tag.putInt("gene_analyzer.maxFuelTime", maxFuelTime);
+        tag.putInt("gene_analyzer.progress", progress);
+        tag.putInt("gene_analyzer.maxProgress", maxProgress);
         super.saveAdditional(tag);
     }
 
@@ -154,6 +155,8 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         energyHandler.setEnergy(nbt.getInt("gene_analyzer.energyStorage"));
         fuelTime = nbt.getInt("gene_analyzer.fuelTime");
         maxFuelTime = nbt.getInt("gene_analyzer.maxFuelTime");
+        progress = nbt.getInt("gene_analyzer.progress");
+        maxProgress = nbt.getInt("gene_analyzer.maxProgress");
     }
 
     public void drops() {
@@ -172,10 +175,9 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         energyHandler.setEnergy(energy);
     }
 
-
     private void resetProgress() {
         this.progress = 0;
-        this.maxProgress = 0;
+        this.maxProgress = 1;
         this.successRate = 0;
     }
 
@@ -204,6 +206,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
 
         // Analyzing gene sample
         if(hasRecipe(blockEntity)) {
+            // TODO: remove input item and prevent another one from being used
             blockEntity.progress++;
             extractEnergy(blockEntity);
             setChanged(level, blockPos, blockState);
@@ -270,9 +273,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
 
         if(match.isPresent()) {
             entity.itemHandler.extractItem(1,1, false);
-
             entity.itemHandler.setStackInSlot(2, new ItemStack(match.get().getResultItem().getItem(),1));
-
             entity.resetProgress();
         }
     }

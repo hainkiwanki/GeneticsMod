@@ -64,7 +64,13 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
 
         // energyInfoArea.draw(pPoseStack);
 
-
+        if(menu.isCrafting()) {
+            // start top left corner x, y,
+            //
+            blit(pPoseStack, x + 103, y + 38,
+                    176, 30,
+                    menu.getCraftingProgress(), 16);
+        }
 
         if(menu.hasFuel()) {
             blit(pPoseStack, x + 46, y + 31 + 14 - menu.getScaledFuelProgress(),

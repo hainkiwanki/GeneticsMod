@@ -42,10 +42,6 @@ public class ModMessages {
                 .add();
     }
 
-    /*public static <MSG> void sendToServer(MSG message) {
-        INSTANCE.sendToServer(message);
-    }*/
-
     public static void sendToClients(PacketDistributor.PacketTarget target, EnergySyncS2CPacket message) {
         INSTANCE.send(target, message);
     }

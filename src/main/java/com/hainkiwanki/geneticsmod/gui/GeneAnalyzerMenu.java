@@ -21,12 +21,12 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
     private final ContainerData data;
 
     public GeneAnalyzerMenu(int windowId, Inventory inv, FriendlyByteBuf extraData) {
-        this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(3));
+        this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
     public GeneAnalyzerMenu(int windowId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.GENE_ANALYZER_MENU.get(), windowId);
-        checkContainerSize(inv, 3);
+        checkContainerSize(inv, 4);
         blockEntity = ((GeneAnalyzerBlockEntity) entity);
         this.level = inv.player.level;
         this.data = data;
@@ -44,11 +44,21 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
     }
 
     public boolean hasFuel() {
-        return data.get(0) > 0;
+        return this.data.get(0) > 0;
     }
 
     public boolean hasFuelItemInSlot() {
-        return data.get(2) > 0;
+        return this.data.get(2) > 0;
+    }
+
+    public int getCraftingProgress() {
+        int progress = this.data.get(2);
+        int maxProgress = this.data.get(3);
+        return (int) (((float)progress/ (float)maxProgress) * 22);
+    }
+
+    public boolean isCrafting() {
+        return this.data.get(2) > 0;
     }
 
     public int getEnergyProgress() {
