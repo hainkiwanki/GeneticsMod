@@ -68,6 +68,8 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     private int fuelTime = 0;
     private int maxFuelTime = 0;
 
+    private int energyPerTick = 32;
+
     public GeneAnalyzerBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.GENE_ANALYZER.get(), pPos, pBlockState);
         this.data = new ContainerData() {
@@ -199,14 +201,15 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         }
 
         if(isConsumingFuel(blockEntity)) {
-            blockEntity.fuelTime--;
-            blockEntity.energyHandler.receiveEnergy(256, false);
-            setChanged(level, blockPos, blockState);
+            if (blockEntity.energyHandler.hasStorageForEnergy()) {
+                blockEntity.fuelTime--;
+                blockEntity.energyHandler.receiveEnergy(128, false);
+                setChanged(level, blockPos, blockState);
+            }
         }
 
         // Analyzing gene sample
         if(hasRecipe(blockEntity)) {
-            // TODO: remove input item and prevent another one from being used
             blockEntity.progress++;
             extractEnergy(blockEntity);
             setChanged(level, blockPos, blockState);
@@ -222,7 +225,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     }
 
     private static void extractEnergy(GeneAnalyzerBlockEntity pEntity) {
-        pEntity.energyHandler.extractEnergy(64, false);
+        pEntity.energyHandler.extractEnergy(pEntity.energyPerTick, false);
     }
 
     private static boolean hasFuelInFuelSlot(GeneAnalyzerBlockEntity entity) {
@@ -259,7 +262,6 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(1).getMaxStackSize() > inventory.getItem(1).getCount();
     }
-
 
     private static void craftItem(GeneAnalyzerBlockEntity entity) {
         Level level = entity.level;

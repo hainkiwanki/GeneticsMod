@@ -28,6 +28,10 @@ public abstract class EnergyStorageCapability extends EnergyStorage {
         return receiveEnergy;
     }
 
+    public boolean hasStorageForEnergy() {
+        return capacity - energy > 0;
+    }
+
     public int setEnergy(int energy) {
         this.energy = energy;
         return energy;
