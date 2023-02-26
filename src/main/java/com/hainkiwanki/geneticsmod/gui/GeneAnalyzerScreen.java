@@ -5,6 +5,7 @@ import com.hainkiwanki.geneticsmod.gui.renderer.EnergyInfoArea;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -64,9 +65,12 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
 
         // energyInfoArea.draw(pPoseStack);
 
+        // Minecraft.getInstance().font.draw()
+
         if(menu.isCrafting()) {
             // start top left corner x, y,
-            //
+            // offset to part of image x, y
+            // width to draw, height to draw
             blit(pPoseStack, x + 103, y + 38,
                     176, 30,
                     menu.getCraftingProgress(), 16);
