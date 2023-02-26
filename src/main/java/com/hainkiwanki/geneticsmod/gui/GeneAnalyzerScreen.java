@@ -7,6 +7,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -65,7 +66,7 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
 
         // energyInfoArea.draw(pPoseStack);
 
-        // Minecraft.getInstance().font.draw()
+        // Minecraft.getInstance().font.draw(pPoseStack, )
 
         if(menu.isCrafting()) {
             // start top left corner x, y,
