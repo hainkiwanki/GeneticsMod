@@ -69,12 +69,12 @@ public class MobData {
             mobDataMap.put(CAN_MILK, canMilk);
         }
         if(!mobDataMap.containsKey(MATURING_TIME)) {
-            Animal animal = (Animal)pEntity;
+            /*Animal animal = (Animal)pEntity;
             float value = 0.0f;
             if(animal != null) {
                 value = 24000.0f;
-            }
-            mobDataMap.put(MATURING_TIME, value);
+            }*/
+            mobDataMap.put(MATURING_TIME, 0.0f);
         }
         if(!mobDataMap.containsKey(IS_HOSTILE)) {
             if(NeutralMob.class.isAssignableFrom(pEntity.getClass())) {

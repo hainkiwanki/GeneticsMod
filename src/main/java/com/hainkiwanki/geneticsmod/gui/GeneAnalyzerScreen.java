@@ -6,12 +6,16 @@ import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.font.TextFieldHelper;
+import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.BookEditScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.util.Optional;
@@ -66,7 +70,13 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
 
         // energyInfoArea.draw(pPoseStack);
 
-        // Minecraft.getInstance().font.draw(pPoseStack, )
+        // Draw some text
+        pPoseStack.pushPose();
+        Component ownerText = new TextComponent("test component text");
+        int textX = leftPos + 78;
+        int textY = topPos + 28;
+        font.draw(pPoseStack, ownerText, (float)textX, (float)textY, 0);
+        pPoseStack.popPose();
 
         if(menu.isCrafting()) {
             // start top left corner x, y,
