@@ -9,10 +9,8 @@ import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Cow;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -40,6 +38,10 @@ public class ModEvents {
     @SubscribeEvent
     public static void onMobSpawn(LivingSpawnEvent e) {
         if(e.getEntityLiving() == null || !(e.getEntityLiving() instanceof Mob)) return;
+        /*AgeableMob mob = (AgeableMob)e.getEntityLiving();
+        if(mob.isBaby()) {
+            mob.
+        }*/
         e.getEntityLiving().getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
             CompoundTag nbt = new CompoundTag();
             data.initialize(e.getEntityLiving());
