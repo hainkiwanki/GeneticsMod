@@ -1,7 +1,8 @@
-package com.hainkiwanki.geneticsmod.gui;
+package com.hainkiwanki.geneticsmod.gui.menus;
 
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
 import com.hainkiwanki.geneticsmod.block.entity.TerminalBlockEntity;
+import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.gui.slot.ModDNASlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;

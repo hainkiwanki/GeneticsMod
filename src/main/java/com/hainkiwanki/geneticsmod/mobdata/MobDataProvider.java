@@ -40,7 +40,8 @@ public class MobDataProvider implements ICapabilityProvider, INBTSerializable<Co
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        createMobData().saveNBTData(nbt);
+        createMobData();
+        mobData.saveNBTData(nbt);
         return nbt;
     }
 

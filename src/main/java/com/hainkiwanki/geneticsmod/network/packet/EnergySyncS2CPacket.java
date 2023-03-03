@@ -1,15 +1,10 @@
 package com.hainkiwanki.geneticsmod.network.packet;
 
 import com.hainkiwanki.geneticsmod.block.entity.GeneAnalyzerBlockEntity;
-import com.hainkiwanki.geneticsmod.gui.GeneAnalyzerMenu;
-import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
+import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;

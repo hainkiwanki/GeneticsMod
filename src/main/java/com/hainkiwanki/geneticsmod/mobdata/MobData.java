@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Enemy;
@@ -86,14 +87,22 @@ public class MobData {
             }
         }
         if(!mobDataMap.containsKey(ATTACK_DAMAGE)) {
-            mobDataMap.put(ATTACK_DAMAGE, (float)pEntity.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
+            mobDataMap.put(ATTACK_DAMAGE, TryGetAttribute(pEntity, Attributes.ATTACK_DAMAGE));
         }
         if(!mobDataMap.containsKey(ATTACK_SPEED)) {
-            mobDataMap.put(ATTACK_SPEED, (float)pEntity.getAttributeBaseValue(Attributes.ATTACK_SPEED));
+            mobDataMap.put(ATTACK_SPEED, TryGetAttribute(pEntity, Attributes.ATTACK_SPEED));
         }
         if(!mobDataMap.containsKey(MOVE_SPEED)) {
-            mobDataMap.put(MOVE_SPEED, (float)pEntity.getAttributeBaseValue(Attributes.MOVEMENT_SPEED));
+            mobDataMap.put(MOVE_SPEED, TryGetAttribute(pEntity, Attributes.MOVEMENT_SPEED));
         }
+    }
+
+    private float TryGetAttribute(LivingEntity pEntity, Attribute pAttribute) {
+        float result = 0.0f;
+        if(pEntity.getAttributes().hasAttribute(pAttribute)){
+            result = (float)pEntity.getAttributeBaseValue(pAttribute);
+        }
+        return result;
     }
 
     public float getStat(String stat) {
@@ -112,6 +121,7 @@ public class MobData {
     }
 
     public void saveNBTData(CompoundTag nbt) {
+        if(mobDataMap.isEmpty() || mobDataType.isEmpty()) return;
         for (Map.Entry<String, Float> entry : mobDataMap.entrySet()) {
             nbt.putFloat(entry.getKey(), entry.getValue());
         }
