@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "geneticsmod:block/gene_isolator", "y": 0 },
+    "facing=east": { "model": "geneticsmod:block/gene_isolator", "y": 90 },
+    "facing=south": { "model": "geneticsmod:block/gene_isolator", "y": 180 },
+    "facing=west": { "model": "geneticsmod:block/gene_isolator", "y": 270 }
+  }
+}

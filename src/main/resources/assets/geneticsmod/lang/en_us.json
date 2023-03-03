@@ -52,6 +52,7 @@
 
   "block.geneticsmod.terminal": "Terminal",
   "block.geneticsmod.gene_analyzer": "Gene Analyzer",
+  "block.geneticsmod.gene_isolator": "Gene Isolator",
 
   "itemGroup.geneticsmodtab": "Genetics Mod",
 
@@ -62,5 +63,6 @@
 
   "tooltip.geneticsmod.genesampleritem.unidentified" : "Unidentified sample...",
   "gui.geneticsmod.terminal_block" : "Terminal",
-  "gui.geneticsmod.gene_analyzer_block" : "Gene Analyzer"
+  "gui.geneticsmod.gene_analyzer_block" : "Gene Analyzer",
+  "gui.geneticsmod.gene_isolator_block": "Gene Isolator"
 }

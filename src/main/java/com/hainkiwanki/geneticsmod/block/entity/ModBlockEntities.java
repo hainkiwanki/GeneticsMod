@@ -21,6 +21,13 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(GeneAnalyzerBlockEntity::new,
                             ModBlocks.GENE_ANALYZER.get()).build(null));
 
+
+    public static final RegistryObject<BlockEntityType<GeneIsolatorBlockEntity>> GENE_ISOLATOR =
+            BLOCK_ENTITIES.register("gene_isolator", () ->
+                    BlockEntityType.Builder.of(GeneIsolatorBlockEntity::new,
+                            ModBlocks.GENE_ISOLATOR.get()).build(null));
+
+
     public static void register(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);
     }

@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "particle": "geneticsmod:block/terminal_side",
+    "north": "geneticsmod:block/gene_isolator_front",
+    "south": "geneticsmod:block/gene_isolator_front",
+    "east": "geneticsmod:block/terminal_side",
+    "west": "geneticsmod:block/terminal_side",
+    "up": "geneticsmod:block/terminal_side",
+    "down": "geneticsmod:block/terminal_side"
+  }
+}

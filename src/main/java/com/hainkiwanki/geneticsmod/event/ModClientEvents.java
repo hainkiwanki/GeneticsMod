@@ -3,9 +3,10 @@ package com.hainkiwanki.geneticsmod.event;
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.block.entity.client.TerminalBlockRenderer;
-import com.hainkiwanki.geneticsmod.gui.GeneAnalyzerScreen;
+import com.hainkiwanki.geneticsmod.gui.renderer.GeneAnalyzerScreen;
 import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
-import com.hainkiwanki.geneticsmod.gui.TerminalScreen;
+import com.hainkiwanki.geneticsmod.gui.renderer.GeneIsolatorScreen;
+import com.hainkiwanki.geneticsmod.gui.renderer.TerminalScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -23,5 +24,6 @@ public class ModClientEvents {
     public static void clientSetup(final FMLClientSetupEvent event) {
         MenuScreens.register(ModMenuTypes.TERMINAL_MENU.get(), TerminalScreen::new);
         MenuScreens.register(ModMenuTypes.GENE_ANALYZER_MENU.get(), GeneAnalyzerScreen::new);
+        MenuScreens.register(ModMenuTypes.GENE_ISOLATOR_MENU.get(), GeneIsolatorScreen::new);
     }
 }
