@@ -1,4 +1,4 @@
-package com.hainkiwanki.geneticsmod.gui.renderer;
+package com.hainkiwanki.geneticsmod.gui.renderer.components;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.Rect2i;

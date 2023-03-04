@@ -2,6 +2,7 @@ package com.hainkiwanki.geneticsmod.gui.renderer;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
+import com.hainkiwanki.geneticsmod.gui.renderer.components.EnergyInfoArea;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;

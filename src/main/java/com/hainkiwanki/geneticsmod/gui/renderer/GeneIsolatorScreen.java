@@ -2,9 +2,11 @@ package com.hainkiwanki.geneticsmod.gui.renderer;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneIsolatorMenu;
+import com.hainkiwanki.geneticsmod.gui.renderer.components.EnergyInfoArea;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.screens.advancements.AdvancementTab;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -65,12 +67,13 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         // energyInfoArea.draw(pPoseStack);
 
         // Draw some text
-        pPoseStack.pushPose();
         Component ownerText = new TextComponent("test component text");
         int textX = leftPos + 78;
         int textY = topPos + 28;
-        font.draw(pPoseStack, ownerText, (float)textX, (float)textY, 0);
-        pPoseStack.popPose();
+        // font.draw(pPoseStack, ownerText, (float)textX, (float)textY, 0);
+
+        //Line line = new Line(0, 0,  20, 20);
+        //line.draw(pPoseStack);
 
         if(menu.isCrafting()) {
             // start top left corner x, y,
@@ -97,5 +100,18 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         renderBackground(pPoseStack);
         super.render(pPoseStack, mouseX, mouseY, delta);
         renderTooltip(pPoseStack, mouseX, mouseY);
+    }
+
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+        if (pButton == 0) {
+            System.out.println("Clicked: " + pMouseX + ", " + pMouseY);
+            System.out.println("GUI Mouse Position: " + ((int)pMouseX - leftPos) + ", " + ((int)pMouseY - topPos));
+            System.out.println("Width " + width + ", imagewidth: " + imageWidth);
+            System.out.println("Height " + height + ", imageheight: " + imageHeight);
+            System.out.println("Clicked inside: " + Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, leftPos, topPos,
+                    0, 0, imageWidth, imageHeight));
+        }
+
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
 }
