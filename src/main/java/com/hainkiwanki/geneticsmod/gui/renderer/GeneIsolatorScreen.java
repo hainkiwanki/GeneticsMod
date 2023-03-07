@@ -6,8 +6,15 @@ import com.hainkiwanki.geneticsmod.gui.renderer.components.EnergyInfoArea;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.advancements.AdvancementTab;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
@@ -20,9 +27,11 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/gene_isolator.png");
     private EnergyInfoArea energyInfoArea;
+    private EditBox editBox;
 
     public GeneIsolatorScreen(GeneIsolatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+        editBox = new EditBox(Minecraft.getInstance().font, 10, 10, 150, 20, null);
     }
 
     @Override
@@ -75,6 +84,15 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         //Line line = new Line(0, 0,  20, 20);
         //line.draw(pPoseStack);
 
+        // editBox.renderButton(pPoseStack, 10, 10, 1.0f);
+        // editBox.setValue("Test value");
+        /*Button button = new Button(10, 10, 64, 20, new TextComponent("Button"), (btn) -> {
+            System.out.println("Test message");
+        });
+        addRenderableWidget(button);
+        button.setMessage(new TextComponent("SDFasd"));*/
+        // Title Screen => ImageButton
+
         if(menu.isCrafting()) {
             // start top left corner x, y,
             // offset to part of image x, y
@@ -104,12 +122,11 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (pButton == 0) {
-            System.out.println("Clicked: " + pMouseX + ", " + pMouseY);
+            // System.out.println("Clicked: " + pMouseX + ", " + pMouseY);
             System.out.println("GUI Mouse Position: " + ((int)pMouseX - leftPos) + ", " + ((int)pMouseY - topPos));
-            System.out.println("Width " + width + ", imagewidth: " + imageWidth);
-            System.out.println("Height " + height + ", imageheight: " + imageHeight);
-            System.out.println("Clicked inside: " + Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, leftPos, topPos,
-                    0, 0, imageWidth, imageHeight));
+            // System.out.println("Width " + width + ", imagewidth: " + imageWidth);
+            // System.out.println("Height " + height + ", imageheight: " + imageHeight);
+            // System.out.println("Clicked inside: " + Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, leftPos, topPos,0, 0, imageWidth, imageHeight));
         }
 
         return super.mouseClicked(pMouseX, pMouseY, pButton);
