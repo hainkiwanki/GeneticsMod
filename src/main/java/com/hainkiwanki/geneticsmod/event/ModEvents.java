@@ -62,4 +62,13 @@ public class ModEvents {
             }
         });
     }
+
+    @SubscribeEvent
+    public static void onMobJoinWorld(EntityJoinWorldEvent e) {
+        // Check type before adding goals
+        if(e.getEntity().getType() == EntityType.COW){
+            Mob cow = (Mob)e.getEntity();
+            // cow.goalSelector.addGoal();
+        }
+    }
 }
