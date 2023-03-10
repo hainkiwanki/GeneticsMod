@@ -246,12 +246,23 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         Optional<GeneAnalyzerRecipe> match = level.getRecipeManager()
                 .getRecipeFor(GeneAnalyzerRecipe.Type.INSTANCE, inventory, level);
 
+        // Check if item is identified
+        boolean isIdentified = false;
+        ItemStack input = inventory.getItem(1);
+        if(input != null) {
+            CompoundTag tag = input.getTag();
+            if(tag != null) {
+                if(tag.getInt("identified") != 0)
+                    isIdentified = true;
+            }
+        }
+
         if(!match.isEmpty()) {
             entity.maxProgress = match.get().getAnalyzeTime();
             entity.successRate = match.get().getSuccessRate();
         }
 
-        return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
+        return !isIdentified && match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
                 && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
     }
 
@@ -274,8 +285,15 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
                 .getRecipeFor(GeneAnalyzerRecipe.Type.INSTANCE, inventory, level);
 
         if(match.isPresent()) {
+            CompoundTag tag = inventory.getItem(1).getTag();
+            if(tag != null) {
+                tag.putInt("identified", 1);
+            }
+            ItemStack resultItem = new ItemStack(match.get().getResultItem().getItem(), 1);
+            resultItem.setTag(tag);
+
             entity.itemHandler.extractItem(1,1, false);
-            entity.itemHandler.setStackInSlot(2, new ItemStack(match.get().getResultItem().getItem(),1));
+            entity.itemHandler.setStackInSlot(2, resultItem);
             entity.resetProgress();
         }
     }

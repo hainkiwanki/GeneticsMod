@@ -30,71 +30,54 @@ public class MobData {
     public static final String CAN_MILK = "lactation";
     public static final String MATURING_TIME = "maturing_time";
     public static final String IS_HOSTILE = "hostility";
+    public static final String IDENTIFIED = "identified";
 
     private Map<String, Float> mobDataMap = new HashMap<String, Float>(){};
     private String mobDataType;
 
     public void initialize(LivingEntity pEntity) {
-        if(!mobDataMap.containsKey(SIZE))
-            mobDataMap.put(SIZE, 1.0f);
-        if(!mobDataMap.containsKey(HEALTH))
-            mobDataMap.put(HEALTH, pEntity.getMaxHealth());
-
+        mobDataMap.put(SIZE, 1.0f);
+        mobDataMap.put(HEALTH, pEntity.getMaxHealth());
         mobDataType = pEntity.getClass().getSimpleName();
 
-        if(!mobDataMap.containsKey(DROPS_MODIFIER))
-            mobDataMap.put(DROPS_MODIFIER, 1.0f);
-        if(!mobDataMap.containsKey(EXP_MODIFIER))
-            mobDataMap.put(EXP_MODIFIER, 1.0f);
-        if(!mobDataMap.containsKey(FERTILITY))
-            mobDataMap.put(FERTILITY, pEntity instanceof AgeableMob ? 1.0f: 0.0f);
+        mobDataMap.put(DROPS_MODIFIER, 1.0f);
+        mobDataMap.put(EXP_MODIFIER, 1.0f);
+        mobDataMap.put(FERTILITY, pEntity instanceof AgeableMob ? 1.0f: 0.0f);
 
-        if(!mobDataMap.containsKey(BREATH_UNDER_WATER)) {
-            float canBreath = pEntity.canBreatheUnderwater() ? 1.0f : 0.0f;
-            mobDataMap.put(BREATH_UNDER_WATER, canBreath);
-        }
-        if(!mobDataMap.containsKey(IMMUNE_FIRE)) {
-            float isImmuneToFire = pEntity.fireImmune() ? 1.0f : 0.0f;
-            mobDataMap.put(IMMUNE_FIRE, isImmuneToFire);
-        }
-        if(!mobDataMap.containsKey(CAN_LAY_EGG)) {
-            float canLayEggs = 0.0f;
-            if(pEntity.getType().is(ModTags.EntityTypeTags.CAN_LAY_EGG))
-                canLayEggs = 1.0f;
-            mobDataMap.put(CAN_LAY_EGG, canLayEggs);
-        }
-        if(!mobDataMap.containsKey(CAN_MILK)) {
-            float canMilk = 0.0f;
-            if (pEntity.getType().is(ModTags.EntityTypeTags.CAN_MILK))
-                canMilk = 1.0f;
-            mobDataMap.put(CAN_MILK, canMilk);
-        }
-        if(!mobDataMap.containsKey(MATURING_TIME)) {
+        float canBreath = pEntity.canBreatheUnderwater() ? 1.0f : 0.0f;
+        mobDataMap.put(BREATH_UNDER_WATER, canBreath);
+
+        float isImmuneToFire = pEntity.fireImmune() ? 1.0f : 0.0f;
+        mobDataMap.put(IMMUNE_FIRE, isImmuneToFire);
+
+        float canLayEggs = 0.0f;
+        if(pEntity.getType().is(ModTags.EntityTypeTags.CAN_LAY_EGG))
+            canLayEggs = 1.0f;
+        mobDataMap.put(CAN_LAY_EGG, canLayEggs);
+
+        float canMilk = 0.0f;
+        if (pEntity.getType().is(ModTags.EntityTypeTags.CAN_MILK))
+            canMilk = 1.0f;
+        mobDataMap.put(CAN_MILK, canMilk);
+
             /*Animal animal = (Animal)pEntity;
             float value = 0.0f;
             if(animal != null) {
                 value = 24000.0f;
             }*/
-            mobDataMap.put(MATURING_TIME, 0.0f);
+        mobDataMap.put(MATURING_TIME, 0.0f);
+
+        if(NeutralMob.class.isAssignableFrom(pEntity.getClass())) {
+            mobDataMap.put(IS_HOSTILE, 0.0f);
+        } else if(Enemy.class.isAssignableFrom(pEntity.getClass())) {
+            mobDataMap.put(IS_HOSTILE, 1.0f);
+        } else {
+            mobDataMap.put(IS_HOSTILE, -1.0f);
         }
-        if(!mobDataMap.containsKey(IS_HOSTILE)) {
-            if(NeutralMob.class.isAssignableFrom(pEntity.getClass())) {
-                mobDataMap.put(IS_HOSTILE, 1.0f);
-            } else if(Enemy.class.isAssignableFrom(pEntity.getClass())) {
-                mobDataMap.put(IS_HOSTILE, 0.5f);
-            } else {
-                mobDataMap.put(IS_HOSTILE, 0.0f);
-            }
-        }
-        if(!mobDataMap.containsKey(ATTACK_DAMAGE)) {
-            mobDataMap.put(ATTACK_DAMAGE, TryGetAttribute(pEntity, Attributes.ATTACK_DAMAGE));
-        }
-        if(!mobDataMap.containsKey(ATTACK_SPEED)) {
-            mobDataMap.put(ATTACK_SPEED, TryGetAttribute(pEntity, Attributes.ATTACK_SPEED));
-        }
-        if(!mobDataMap.containsKey(MOVE_SPEED)) {
-            mobDataMap.put(MOVE_SPEED, TryGetAttribute(pEntity, Attributes.MOVEMENT_SPEED));
-        }
+
+        mobDataMap.put(ATTACK_DAMAGE, TryGetAttribute(pEntity, Attributes.ATTACK_DAMAGE));
+        mobDataMap.put(ATTACK_SPEED, TryGetAttribute(pEntity, Attributes.ATTACK_SPEED));
+        mobDataMap.put(MOVE_SPEED, TryGetAttribute(pEntity, Attributes.MOVEMENT_SPEED));
     }
 
     private float TryGetAttribute(LivingEntity pEntity, Attribute pAttribute) {

@@ -10,12 +10,14 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
@@ -54,7 +56,9 @@ public class GeneSamplerItem extends Item {
         if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
             boolean usedCorrectSampler = pInteractionTarget.getType().is(ENTITY_CAN_USE_CLIPBONE);
 
-            if(usedCorrectSampler) {
+            if(usedCorrectSampler && pInteractionTarget.getHealth() > 0.0f) {
+                // TODO: cooldown on sampler item
+                // pPlayer.getCooldowns().addCooldown(this, 20);
                 OnUseCorrectTool(pInteractionTarget, pPlayer);
 
                 // Play Sound
@@ -63,11 +67,10 @@ public class GeneSamplerItem extends Item {
                     pInteractionTarget.hurt(DamageSource.GENERIC, damageDealt);
                 }
                 pStack.hurtAndBreak(1, pPlayer, (p) -> p.broadcastBreakEvent(p.getUsedItemHand()));
-
                 return net.minecraft.world.InteractionResult.SUCCESS;
             }
             else {
-                pPlayer.sendMessage(new TextComponent("This dna sampler cannot be used on " + pInteractionTarget.getClass().getSimpleName()), pPlayer.getUUID());
+                // pPlayer.sendMessage(new TextComponent("This dna sampler cannot be used on " + pInteractionTarget.getClass().getSimpleName()), pPlayer.getUUID());
             }
         }
         return InteractionResult.CONSUME;
@@ -83,6 +86,7 @@ public class GeneSamplerItem extends Item {
         entity.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
             CompoundTag tag = new CompoundTag();
             data.saveNBTData(tag);
+            tag.putInt("identified", 0);
             item.setTag(tag);
         });
     }
