@@ -209,6 +209,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         }
 
         // Analyzing gene sample
+        // TODO: when output is processed it processes all inputs too
         if(hasRecipe(blockEntity)) {
             blockEntity.progress++;
             extractEnergy(blockEntity);

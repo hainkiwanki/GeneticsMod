@@ -42,10 +42,10 @@ public class GeneSampleItem extends Item {
 
                         float fResult = nbtTag.getFloat(tagKey);
                         String strOutput = fResult + "";
+                        if (tagKey.equals(MobData.IS_HOSTILE)) {
+                            strOutput = (fResult) > 0.0f ? "Hostile" : (fResult) < 0.0f ? "Friendly" : "Neutral";
+                        }
                         if((int)fResult == 0) {
-                            if (tagKey.equals(MobData.IS_HOSTILE)) {
-                                strOutput = (fResult) > 0.0f ? "Hostile" : (fResult) < 0.0f ? "Friendly" : "Neutral";
-                            }
                             continue;
                         }
                         tc.append(new TextComponent(strOutput).withStyle(ChatFormatting.WHITE));
