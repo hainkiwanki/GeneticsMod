@@ -53,9 +53,10 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
     }
 
     public int getCraftingProgress() {
+        int craftingProgressScaled = 16;
         int progress = this.data.get(2);
         int maxProgress = this.data.get(3);
-        return (int) (((float)progress/ (float)maxProgress) * 22);
+        return (int) (((float)progress/ (float)maxProgress) * craftingProgressScaled);
     }
 
     public boolean isCrafting() {

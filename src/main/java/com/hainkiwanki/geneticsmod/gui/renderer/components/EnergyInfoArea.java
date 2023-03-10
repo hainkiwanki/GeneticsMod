@@ -18,12 +18,15 @@ import java.util.List;
 public class EnergyInfoArea extends InfoArea{
     private final IEnergyStorage energy;
 
+    public static int DEFAULT_WIDTH = 12;
+    public static int DEFAULT_HEIGHT = 39;
+
     public EnergyInfoArea(int xMin, int yMin)  {
-        this(xMin, yMin, null,14,41);
+        this(xMin, yMin, null, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     public EnergyInfoArea(int xMin, int yMin, IEnergyStorage energy)  {
-        this(xMin, yMin, energy,14,41);
+        this(xMin, yMin, energy, DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     public EnergyInfoArea(int xMin, int yMin, IEnergyStorage energy, int width, int height)  {

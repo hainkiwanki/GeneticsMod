@@ -48,7 +48,10 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        super.renderLabels(pPoseStack, pMouseX, pMouseY);
+        // super.renderLabels(pPoseStack, pMouseX, pMouseY);
+
+        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 12, 4210752);
+
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
@@ -76,30 +79,29 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         // energyInfoArea.draw(pPoseStack);
 
         // Draw some text
+        /*
         Component ownerText = new TextComponent("test component text");
         int textX = leftPos + 78;
         int textY = topPos + 28;
-        // font.draw(pPoseStack, ownerText, (float)textX, (float)textY, 0);
+        font.draw(pPoseStack, ownerText, (float)textX, (float)textY, 0);
 
-        //Line line = new Line(0, 0,  20, 20);
-        //line.draw(pPoseStack);
+        Line line = new Line(0, 0,  20, 20);
+        line.draw(pPoseStack);
 
-        // editBox.renderButton(pPoseStack, 10, 10, 1.0f);
-        // editBox.setValue("Test value");
-        /*Button button = new Button(10, 10, 64, 20, new TextComponent("Button"), (btn) -> {
+        editBox.renderButton(pPoseStack, 10, 10, 1.0f);
+        editBox.setValue("Test value");
+        Button button = new Button(10, 10, 64, 20, new TextComponent("Button"), (btn) -> {
             System.out.println("Test message");
         });
         addRenderableWidget(button);
-        button.setMessage(new TextComponent("SDFasd"));*/
+        button.setMessage(new TextComponent("SDFasd"));
         // Title Screen => ImageButton
+        */
 
         if(menu.isCrafting()) {
-            // start top left corner x, y,
-            // offset to part of image x, y
-            // width to draw, height to draw
-            blit(pPoseStack, x + 103, y + 38,
-                    176, 30,
-                    menu.getCraftingProgress(), 16);
+            blit(pPoseStack, x + 52, y + 33 + 16 - menu.getCraftingProgress(),
+                    176, 16 - menu.getCraftingProgress(),
+                    14, menu.getCraftingProgress());
         }
 
         if(menu.hasFuel()) {

@@ -21,6 +21,8 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
     private final Level level;
     private final ContainerData data;
 
+    private int playerInventoryOffset = 12;
+
     public GeneAnalyzerMenu(int windowId, Inventory inv, FriendlyByteBuf extraData) {
         this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
@@ -36,9 +38,9 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            this.addSlot(new ModFuelSlot(handler, 0, 44, 47));
-            this.addSlot(new ModGeneSampleSlot(handler, 1, 80, 38));
-            this.addSlot(new ModResultSlot(handler, 2, 134, 38));
+            this.addSlot(new ModFuelSlot(handler, 0, 7, 52));
+            this.addSlot(new ModGeneSampleSlot(handler, 1, 56, 10));
+            this.addSlot(new ModResultSlot(handler, 2, 51, 52));
         });
 
         addDataSlots(data);
@@ -52,26 +54,28 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
         return this.data.get(2) > 0;
     }
 
-    public int getCraftingProgress() {
-        int progress = this.data.get(2);
-        int maxProgress = this.data.get(3);
-        return (int) (((float)progress/ (float)maxProgress) * 22);
-    }
-
     public boolean isCrafting() {
         return this.data.get(2) > 0;
     }
 
+    public int getCraftingProgress() {
+        int energyProgressSize = 16;
+        int progress = this.data.get(2);
+        int maxProgress = this.data.get(3);
+        return (int) (((float)progress/ (float)maxProgress) * energyProgressSize);
+    }
+
     public int getEnergyProgress() {
+        int energyProgressSize = 39;
         IEnergyStorage energyStorage = blockEntity.getEnergyStorage();
-        int stored = (int)(41*(energyStorage.getEnergyStored()/(float)energyStorage.getMaxEnergyStored()));
+        int stored = (int)(energyProgressSize*(energyStorage.getEnergyStored()/(float)energyStorage.getMaxEnergyStored()));
         return stored;
     }
 
     public int getScaledFuelProgress() {
+        int fuelProgressSize = 39;
         int fuelProgress = this.data.get(0);
         int maxFuelProgress = this.data.get(1);
-        int fuelProgressSize = 14;
 
         return maxFuelProgress != 0 ? (int)(((float)fuelProgress / (float)maxFuelProgress) * fuelProgressSize) : 0;
     }
@@ -132,14 +136,14 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, (86 + i * 18) + playerInventoryOffset));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144 + playerInventoryOffset));
         }
     }
 }

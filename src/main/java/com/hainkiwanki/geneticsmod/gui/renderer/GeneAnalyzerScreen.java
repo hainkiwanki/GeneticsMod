@@ -22,6 +22,7 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
 
     public GeneAnalyzerScreen(GeneAnalyzerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+        imageHeight = 180;
     }
 
     @Override
@@ -33,12 +34,14 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
     private void assignEnergyInfoArea() {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        energyInfoArea = new EnergyInfoArea(x + 21, y + 26, menu.blockEntity.getEnergyStorage());
+        energyInfoArea = new EnergyInfoArea(x + 6, y + 6, menu.blockEntity.getEnergyStorage());
     }
 
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        super.renderLabels(pPoseStack, pMouseX, pMouseY);
+        // super.renderLabels(pPoseStack, pMouseX, pMouseY);
+
+        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 12, 4210752);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
@@ -47,7 +50,7 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
     }
 
     private void renderEnergyAreaTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
-        if(Utils.isMouseAboveArea(pMouseX, pMouseY, x, y, 21, 26, 14, 41)) {
+        if(Utils.isMouseAboveArea(pMouseX, pMouseY, x, y, 6, 6, energyInfoArea.DEFAULT_WIDTH, energyInfoArea.DEFAULT_HEIGHT)) {
             renderTooltip(pPoseStack, energyInfoArea.getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
@@ -66,31 +69,30 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
         // energyInfoArea.draw(pPoseStack);
 
         // Draw some text
+        /*
         pPoseStack.pushPose();
         Component ownerText = new TextComponent("test component text");
         int textX = leftPos + 78;
         int textY = topPos + 28;
         font.draw(pPoseStack, ownerText, (float)textX, (float)textY, 0);
         pPoseStack.popPose();
+        */
 
         if(menu.isCrafting()) {
-            // start top left corner x, y,
-            // offset to part of image x, y
-            // width to draw, height to draw
-            blit(pPoseStack, x + 103, y + 38,
-                    176, 30,
-                    menu.getCraftingProgress(), 16);
+            blit(pPoseStack, x + 52, y + 33,
+                    176, 0,
+                    14, menu.getCraftingProgress());
         }
 
         if(menu.hasFuel()) {
-            blit(pPoseStack, x + 46, y + 31 + 14 - menu.getScaledFuelProgress(),
-                    176, 14 - menu.getScaledFuelProgress(),
-                    14, menu.getScaledFuelProgress());
+            blit(pPoseStack, x + 22, y + 45 - menu.getScaledFuelProgress(),
+                    188, 55 - menu.getScaledFuelProgress(),
+                    2, menu.getScaledFuelProgress());
         }
 
-        this.blit(pPoseStack, x + 21, y + 26 + 41 - menu.getEnergyProgress(),
-                176, 88 - menu.getEnergyProgress(),
-                14, menu.getEnergyProgress());
+        this.blit(pPoseStack, x + 6, y + 6 + 39 - menu.getEnergyProgress(),
+                176, 16 + 39 - menu.getEnergyProgress(),
+                12, menu.getEnergyProgress());
     }
 
     @Override
