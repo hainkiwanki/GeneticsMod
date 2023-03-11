@@ -57,8 +57,7 @@ public class GeneSamplerItem extends Item {
             boolean usedCorrectSampler = pInteractionTarget.getType().is(ENTITY_CAN_USE_CLIPBONE);
 
             if(usedCorrectSampler && pInteractionTarget.getHealth() > 0.0f) {
-                // TODO: cooldown on sampler item
-                // pPlayer.getCooldowns().addCooldown(this, 20);
+                pPlayer.getCooldowns().addCooldown(this, 20);
                 OnUseCorrectTool(pInteractionTarget, pPlayer);
 
                 // Play Sound
@@ -74,6 +73,11 @@ public class GeneSamplerItem extends Item {
             }
         }
         return InteractionResult.CONSUME;
+    }
+
+    @Override
+    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
+        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
     }
 
     public ItemStack CreateItemStack(String resLocation) {

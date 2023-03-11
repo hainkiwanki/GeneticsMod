@@ -1,16 +1,23 @@
 package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.item.ModItems;
 import com.hainkiwanki.geneticsmod.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
+import com.hainkiwanki.geneticsmod.tags.ModTags;
 import com.hainkiwanki.geneticsmod.util.Utils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -69,6 +76,20 @@ public class ModEvents {
         if(e.getEntity().getType() == EntityType.COW){
             Mob cow = (Mob)e.getEntity();
             // cow.goalSelector.addGoal();
+        }
+    }
+
+    @SubscribeEvent
+    public static void onInteraction(InputEvent.ClickInputEvent e) {
+        if(e.isUseItem()) {
+            LocalPlayer player = Minecraft.getInstance().player;
+            ItemStack inHandItem = player.getItemInHand(InteractionHand.MAIN_HAND);
+            if(inHandItem.is(ModTags.ItemTags.SAMPLER_ITEM)) {
+                if (player.getCooldowns().isOnCooldown(inHandItem.getItem())) {
+                    e.setCanceled(true);
+                    e.setSwingHand(false);
+                }
+            }
         }
     }
 }

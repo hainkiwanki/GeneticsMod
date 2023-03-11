@@ -1,0 +1,9 @@
+  {
+  "replace": false,
+  "values": [
+    "geneticsmod:dna_sampler_swab",
+    "geneticsmod:dna_sampler_clipper",
+    "geneticsmod:dna_sampler_knife",
+    "geneticsmod:dna_sampler_syringe"
+  ]
+}

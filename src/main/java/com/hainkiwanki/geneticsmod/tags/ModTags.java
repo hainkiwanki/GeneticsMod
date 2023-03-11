@@ -22,6 +22,7 @@ public class ModTags {
 
     public static class ItemTags {
         public static final TagKey<Item> SAMPLE_ITEM = create("sample");
+        public static final TagKey<Item> SAMPLER_ITEM = create("sampler");
 
         public static TagKey<Item> create(String pName) {
             return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(pName));

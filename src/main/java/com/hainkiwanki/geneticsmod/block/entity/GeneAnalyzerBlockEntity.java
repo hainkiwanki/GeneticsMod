@@ -22,6 +22,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -70,6 +71,8 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     private int maxFuelTime = 0;
 
     private int energyPerTick = 32;
+    private int brunRate = 8;
+    private static int receivedEnergy = 128;
 
     public GeneAnalyzerBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.GENE_ANALYZER.get(), pPos, pBlockState);
@@ -187,7 +190,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     private void consumeFuel() {
         if(!itemHandler.getStackInSlot(0).isEmpty()) {
             this.fuelTime = ForgeHooks.getBurnTime(this.itemHandler.extractItem(0, 1, false),
-                    RecipeType.SMELTING) / 8;
+                    RecipeType.SMELTING) / brunRate;
             this.maxFuelTime = this.fuelTime;
         }
     }
@@ -204,14 +207,13 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         if(isConsumingFuel(blockEntity)) {
             if (blockEntity.energyHandler.hasStorageForEnergy()) {
                 blockEntity.fuelTime--;
-                blockEntity.energyHandler.receiveEnergy(128, false);
+                blockEntity.energyHandler.receiveEnergy(receivedEnergy, false);
                 setChanged(level, blockPos, blockState);
             }
         }
 
         // Analyzing gene sample
-        // TODO: Analyses without energy!!!
-        if(hasRecipe(blockEntity)) {
+        if(hasRecipe(blockEntity) && hasEnergyToWork(blockEntity)) {
             blockEntity.progress++;
             extractEnergy(blockEntity);
             setChanged(level, blockPos, blockState);
@@ -238,7 +240,6 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         return entity.fuelTime > 0;
     }
 
-    // TODO: Analyses without energy!!!
     private static boolean hasEnergyToWork(GeneAnalyzerBlockEntity entity) {
         return entity.energyHandler.getEnergyStored() > entity.energyPerTick * entity.maxProgress;
     }
@@ -293,12 +294,17 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
 
         if(match.isPresent()) {
             ItemStack resultItem = new ItemStack(match.get().getResultItem().getItem(), 1);
-            ItemStack input = entity.itemHandler.extractItem(1,1, false);
-            resultItem.setTag(input.getTag());
-            resultItem.getTag().putFloat(MobData.IDENTIFIED, 1.0f);
 
-            //  TODO: Removes output if there is already item there!!!
-            entity.itemHandler.setStackInSlot(2, resultItem);
+            ItemStack outputItem = entity.itemHandler.getStackInSlot(2);
+            if(outputItem.getItem() == Items.AIR.asItem()) {
+                ItemStack input = entity.itemHandler.extractItem(1,1, false);
+                resultItem.setTag(input.getTag());
+                resultItem.getTag().putFloat(MobData.IDENTIFIED, 1.0f);
+                entity.itemHandler.setStackInSlot(2, resultItem);
+            } else if (outputItem.getItem() == resultItem.getItem()){
+                entity.itemHandler.extractItem(1,1, false);
+                outputItem.setCount(outputItem.getCount() + 1);
+            }
             entity.resetProgress();
         }
     }
