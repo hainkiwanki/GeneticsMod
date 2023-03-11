@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.block.entity;
 
 import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
+import com.hainkiwanki.geneticsmod.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.EnergySyncS2CPacket;
 import com.hainkiwanki.geneticsmod.recipe.GeneAnalyzerRecipe;
@@ -209,7 +210,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         }
 
         // Analyzing gene sample
-        // TODO: when output is processed it processes all inputs too
+        // TODO: Analyses without energy!!!
         if(hasRecipe(blockEntity)) {
             blockEntity.progress++;
             extractEnergy(blockEntity);
@@ -235,6 +236,11 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
 
     private static boolean isConsumingFuel(GeneAnalyzerBlockEntity entity) {
         return entity.fuelTime > 0;
+    }
+
+    // TODO: Analyses without energy!!!
+    private static boolean hasEnergyToWork(GeneAnalyzerBlockEntity entity) {
+        return entity.energyHandler.getEnergyStored() > entity.energyPerTick * entity.maxProgress;
     }
 
     private static boolean hasRecipe(GeneAnalyzerBlockEntity entity) {
@@ -286,14 +292,12 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
                 .getRecipeFor(GeneAnalyzerRecipe.Type.INSTANCE, inventory, level);
 
         if(match.isPresent()) {
-            CompoundTag tag = inventory.getItem(1).getTag();
-            if(tag != null) {
-                tag.putInt("identified", 1);
-            }
             ItemStack resultItem = new ItemStack(match.get().getResultItem().getItem(), 1);
-            resultItem.setTag(tag);
+            ItemStack input = entity.itemHandler.extractItem(1,1, false);
+            resultItem.setTag(input.getTag());
+            resultItem.getTag().putFloat(MobData.IDENTIFIED, 1.0f);
 
-            entity.itemHandler.extractItem(1,1, false);
+            //  TODO: Removes output if there is already item there!!!
             entity.itemHandler.setStackInSlot(2, resultItem);
             entity.resetProgress();
         }
