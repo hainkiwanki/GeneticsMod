@@ -3,41 +3,63 @@ package com.hainkiwanki.geneticsmod.gui.renderer;
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneIsolatorMenu;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.EnergyInfoArea;
+import com.hainkiwanki.geneticsmod.mobdata.MobData;
+import com.hainkiwanki.geneticsmod.tags.ModTags;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.advancements.AdvancementTab;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/gene_isolator.png");
     private EnergyInfoArea energyInfoArea;
-    private EditBox editBox;
+
+    private Button traitButton;
+
+    private int gridHeight = 64;
+    private int gridWidth = 48;
+    private int gridSize = 8;
+    private int rows = 8;
+    private int cols = 6;
+    private int gridOffsetX = 39;
+    private int gridOffsetY = 64;
+
+    private int currentTraitIndex = 0;
 
     public GeneIsolatorScreen(GeneIsolatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        editBox = new EditBox(Minecraft.getInstance().font, 10, 10, 150, 20, null);
+        imageHeight = 241;
     }
 
     @Override
     protected void init() {
         super.init();
         assignEnergyInfoArea();
+
+        traitButton = new Button(leftPos + 36, topPos + 5, 54, 20, new TextComponent("Trait"), (btn) -> {
+            List<String> tags = menu.getSampleTags();
+            if(tags != null) {
+                currentTraitIndex++;
+                currentTraitIndex = currentTraitIndex % tags.size();
+                TranslatableComponent textComponent = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tags.get(currentTraitIndex));
+                this.traitButton.setWidth(font.width(textComponent) + 8);
+                this.traitButton.setMessage(textComponent);
+
+            }
+        });
     }
 
     private void assignEnergyInfoArea() {
@@ -48,19 +70,15 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        // super.renderLabels(pPoseStack, pMouseX, pMouseY);
-
-        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 12, 4210752);
-
+        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 73, 4210752);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-
         renderEnergyAreaTooltips(pPoseStack, pMouseX, pMouseY, x, y);
 
     }
 
     private void renderEnergyAreaTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
-        if(Utils.isMouseAboveArea(pMouseX, pMouseY, x, y, 21, 26, 14, 41)) {
+        if(Utils.isMouseAboveArea(pMouseX, pMouseY, x, y, 6, 68, energyInfoArea.DEFAULT_WIDTH, energyInfoArea.DEFAULT_HEIGHT)) {
             renderTooltip(pPoseStack, energyInfoArea.getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
@@ -76,43 +94,39 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
 
-        // energyInfoArea.draw(pPoseStack);
 
-        // Draw some text
-        /*
-        Component ownerText = new TextComponent("test component text");
-        int textX = leftPos + 78;
-        int textY = topPos + 28;
-        font.draw(pPoseStack, ownerText, (float)textX, (float)textY, 0);
-
-        Line line = new Line(0, 0,  20, 20);
-        line.draw(pPoseStack);
-
-        editBox.renderButton(pPoseStack, 10, 10, 1.0f);
-        editBox.setValue("Test value");
-        Button button = new Button(10, 10, 64, 20, new TextComponent("Button"), (btn) -> {
-            System.out.println("Test message");
-        });
-        addRenderableWidget(button);
-        button.setMessage(new TextComponent("SDFasd"));
+        // Line line = new Line(0, 0,  20, 20);
+        // line.draw(pPoseStack);
+        addRenderableWidget(traitButton);
         // Title Screen => ImageButton
-        */
 
+        /*
         if(menu.isCrafting()) {
             blit(pPoseStack, x + 52, y + 33 + 16 - menu.getCraftingProgress(),
                     176, 16 - menu.getCraftingProgress(),
                     14, menu.getCraftingProgress());
         }
-
+        */
         if(menu.hasFuel()) {
-            blit(pPoseStack, x + 46, y + 31 + 14 - menu.getScaledFuelProgress(),
-                    176, 14 - menu.getScaledFuelProgress(),
-                    14, menu.getScaledFuelProgress());
+            blit(pPoseStack, x + 22, y + 107 - menu.getScaledFuelProgress(),
+                    188, 55 - menu.getScaledFuelProgress(),
+                    2, menu.getScaledFuelProgress());
         }
-
-        this.blit(pPoseStack, x + 21, y + 26 + 41 - menu.getEnergyProgress(),
-                176, 88 - menu.getEnergyProgress(),
-                14, menu.getEnergyProgress());
+        this.blit(pPoseStack, x + 6, y + 68 + 39 - menu.getEnergyProgress(),
+                176, 15 + 39 - menu.getEnergyProgress(),
+                12, menu.getEnergyProgress());
+        /*
+        // Draws letters
+        for(int r = 0; r < rows; r++) {
+            int textY = topPos + gridOffsetY + r * gridSize;
+            for (int c = 0; c < cols; c++) {
+                int textX = leftPos + gridOffsetX + c * gridSize;
+                Component textComponent = new TextComponent("G");
+                int textWidth = font.width(textComponent);
+                font.draw(pPoseStack, textComponent, (float)textX + ((float)gridSize *0.5f - (float)(textWidth*0.5f)), (float)textY, 0xFFFFFFFF);
+            }
+        }
+        */
     }
 
     @Override
@@ -124,11 +138,15 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (pButton == 0) {
-            // System.out.println("Clicked: " + pMouseX + ", " + pMouseY);
-            System.out.println("GUI Mouse Position: " + ((int)pMouseX - leftPos) + ", " + ((int)pMouseY - topPos));
-            // System.out.println("Width " + width + ", imagewidth: " + imageWidth);
-            // System.out.println("Height " + height + ", imageheight: " + imageHeight);
-            // System.out.println("Clicked inside: " + Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, leftPos, topPos,0, 0, imageWidth, imageHeight));
+            int xPos = (int)pMouseX - leftPos - gridOffsetX;
+            int yPos = (int)pMouseY - topPos - gridOffsetY;
+            boolean clickInGrid = Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, xPos, yPos,0, 0, gridWidth, gridHeight);
+            if(clickInGrid){
+                int row = xPos / gridSize;
+                int col = yPos / gridSize;
+            }
+            //System.out.println("GUI Mouse Position: " + xPos + ", " + yPos);
+            //System.out.println("Grid pos: " + row + ", " + col);
         }
 
         return super.mouseClicked(pMouseX, pMouseY, pButton);

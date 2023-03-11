@@ -50,10 +50,6 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
         return this.data.get(0) > 0;
     }
 
-    public boolean hasFuelItemInSlot() {
-        return this.data.get(2) > 0;
-    }
-
     public boolean isCrafting() {
         return this.data.get(2) > 0;
     }

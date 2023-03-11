@@ -3,6 +3,7 @@ package com.hainkiwanki.geneticsmod.item.custom;
 import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -69,7 +70,10 @@ public class GeneSamplerItem extends Item {
                 return net.minecraft.world.InteractionResult.SUCCESS;
             }
             else {
-                // pPlayer.sendMessage(new TextComponent("This dna sampler cannot be used on " + pInteractionTarget.getClass().getSimpleName()), pPlayer.getUUID());
+                if(pInteractionTarget.getHealth() > 0.0f) {
+                    pPlayer.sendMessage(new TranslatableComponent("message.geneticsmod.on_sample_fail"
+                            + pInteractionTarget.getClass().getSimpleName()), pPlayer.getUUID());
+                }
             }
         }
         return InteractionResult.CONSUME;

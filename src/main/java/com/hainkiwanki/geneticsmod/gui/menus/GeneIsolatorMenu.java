@@ -6,6 +6,9 @@ import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.gui.slot.ModFuelSlot;
 import com.hainkiwanki.geneticsmod.gui.slot.ModGeneSampleSlot;
 import com.hainkiwanki.geneticsmod.gui.slot.ModResultSlot;
+import com.hainkiwanki.geneticsmod.mobdata.MobData;
+import com.hainkiwanki.geneticsmod.tags.ModTags;
+import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -16,18 +19,24 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 public class GeneIsolatorMenu extends AbstractContainerMenu {
     public final GeneIsolatorBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
 
+    private int playerInventoryOffset = 73;
+
     public GeneIsolatorMenu(int windowId, Inventory inv, FriendlyByteBuf extraData) {
-        this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
+        this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(5));
     }
 
     public GeneIsolatorMenu(int windowId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.GENE_ISOLATOR_MENU.get(), windowId);
-        checkContainerSize(inv, 4);
+        checkContainerSize(inv, 5);
         blockEntity = ((GeneIsolatorBlockEntity) entity);
         this.level = inv.player.level;
         this.data = data;
@@ -36,9 +45,10 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            this.addSlot(new ModFuelSlot(handler, 0, 44, 47));
-            this.addSlot(new ModGeneSampleSlot(handler, 1, 80, 38));
-            this.addSlot(new ModResultSlot(handler, 2, 134, 38));
+            this.addSlot(new ModFuelSlot(handler, 0, 7, 114));
+            this.addSlot(new ModGeneSampleSlot(handler, 1, 7, 38)); // Vials
+            this.addSlot(new ModGeneSampleSlot(handler, 2, 7, 7));  // Gene Sample
+            this.addSlot(new ModResultSlot(handler, 3, 134, 38));
         });
 
         addDataSlots(data);
@@ -46,10 +56,6 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
 
     public boolean hasFuel() {
         return this.data.get(0) > 0;
-    }
-
-    public boolean hasFuelItemInSlot() {
-        return this.data.get(2) > 0;
     }
 
     public int getCraftingProgress() {
@@ -64,17 +70,23 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
     }
 
     public int getEnergyProgress() {
+        int energyProgressSize = 39;
         IEnergyStorage energyStorage = blockEntity.getEnergyStorage();
-        int stored = (int)(41*(energyStorage.getEnergyStored()/(float)energyStorage.getMaxEnergyStored()));
+        int stored = (int)(energyProgressSize*(energyStorage.getEnergyStored()/(float)energyStorage.getMaxEnergyStored()));
         return stored;
     }
 
     public int getScaledFuelProgress() {
+        int fuelProgressSize = 39;
         int fuelProgress = this.data.get(0);
         int maxFuelProgress = this.data.get(1);
-        int fuelProgressSize = 14;
 
         return maxFuelProgress != 0 ? (int)(((float)fuelProgress / (float)maxFuelProgress) * fuelProgressSize) : 0;
+    }
+
+    public List<String> getSampleTags() {
+        ItemStack inputSample = blockEntity.getInputItemstack(blockEntity);
+         return Utils.getImportantTags(inputSample);
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
@@ -93,7 +105,7 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
     private static final int TE_INVENTORY_FIRST_SLOT_INDEX = VANILLA_FIRST_SLOT_INDEX + VANILLA_SLOT_COUNT;
 
     // THIS YOU HAVE TO DEFINE!
-    private static final int TE_INVENTORY_SLOT_COUNT = 3;  // must be the number of slots you have!
+    private static final int TE_INVENTORY_SLOT_COUNT = 4;  // must be the number of slots you have!
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int index) {
@@ -133,14 +145,14 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 86 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, (86 + i * 18) + playerInventoryOffset));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144));
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144 + playerInventoryOffset));
         }
     }
 }

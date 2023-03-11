@@ -1,10 +1,15 @@
 package com.hainkiwanki.geneticsmod.util;
 
+import com.hainkiwanki.geneticsmod.mobdata.MobData;
+import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Utils {
     public static String getItemPath(ItemStack item) {
@@ -33,5 +38,28 @@ public class Utils {
 
     public static boolean isMouseOver(double mouseX, double mouseY, int x, int y, int sizeX, int sizeY) {
         return (mouseX >= x && mouseX <= x + sizeX) && (mouseY >= y && mouseY <= y + sizeY);
+    }
+
+    public static List<String> getImportantTags(ItemStack itemStack) {
+        List<String> tagList = null;
+
+        if(itemStack.is(ModTags.ItemTags.SAMPLE_ITEM)) {
+
+            tagList = new ArrayList<String>();
+            for (String tag : itemStack.getTag().getAllKeys()) {
+                if(tag.equals(MobData.MOB_TYPE) || tag.equals(MobData.IDENTIFIED)) {
+                    continue;
+                }
+
+                float fRes = itemStack.getTag().getFloat(tag);
+                if((int)fRes == 0 && !tag.equals(MobData.IS_HOSTILE)) {
+                    continue;
+                }
+
+                tagList.add(tag);
+            }
+        }
+
+        return tagList;
     }
 }

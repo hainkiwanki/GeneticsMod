@@ -40,11 +40,9 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
         // super.renderLabels(pPoseStack, pMouseX, pMouseY);
-
         this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 12, 4210752);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-
         renderEnergyAreaTooltips(pPoseStack, pMouseX, pMouseY, x, y);
 
     }
@@ -66,30 +64,16 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
 
-        // energyInfoArea.draw(pPoseStack);
-
-        // Draw some text
-        /*
-        pPoseStack.pushPose();
-        Component ownerText = new TextComponent("test component text");
-        int textX = leftPos + 78;
-        int textY = topPos + 28;
-        font.draw(pPoseStack, ownerText, (float)textX, (float)textY, 0);
-        pPoseStack.popPose();
-        */
-
         if(menu.isCrafting()) {
             blit(pPoseStack, x + 52, y + 33,
                     176, 0,
                     14, menu.getCraftingProgress());
         }
-
         if(menu.hasFuel()) {
             blit(pPoseStack, x + 22, y + 45 - menu.getScaledFuelProgress(),
                     188, 55 - menu.getScaledFuelProgress(),
                     2, menu.getScaledFuelProgress());
         }
-
         this.blit(pPoseStack, x + 6, y + 6 + 39 - menu.getEnergyProgress(),
                 176, 16 + 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());

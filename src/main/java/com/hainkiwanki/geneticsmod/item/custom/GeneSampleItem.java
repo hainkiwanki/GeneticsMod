@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
 import com.hainkiwanki.geneticsmod.mobdata.MobData;
+import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
@@ -33,22 +34,15 @@ public class GeneSampleItem extends Item {
             else {
                 if(Screen.hasShiftDown()) {
                     CompoundTag nbtTag = pStack.getTag();
-                    Set<String> tags = nbtTag.getAllKeys();
-                    for (String tagKey : tags) {
-                        if (tagKey.equals("identified") || tagKey.equals("mob_type"))
-                            continue;
-
-                        TranslatableComponent tc = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tagKey);
-
-                        float fResult = nbtTag.getFloat(tagKey);
+                    List<String> tagKeys = Utils.getImportantTags(pStack);
+                    for (String tag : tagKeys) {
+                        TranslatableComponent tc = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tag);
+                        float fResult = nbtTag.getFloat(tag);
                         String strOutput = fResult + "";
-                        if (tagKey.equals(MobData.IS_HOSTILE)) {
+                        if (tag.equals(MobData.IS_HOSTILE)) {
                             strOutput = (fResult) > 0.0f ? "Hostile" : (fResult) < 0.0f ? "Friendly" : "Neutral";
                         }
-                        if((int)fResult == 0) {
-                            continue;
-                        }
-                        tc.append(new TextComponent(strOutput).withStyle(ChatFormatting.WHITE));
+                        tc.append(": ").append(new TextComponent(strOutput).withStyle(ChatFormatting.WHITE));
                         pTooltipComponents.add(tc.withStyle(ChatFormatting.GREEN));
                     }
                 }

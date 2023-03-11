@@ -67,6 +67,8 @@ public class GeneIsolatorBlockEntity extends BlockEntity implements MenuProvider
     private int maxFuelTime = 0;
 
     private int energyPerTick = 32;
+    private int brunRate = 8;
+    private static int receivedEnergy = 128;
 
     public GeneIsolatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.GENE_ISOLATOR.get(), pPos, pBlockState);
@@ -184,7 +186,7 @@ public class GeneIsolatorBlockEntity extends BlockEntity implements MenuProvider
     private void consumeFuel() {
         if(!itemHandler.getStackInSlot(0).isEmpty()) {
             this.fuelTime = ForgeHooks.getBurnTime(this.itemHandler.extractItem(0, 1, false),
-                    RecipeType.SMELTING) / 8;
+                    RecipeType.SMELTING) / brunRate;
             this.maxFuelTime = this.fuelTime;
         }
     }
@@ -201,7 +203,7 @@ public class GeneIsolatorBlockEntity extends BlockEntity implements MenuProvider
         if(isConsumingFuel(blockEntity)) {
             if (blockEntity.energyHandler.hasStorageForEnergy()) {
                 blockEntity.fuelTime--;
-                blockEntity.energyHandler.receiveEnergy(128, false);
+                blockEntity.energyHandler.receiveEnergy(receivedEnergy, false);
                 setChanged(level, blockPos, blockState);
             }
         }
@@ -243,6 +245,16 @@ public class GeneIsolatorBlockEntity extends BlockEntity implements MenuProvider
 
         Optional<GeneIsolatorRecipe> match = level.getRecipeManager()
                 .getRecipeFor(GeneIsolatorRecipe.Type.INSTANCE, inventory, level);
+        // Check if item is identified
+        /*boolean isIdentified = false;
+        ItemStack input = inventory.getItem(1);
+        if(input != null) {
+            CompoundTag tag = input.getTag();
+            if(tag != null) {
+                if(tag.getInt("identified") != 0)
+                    isIdentified = true;
+            }
+        }*/
 
         if(!match.isEmpty()) {
             // entity.maxProgress = match.get().getAnalyzeTime();
@@ -272,10 +284,25 @@ public class GeneIsolatorBlockEntity extends BlockEntity implements MenuProvider
                 .getRecipeFor(GeneIsolatorRecipe.Type.INSTANCE, inventory, level);
 
         if(match.isPresent()) {
+            /*ItemStack resultItem = new ItemStack(match.get().getResultItem().getItem(), 1);
+            ItemStack outputItem = entity.itemHandler.getStackInSlot(2);
+            if(outputItem.getItem() == Items.AIR.asItem()) {
+                ItemStack input = entity.itemHandler.extractItem(1,1, false);
+                resultItem.setTag(input.getTag());
+                resultItem.getTag().putFloat(MobData.IDENTIFIED, 1.0f);
+                entity.itemHandler.setStackInSlot(2, resultItem);
+            } else if (outputItem.getItem() == resultItem.getItem()){
+                entity.itemHandler.extractItem(1,1, false);
+                outputItem.setCount(outputItem.getCount() + 1);
+            }*/
             // entity.itemHandler.extractItem(1,1, false);
             // entity.itemHandler.setStackInSlot(2, new ItemStack(match.get().getResultItem().getItem(),1));
             entity.resetProgress();
         }
+    }
+
+    public ItemStack getInputItemstack(GeneIsolatorBlockEntity entity) {
+        return entity.itemHandler.getStackInSlot(2).copy();
     }
 
     //region Fix for empty energy bar after world reload
