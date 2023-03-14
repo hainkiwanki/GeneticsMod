@@ -8,7 +8,9 @@ import com.hainkiwanki.geneticsmod.tags.ModTags;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -32,8 +34,6 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private int gridHeight = 64;
     private int gridWidth = 48;
     private int gridSize = 8;
-    private int rows = 8;
-    private int cols = 6;
     private int gridOffsetX = 39;
     private int gridOffsetY = 64;
 
@@ -49,13 +49,18 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         super.init();
         assignEnergyInfoArea();
 
-        traitButton = new Button(leftPos + 36, topPos + 5, 54, 20, new TextComponent("Trait"), (btn) -> {
+        int paddingOffset = 3;
+        int maxWidth = 55 + paddingOffset;
+        traitButton = new Button(leftPos + 36, topPos + 5, maxWidth, 20, new TextComponent("Trait"), (btn) -> {
             List<String> tags = menu.getSampleTags();
             if(tags != null) {
                 currentTraitIndex++;
                 currentTraitIndex = currentTraitIndex % tags.size();
                 TranslatableComponent textComponent = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tags.get(currentTraitIndex));
-                this.traitButton.setWidth(font.width(textComponent) + 8);
+                int textWidth = font.width(textComponent) + paddingOffset;
+                if(textWidth > maxWidth)
+                    textWidth = maxWidth;
+                this.traitButton.setWidth(maxWidth);
                 this.traitButton.setMessage(textComponent);
 
             }
@@ -115,18 +120,31 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         this.blit(pPoseStack, x + 6, y + 68 + 39 - menu.getEnergyProgress(),
                 176, 15 + 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());
-        /*
-        // Draws letters
+
+        drawGrid(pPoseStack, 39, 64, 8, 6);
+
+        // Masking overlapping boundaries
+        Minecraft mc = Minecraft.getInstance();
+        double scale = mc.getWindow().getGuiScale();
+        int xPos = (int)(scale * leftPos);
+        int yPos = mc.getWindow().getHeight() - (int)(scale * topPos) - (int)(scale * imageHeight);
+        int width = (int)(scale * imageWidth);
+        int height = (int)(scale * imageHeight);
+        RenderSystem.enableScissor(xPos,  yPos, width, height);
+        drawGrid(pPoseStack, 93, 4, 16, 16);
+        RenderSystem.disableScissor();
+    }
+
+    private void drawGrid(PoseStack pPoseStack, int offsetX, int offsetY, int rows, int cols) {
         for(int r = 0; r < rows; r++) {
-            int textY = topPos + gridOffsetY + r * gridSize;
+            int textY = topPos + offsetY + r * gridSize;
             for (int c = 0; c < cols; c++) {
-                int textX = leftPos + gridOffsetX + c * gridSize;
+                int textX = leftPos + offsetX + c * gridSize;
                 Component textComponent = new TextComponent("G");
                 int textWidth = font.width(textComponent);
                 font.draw(pPoseStack, textComponent, (float)textX + ((float)gridSize *0.5f - (float)(textWidth*0.5f)), (float)textY, 0xFFFFFFFF);
             }
         }
-        */
     }
 
     @Override

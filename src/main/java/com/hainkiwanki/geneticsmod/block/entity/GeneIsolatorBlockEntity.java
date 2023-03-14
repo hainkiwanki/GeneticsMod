@@ -302,7 +302,7 @@ public class GeneIsolatorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public ItemStack getInputItemstack(GeneIsolatorBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(2).copy();
+        return entity.itemHandler.getStackInSlot(1).copy();
     }
 
     //region Fix for empty energy bar after world reload

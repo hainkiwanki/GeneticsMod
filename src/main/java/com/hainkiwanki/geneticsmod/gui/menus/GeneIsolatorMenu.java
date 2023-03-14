@@ -46,8 +46,8 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
 
         this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
             this.addSlot(new ModFuelSlot(handler, 0, 7, 114));
-            this.addSlot(new ModGeneSampleSlot(handler, 1, 7, 38)); // Vials
-            this.addSlot(new ModGeneSampleSlot(handler, 2, 7, 7));  // Gene Sample
+            this.addSlot(new ModGeneSampleSlot(handler, 1, 7, 7));  // Gene Sample
+            this.addSlot(new ModGeneSampleSlot(handler, 2, 7, 38)); // Vials
             this.addSlot(new ModResultSlot(handler, 3, 134, 38));
         });
 
