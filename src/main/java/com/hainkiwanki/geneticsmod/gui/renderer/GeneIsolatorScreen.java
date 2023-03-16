@@ -17,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
@@ -36,6 +37,14 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private int gridSize = 8;
     private int gridOffsetX = 39;
     private int gridOffsetY = 64;
+
+    private int gridSearchRows = 32;
+    private int gridSearchCols = 32;
+    private int gridSearchWidth = 131;
+    private int gridSearchHeight = 76;
+
+    private int maskPosX = 0;
+    private int maskPosY = 0;
 
     private int currentTraitIndex = 0;
 
@@ -98,13 +107,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         int y = (height - imageHeight) / 2;
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
-
-
-        // Line line = new Line(0, 0,  20, 20);
-        // line.draw(pPoseStack);
         addRenderableWidget(traitButton);
-        // Title Screen => ImageButton
-
         /*
         if(menu.isCrafting()) {
             blit(pPoseStack, x + 52, y + 33 + 16 - menu.getCraftingProgress(),
@@ -121,17 +124,18 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 176, 15 + 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());
 
-        drawGrid(pPoseStack, 39, 64, 8, 6);
+        drawGrid(pPoseStack, 97, 7, 5, 9);
 
         // Masking overlapping boundaries
         Minecraft mc = Minecraft.getInstance();
         double scale = mc.getWindow().getGuiScale();
-        int xPos = (int)(scale * leftPos);
-        int yPos = mc.getWindow().getHeight() - (int)(scale * topPos) - (int)(scale * imageHeight);
-        int width = (int)(scale * imageWidth);
-        int height = (int)(scale * imageHeight);
+        // 38, 112 to the bottom left position of grid
+        int xPos = (int)(scale * (leftPos + 38));
+        int yPos = mc.getWindow().getHeight() - (int)(scale * topPos) - (int)(scale * imageHeight) + (int)(scale * 112);
+        int width = (int)(scale * gridSearchWidth);
+        int height = (int)(scale * gridSearchHeight);
         RenderSystem.enableScissor(xPos,  yPos, width, height);
-        drawGrid(pPoseStack, 93, 4, 16, 16);
+        drawGrid(pPoseStack, 38 + maskPosX, 53 + maskPosY, gridSearchRows, gridSearchCols);
         RenderSystem.disableScissor();
     }
 
@@ -145,6 +149,15 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 font.draw(pPoseStack, textComponent, (float)textX + ((float)gridSize *0.5f - (float)(textWidth*0.5f)), (float)textY, 0xFFFFFFFF);
             }
         }
+    }
+
+    @Override
+    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
+        maskPosY += pDragY;
+        int diffY = (gridSize * gridSearchRows) - gridSearchHeight;
+        maskPosY = Mth.clamp(maskPosY, -diffY, 0);
+        maskPosX += pDragX;
+        return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
 
     @Override
