@@ -8,22 +8,23 @@ import com.hainkiwanki.geneticsmod.tags.ModTags;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+import org.w3c.dom.Text;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu> {
     private static final ResourceLocation TEXTURE =
@@ -43,14 +44,19 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private int gridSearchWidth = 131;
     private int gridSearchHeight = 76;
 
-    private int maskPosX = 0;
-    private int maskPosY = 0;
+    private float maskPosX = 0;
+    private float maskPosY = 0;
 
     private int currentTraitIndex = 0;
+
+    private List<Character> dnaRandomChars;
+    private TextComponent dnaRandomText;
 
     public GeneIsolatorScreen(GeneIsolatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         imageHeight = 241;
+        dnaRandomChars = new ArrayList<>();
+        fillCharList();
     }
 
     @Override
@@ -74,6 +80,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
             }
         });
+        addRenderableWidget(traitButton);
     }
 
     private void assignEnergyInfoArea() {
@@ -107,14 +114,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         int y = (height - imageHeight) / 2;
 
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
-        addRenderableWidget(traitButton);
-        /*
-        if(menu.isCrafting()) {
-            blit(pPoseStack, x + 52, y + 33 + 16 - menu.getCraftingProgress(),
-                    176, 16 - menu.getCraftingProgress(),
-                    14, menu.getCraftingProgress());
-        }
-        */
+
         if(menu.hasFuel()) {
             blit(pPoseStack, x + 22, y + 107 - menu.getScaledFuelProgress(),
                     188, 55 - menu.getScaledFuelProgress(),
@@ -124,9 +124,12 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 176, 15 + 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());
 
-        drawGrid(pPoseStack, 97, 7, 5, 9);
+        // drawGrid(pPoseStack, 97, 7, 5, 9);
 
-        // Masking overlapping boundaries
+        DrawSearchGrid();
+    }
+
+    private void DrawSearchGrid() {
         Minecraft mc = Minecraft.getInstance();
         double scale = mc.getWindow().getGuiScale();
         // 38, 112 to the bottom left position of grid
@@ -134,29 +137,30 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         int yPos = mc.getWindow().getHeight() - (int)(scale * topPos) - (int)(scale * imageHeight) + (int)(scale * 112);
         int width = (int)(scale * gridSearchWidth);
         int height = (int)(scale * gridSearchHeight);
+
         RenderSystem.enableScissor(xPos,  yPos, width, height);
-        drawGrid(pPoseStack, 38 + maskPosX, 53 + maskPosY, gridSearchRows, gridSearchCols);
+        int textWidth = font.width(dnaRandomText)/ gridSearchRows;
+        font.drawWordWrap(dnaRandomText, leftPos + 38 + (int)maskPosX, topPos + 53 + (int)maskPosY, textWidth, 0xFFFFFFFF);
         RenderSystem.disableScissor();
     }
 
-    private void drawGrid(PoseStack pPoseStack, int offsetX, int offsetY, int rows, int cols) {
-        for(int r = 0; r < rows; r++) {
-            int textY = topPos + offsetY + r * gridSize;
-            for (int c = 0; c < cols; c++) {
-                int textX = leftPos + offsetX + c * gridSize;
-                Component textComponent = new TextComponent("G");
-                int textWidth = font.width(textComponent);
-                font.draw(pPoseStack, textComponent, (float)textX + ((float)gridSize *0.5f - (float)(textWidth*0.5f)), (float)textY, 0xFFFFFFFF);
-            }
-        }
-    }
+    private int diffY;
+    private int diffX;
 
     @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
-        maskPosY += pDragY;
-        int diffY = (gridSize * gridSearchRows) - gridSearchHeight;
-        maskPosY = Mth.clamp(maskPosY, -diffY, 0);
-        maskPosX += pDragX;
+        if(pButton == 0) {
+
+            int textWidth = font.width(dnaRandomText) / gridSearchRows;
+            diffX =  textWidth - gridSearchWidth;
+            diffY = font.wordWrapHeight(dnaRandomText.toString(), textWidth) - gridSearchHeight;
+
+            maskPosX += pDragX;
+            // maskPosX = Mth.clamp(maskPosX, -diffX, 0);
+
+            maskPosY += pDragY;
+            //maskPosY = Mth.clamp(maskPosY, -diffY, 0);
+        }
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
 
@@ -181,5 +185,31 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         }
 
         return super.mouseClicked(pMouseX, pMouseY, pButton);
+    }
+
+    private void fillCharList() {
+        dnaRandomText = new TextComponent("");
+        int max = gridSearchCols * gridSearchRows;
+        List<Character> dnaLetters = Arrays.asList(new Character[]{'C', 'G', 'T', 'A'});
+        Random rand = new Random();
+
+        Component aComp = new TextComponent("A ").withStyle(ChatFormatting.BLUE);
+        Component tComp = new TextComponent("T ").withStyle(ChatFormatting.GREEN);
+        Component gComp = new TextComponent("G ").withStyle(ChatFormatting.RED);
+        Component cComp = new TextComponent("C ").withStyle(ChatFormatting.YELLOW);
+
+        for (int i = 0; i < max; i++) {
+            Character cLetter = dnaLetters.get(rand.nextInt(4));
+            dnaRandomChars.add(cLetter);
+            if (cLetter == 'G') {
+                dnaRandomText.append(gComp);
+            } else if (cLetter == 'T') {
+                dnaRandomText.append(tComp);
+            } else if (cLetter == 'C') {
+                dnaRandomText.append(cComp);
+            } else if (cLetter == 'A') {
+                dnaRandomText.append(aComp);
+            }
+        }
     }
 }

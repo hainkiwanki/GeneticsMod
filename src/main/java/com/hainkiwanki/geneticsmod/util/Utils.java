@@ -1,5 +1,6 @@
 package com.hainkiwanki.geneticsmod.util;
 
+import com.hainkiwanki.geneticsmod.gui.renderer.components.Pos2i;
 import com.hainkiwanki.geneticsmod.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -61,5 +62,13 @@ public class Utils {
         }
 
         return tagList;
+    }
+
+    public static int Convert2DTo1D(int row, int col, int maxCols) {
+        return row * maxCols + col;
+    }
+
+    public static Pos2i Convert1DTo2D(int index, int maxRows, int maxCols) {
+        return new Pos2i(index / maxRows, index % maxCols);
     }
 }
