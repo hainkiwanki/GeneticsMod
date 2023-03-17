@@ -3,8 +3,7 @@ package com.hainkiwanki.geneticsmod.gui.renderer;
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneIsolatorMenu;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.EnergyInfoArea;
-import com.hainkiwanki.geneticsmod.mobdata.MobData;
-import com.hainkiwanki.geneticsmod.tags.ModTags;
+import com.hainkiwanki.geneticsmod.gui.renderer.components.Pos2i;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,14 +14,11 @@ import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
-import org.w3c.dom.Text;
 
 import java.util.*;
 
@@ -32,12 +28,6 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private EnergyInfoArea energyInfoArea;
 
     private Button traitButton;
-
-    private int gridHeight = 64;
-    private int gridWidth = 48;
-    private int gridSize = 8;
-    private int gridOffsetX = 39;
-    private int gridOffsetY = 64;
 
     private int gridSearchRows = 32;
     private int gridSearchCols = 32;
@@ -51,12 +41,11 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     private List<Character> dnaRandomChars;
     private TextComponent dnaRandomText;
+    private List<Pos2i> gridPoints;
 
     public GeneIsolatorScreen(GeneIsolatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         imageHeight = 241;
-        dnaRandomChars = new ArrayList<>();
-        fillCharList();
     }
 
     @Override
@@ -81,6 +70,10 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             }
         });
         addRenderableWidget(traitButton);
+
+        dnaRandomChars = new ArrayList<>();
+        gridPoints = new ArrayList<>();
+        fillCharList();
     }
 
     private void assignEnergyInfoArea() {
@@ -125,11 +118,11 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 12, menu.getEnergyProgress());
 
         // drawGrid(pPoseStack, 97, 7, 5, 9);
-
-        DrawSearchGrid();
+        drawSearchGrid();
+        drawSearchGridPoints(pPoseStack);
     }
 
-    private void DrawSearchGrid() {
+    private void drawSearchGrid() {
         Minecraft mc = Minecraft.getInstance();
         double scale = mc.getWindow().getGuiScale();
         // 38, 112 to the bottom left position of grid
@@ -140,8 +133,25 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
         RenderSystem.enableScissor(xPos,  yPos, width, height);
         int textWidth = font.width(dnaRandomText)/ gridSearchRows;
-        font.drawWordWrap(dnaRandomText, leftPos + 38 + (int)maskPosX, topPos + 53 + (int)maskPosY, textWidth, 0xFFFFFFFF);
+        font.drawWordWrap(dnaRandomText, leftPos + 38 + 3 + (int)maskPosX, topPos + 53 + 2 + (int)maskPosY, textWidth, 0xFFFFFFFF);
         RenderSystem.disableScissor();
+    }
+
+    private void drawSearchGridPoints(PoseStack pPosestack) {
+        for (int i = 0; i < gridPoints.size() - 1; i++) {
+            int posX1 = gridPoints.get(i).getX();
+            int posX2 = gridPoints.get(i + 1).getX();
+
+            int posY1 = gridPoints.get(i).getY();
+            int posY2 = gridPoints.get(i + 1).getY();
+            if(posX1 != posX2) {
+                // Horizontal line
+                hLine(pPosestack, posX1, posX2, posY1, 0xFFFFFFFF);
+            } else {
+                // Vertical line
+                vLine(pPosestack, posX1, posY1, posY2, 0xFFFFFFFF);
+            }
+        }
     }
 
     private int diffY;
@@ -149,17 +159,11 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
-        if(pButton == 0) {
-
-            int textWidth = font.width(dnaRandomText) / gridSearchRows;
-            diffX =  textWidth - gridSearchWidth;
-            diffY = font.wordWrapHeight(dnaRandomText.toString(), textWidth) - gridSearchHeight;
-
+        if(pButton == 1) {
             maskPosX += pDragX;
-            // maskPosX = Mth.clamp(maskPosX, -diffX, 0);
-
+            maskPosX = Mth.clamp(maskPosX, -diffX - 3, 0);
             maskPosY += pDragY;
-            //maskPosY = Mth.clamp(maskPosY, -diffY, 0);
+            maskPosY = Mth.clamp(maskPosY, -diffY - 2, 0);
         }
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
@@ -173,15 +177,20 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (pButton == 0) {
-            int xPos = (int)pMouseX - leftPos - gridOffsetX;
-            int yPos = (int)pMouseY - topPos - gridOffsetY;
-            boolean clickInGrid = Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, xPos, yPos,0, 0, gridWidth, gridHeight);
+            int xPos = leftPos + 38;
+            int yPos = topPos + 53;
+            boolean clickInGrid = Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, xPos, yPos,0, 0, 133, 78);
             if(clickInGrid){
-                int row = xPos / gridSize;
-                int col = yPos / gridSize;
+                int row = ((int)pMouseY - yPos + Mth.abs((int)maskPosY)) / 9;
+                int col = ((int)pMouseX - xPos + Mth.abs((int)maskPosX)) / 10;
+                Pos2i newPos = new Pos2i(row * 9, col * 10);
+                if(!gridPoints.contains(newPos)) {
+                    gridPoints.add(new Pos2i(row * 9, col * 10));
+                    System.out.println("New pos added: " + gridPoints.size());
+                }
+                // System.out.println("Grid pos: " + row + ", " + col);
             }
-            //System.out.println("GUI Mouse Position: " + xPos + ", " + yPos);
-            //System.out.println("Grid pos: " + row + ", " + col);
+            // System.out.println("GUI Mouse Position: " + ((int)pMouseX - xPos) + ", " + ((int)pMouseY - yPos));
         }
 
         return super.mouseClicked(pMouseX, pMouseY, pButton);
@@ -211,5 +220,9 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 dnaRandomText.append(aComp);
             }
         }
+
+        int textWidth = font.width(dnaRandomText) / gridSearchRows;
+        diffX =  textWidth - gridSearchWidth;
+        diffY = font.wordWrapHeight(dnaRandomText.getString(), textWidth) - gridSearchHeight;
     }
 }
