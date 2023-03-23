@@ -25,7 +25,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private static final ResourceLocation TEXTURE = new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/gene_isolator.png");
     private EnergyInfoArea energyInfoArea;
     private Button traitButton;
-    private int gridSize = 5, gridWidth = 131, gridHeight = 76, gridOffsetX = 38, gridOffsetY = 53;
+    private int gridSize = 16, gridWidth = 131, gridHeight = 76, gridOffsetX = 38, gridOffsetY = 53;
     private int gridRowHeight = 9, gridColWidth = 10;
     private ArrayList<Integer> selectedIndices = new ArrayList<>();
     private ArrayList<Integer> adjacentIndices = new ArrayList<>();
