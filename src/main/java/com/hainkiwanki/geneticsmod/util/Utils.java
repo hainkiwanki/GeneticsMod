@@ -68,7 +68,7 @@ public class Utils {
         return row * maxCols + col;
     }
 
-    public static Pos2i Convert1DTo2D(int index, int maxRows, int maxCols) {
-        return new Pos2i(index / maxRows, index % maxCols);
+    public static Pos2i Convert1DTo2D(int index, int maxCols) {
+        return new Pos2i(index % maxCols, index / maxCols);
     }
 }
