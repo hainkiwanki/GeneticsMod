@@ -39,6 +39,9 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     private int currentTraitIndex = 0;
 
+    private float mousePosX;
+    private float mousePosY;
+
     private List<Character> dnaRandomChars;
     private TextComponent dnaRandomText;
     private List<Pos2i> gridPoints;
@@ -117,12 +120,6 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 176, 15 + 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());
 
-        // drawGrid(pPoseStack, 97, 7, 5, 9);
-        drawSearchGrid();
-        drawSearchGridPoints(pPoseStack);
-    }
-
-    private void drawSearchGrid() {
         Minecraft mc = Minecraft.getInstance();
         double scale = mc.getWindow().getGuiScale();
         // 38, 112 to the bottom left position of grid
@@ -130,26 +127,106 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         int yPos = mc.getWindow().getHeight() - (int)(scale * topPos) - (int)(scale * imageHeight) + (int)(scale * 112);
         int width = (int)(scale * gridSearchWidth);
         int height = (int)(scale * gridSearchHeight);
-
         RenderSystem.enableScissor(xPos,  yPos, width, height);
-        int textWidth = font.width(dnaRandomText)/ gridSearchRows;
-        font.drawWordWrap(dnaRandomText, leftPos + 38 + 3 + (int)maskPosX, topPos + 53 + 2 + (int)maskPosY, textWidth, 0xFFFFFFFF);
+
+        drawSearchGridSelectionSquare(pPoseStack);
+        drawSearchGrid();
+        drawSearchGridPoints(pPoseStack);
+
         RenderSystem.disableScissor();
     }
 
-    private void drawSearchGridPoints(PoseStack pPosestack) {
-        for (int i = 0; i < gridPoints.size() - 1; i++) {
-            int posX1 = gridPoints.get(i).getX();
-            int posX2 = gridPoints.get(i + 1).getX();
+    @Override
+    public void mouseMoved(double pMouseX, double pMouseY) {
+        super.mouseMoved(pMouseX, pMouseY);
+        mousePosX = (float)pMouseX;
+        mousePosY = (float)pMouseY;
+    }
 
-            int posY1 = gridPoints.get(i).getY();
-            int posY2 = gridPoints.get(i + 1).getY();
-            if(posX1 != posX2) {
-                // Horizontal line
-                hLine(pPosestack, posX1, posX2, posY1, 0xFFFFFFFF);
-            } else {
-                // Vertical line
-                vLine(pPosestack, posX1, posY1, posY2, 0xFFFFFFFF);
+    private void drawSearchGridSelectionSquare(PoseStack pPosetack)
+    {
+        int offsetX = 38;
+        int offsetY = 53;
+        int xPos = leftPos + offsetX;
+        int yPos = topPos + offsetY;
+        int size = 9;
+        if(Utils.isMouseAboveArea((int)mousePosX, (int)mousePosY, xPos, yPos, 0, 0, 133, 78))
+        {
+            int r = Mth.clamp((((int)mousePosY - yPos + Mth.abs((int)maskPosY)) / 9), 0, gridSearchRows - 1);
+            int c = Mth.clamp((((int)mousePosX - xPos + Mth.abs((int)maskPosX)) / 10), 0, gridSearchCols - 1);
+            int x = c * 10;
+            int y = r * 9;
+            fill(pPosetack,
+                    xPos + x + (int)maskPosX + 1,
+                    yPos + y + (int)maskPosY + 1,
+                    xPos + x + size + (int)maskPosX + 1,
+                    yPos + y + size + (int)maskPosY + 1,
+                0x77FFFFFF);
+
+            int rDown = r - 1;
+            int rUp = r + 1;
+            int cRight = c + 1;
+            int cLeft = c - 1;
+            if(cRight >= 0 && cRight <= gridSearchCols - 1)
+            {
+                fill(pPosetack,
+                        xPos + x + (int)maskPosX + 1 + 10,
+                        yPos + y + (int)maskPosY + 1,
+                        xPos + x + size + (int)maskPosX + 1 + 10,
+                        yPos + y + size + (int)maskPosY + 1,
+                        0x77FFFF00);
+            }
+            if(cLeft >= 0 && cLeft <= gridSearchCols - 1)
+            {
+                fill(pPosetack,
+                        xPos + x + (int)maskPosX + 1 - 10,
+                        yPos + y + (int)maskPosY + 1,
+                        xPos + x + size + (int)maskPosX + 1 - 10,
+                        yPos + y + size + (int)maskPosY + 1,
+                        0x77FFFF00);
+            }
+            if(rDown >= 0 && rDown <= gridSearchRows - 1)
+            {
+                fill(pPosetack,
+                        xPos + x + (int)maskPosX + 1,
+                        yPos + y + (int)maskPosY + 1 - 9,
+                        xPos + x + size + (int)maskPosX + 1,
+                        yPos + y + size + (int)maskPosY + 1 - 9,
+                        0x77FFFF00);
+            }
+            if(rUp >= 0 && rUp <= gridSearchRows - 1)
+            {
+                fill(pPosetack,
+                        xPos + x + (int)maskPosX + 1,
+                        yPos + y + (int)maskPosY + 1 + 9,
+                        xPos + x + size + (int)maskPosX + 1,
+                        yPos + y + size + (int)maskPosY + 1 + 9,
+                        0x77FFFF00);
+            }
+        }
+    }
+
+    private void drawSearchGrid() {
+        int textWidth = font.width(dnaRandomText)/ gridSearchRows;
+        font.drawWordWrap(dnaRandomText, leftPos + 38 + 3 + (int)maskPosX, topPos + 53 + 2 + (int)maskPosY, textWidth, 0xFFFFFFFF);
+    }
+
+    private void drawSearchGridPoints(PoseStack pPosestack) {
+        if(gridPoints.size() > 1) {
+            int offset = 5;
+            int offsetX = 38;
+            int offsetY = 53;
+            for (int i = 0; i < gridPoints.size() - 1; i++) {
+                int posX1 = gridPoints.get(i).getX() + leftPos + offsetX + offset;
+                int posX2 = gridPoints.get(i + 1).getX() + leftPos + offsetX + offset;
+
+                int posY1 = gridPoints.get(i).getY() + topPos + offsetY + offset;
+                int posY2 = gridPoints.get(i + 1).getY() + topPos + offsetY + offset;
+                if (posX1 != posX2) {
+                    hLine(pPosestack, Math.min(posX1, posX2) + (int)maskPosX, Math.max(posX1, posX2)  + (int)maskPosX, posY1 + (int)maskPosY, 0xFFFF0000);
+                } else {
+                    vLine(pPosestack, posX1 + (int)maskPosX, Math.min(posY1, posY2) - 1  + (int)maskPosY, Math.max(posY1, posY2) + + (int)maskPosY, 0xFFFF0000);
+                }
             }
         }
     }
@@ -175,6 +252,8 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         renderTooltip(pPoseStack, mouseX, mouseY);
     }
 
+    private ArrayList<Integer> selectedIndices = new ArrayList<Integer>();
+
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (pButton == 0) {
             int xPos = leftPos + 38;
@@ -183,10 +262,15 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             if(clickInGrid){
                 int row = ((int)pMouseY - yPos + Mth.abs((int)maskPosY)) / 9;
                 int col = ((int)pMouseX - xPos + Mth.abs((int)maskPosX)) / 10;
-                Pos2i newPos = new Pos2i(row * 9, col * 10);
-                if(!gridPoints.contains(newPos)) {
-                    gridPoints.add(new Pos2i(row * 9, col * 10));
-                    System.out.println("New pos added: " + gridPoints.size());
+                int index = Utils.Convert2DTo1D(row, col, gridSearchCols);
+                if(!selectedIndices.contains(index))
+                {
+                    selectedIndices.add(index);
+                    Pos2i newPos = new Pos2i(col * 10,row * 9);
+                    if(!gridPoints.contains(newPos)) {
+                        gridPoints.add(newPos);
+                        // System.out.println("New pos added: " + gridPoints.size());
+                    }
                 }
                 // System.out.println("Grid pos: " + row + ", " + col);
             }
