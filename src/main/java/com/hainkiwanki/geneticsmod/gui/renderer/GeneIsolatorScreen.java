@@ -10,7 +10,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -23,25 +22,14 @@ import net.minecraft.world.entity.player.Inventory;
 import java.util.*;
 
 public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu> {
-    private static final ResourceLocation TEXTURE =
-            new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/gene_isolator.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/gene_isolator.png");
     private EnergyInfoArea energyInfoArea;
-
     private Button traitButton;
-
-    private int gridSearchRows = 32;
-    private int gridSearchCols = 32;
-    private int gridSearchWidth = 131;
-    private int gridSearchHeight = 76;
-
-    private float maskPosX = 0;
-    private float maskPosY = 0;
-
+    private int gridSearchRows = 32, gridSearchCols = 32;
+    private int gridSearchWidth = 131, gridSearchHeight = 76;
+    private float maskPosX = 0, maskPosY = 0;
     private int currentTraitIndex = 0;
-
-    private float mousePosX;
-    private float mousePosY;
-
+    private float mousePosX, mousePosY;
     private List<Character> dnaRandomChars;
     private TextComponent dnaRandomText;
     private List<Pos2i> gridPoints;
@@ -50,7 +38,6 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         super(pMenu, pPlayerInventory, pTitle);
         imageHeight = 241;
     }
-
     @Override
     protected void init() {
         super.init();
@@ -78,13 +65,11 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         gridPoints = new ArrayList<>();
         fillCharList();
     }
-
     private void assignEnergyInfoArea() {
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         energyInfoArea = new EnergyInfoArea(x + 21, y + 26, menu.blockEntity.getEnergyStorage());
     }
-
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
         this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 73, 4210752);
@@ -93,14 +78,12 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         renderEnergyAreaTooltips(pPoseStack, pMouseX, pMouseY, x, y);
 
     }
-
     private void renderEnergyAreaTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
         if(Utils.isMouseAboveArea(pMouseX, pMouseY, x, y, 6, 68, energyInfoArea.DEFAULT_WIDTH, energyInfoArea.DEFAULT_HEIGHT)) {
             renderTooltip(pPoseStack, energyInfoArea.getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
     }
-
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -135,14 +118,12 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
         RenderSystem.disableScissor();
     }
-
     @Override
     public void mouseMoved(double pMouseX, double pMouseY) {
         super.mouseMoved(pMouseX, pMouseY);
         mousePosX = (float)pMouseX;
         mousePosY = (float)pMouseY;
     }
-
     private void drawSearchGridSelectionSquare(PoseStack pPosetack)
     {
         int offsetX = 38;
@@ -150,12 +131,14 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         int xPos = leftPos + offsetX;
         int yPos = topPos + offsetY;
         int size = 9;
+        int rHeight = 9;
+        int cWidth = 10;
         if(Utils.isMouseAboveArea((int)mousePosX, (int)mousePosY, xPos, yPos, 0, 0, 133, 78))
         {
-            int r = Mth.clamp((((int)mousePosY - yPos + Mth.abs((int)maskPosY)) / 9), 0, gridSearchRows - 1);
-            int c = Mth.clamp((((int)mousePosX - xPos + Mth.abs((int)maskPosX)) / 10), 0, gridSearchCols - 1);
-            int x = c * 10;
-            int y = r * 9;
+            int r = Mth.clamp((((int)mousePosY - yPos + Mth.abs((int)maskPosY)) / rHeight), 0, gridSearchRows - 1);
+            int c = Mth.clamp((((int)mousePosX - xPos + Mth.abs((int)maskPosX)) / cWidth), 0, gridSearchCols - 1);
+            int x = c * cWidth;
+            int y = r * rHeight;
             fill(pPosetack,
                     xPos + x + (int)maskPosX + 1,
                     yPos + y + (int)maskPosY + 1,
@@ -170,18 +153,18 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             if(cRight >= 0 && cRight <= gridSearchCols - 1)
             {
                 fill(pPosetack,
-                        xPos + x + (int)maskPosX + 1 + 10,
+                        xPos + x + (int)maskPosX + 1 + cWidth,
                         yPos + y + (int)maskPosY + 1,
-                        xPos + x + size + (int)maskPosX + 1 + 10,
+                        xPos + x + size + (int)maskPosX + 1 + cWidth,
                         yPos + y + size + (int)maskPosY + 1,
                         0x77FFFF00);
             }
             if(cLeft >= 0 && cLeft <= gridSearchCols - 1)
             {
                 fill(pPosetack,
-                        xPos + x + (int)maskPosX + 1 - 10,
+                        xPos + x + (int)maskPosX + 1 - cWidth,
                         yPos + y + (int)maskPosY + 1,
-                        xPos + x + size + (int)maskPosX + 1 - 10,
+                        xPos + x + size + (int)maskPosX + 1 - cWidth,
                         yPos + y + size + (int)maskPosY + 1,
                         0x77FFFF00);
             }
@@ -189,28 +172,26 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             {
                 fill(pPosetack,
                         xPos + x + (int)maskPosX + 1,
-                        yPos + y + (int)maskPosY + 1 - 9,
+                        yPos + y + (int)maskPosY + 1 - rHeight,
                         xPos + x + size + (int)maskPosX + 1,
-                        yPos + y + size + (int)maskPosY + 1 - 9,
+                        yPos + y + size + (int)maskPosY + 1 - rHeight,
                         0x77FFFF00);
             }
             if(rUp >= 0 && rUp <= gridSearchRows - 1)
             {
                 fill(pPosetack,
                         xPos + x + (int)maskPosX + 1,
-                        yPos + y + (int)maskPosY + 1 + 9,
+                        yPos + y + (int)maskPosY + 1 + rHeight,
                         xPos + x + size + (int)maskPosX + 1,
-                        yPos + y + size + (int)maskPosY + 1 + 9,
+                        yPos + y + size + (int)maskPosY + 1 + rHeight,
                         0x77FFFF00);
             }
         }
     }
-
     private void drawSearchGrid() {
         int textWidth = font.width(dnaRandomText)/ gridSearchRows;
         font.drawWordWrap(dnaRandomText, leftPos + 38 + 3 + (int)maskPosX, topPos + 53 + 2 + (int)maskPosY, textWidth, 0xFFFFFFFF);
     }
-
     private void drawSearchGridPoints(PoseStack pPosestack) {
         if(gridPoints.size() > 1) {
             int offset = 5;
@@ -230,10 +211,8 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             }
         }
     }
-
     private int diffY;
     private int diffX;
-
     @Override
     public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
         if(pButton == 1) {
@@ -244,42 +223,59 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         }
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
     }
-
     @Override
     public void render(PoseStack pPoseStack, int mouseX, int mouseY, float delta) {
         renderBackground(pPoseStack);
         super.render(pPoseStack, mouseX, mouseY, delta);
         renderTooltip(pPoseStack, mouseX, mouseY);
     }
-
-    private ArrayList<Integer> selectedIndices = new ArrayList<Integer>();
-
+    private ArrayList<Integer> selectedIndices = new ArrayList<>();
+    private ArrayList<Integer> adjacentIndices = new ArrayList<>();
+    private int currentSelectedIndex = -1;
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (pButton == 0) {
             int xPos = leftPos + 38;
             int yPos = topPos + 53;
-            boolean clickInGrid = Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, xPos, yPos,0, 0, 133, 78);
-            if(clickInGrid){
+            if(Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, xPos, yPos,0, 0, 133, 78)) {
                 int row = ((int)pMouseY - yPos + Mth.abs((int)maskPosY)) / 9;
                 int col = ((int)pMouseX - xPos + Mth.abs((int)maskPosX)) / 10;
                 int index = Utils.Convert2DTo1D(row, col, gridSearchCols);
-                if(!selectedIndices.contains(index))
-                {
-                    selectedIndices.add(index);
-                    Pos2i newPos = new Pos2i(col * 10,row * 9);
-                    if(!gridPoints.contains(newPos)) {
-                        gridPoints.add(newPos);
-                        // System.out.println("New pos added: " + gridPoints.size());
+                if(currentSelectedIndex > 0) {
+                    if(adjacentIndices.contains(index) && !selectedIndices.contains(index)) {
+                        selectedIndices.add(index);
+                        gridPoints.add(new Pos2i(col * 10,row * 9));
+                        currentSelectedIndex = index;
+                        calculateAdjacentIndices(index);
                     }
+                } else {
+                    currentSelectedIndex = index;
+                    calculateAdjacentIndices(index);
+                    selectedIndices.add(index);
+                    gridPoints.add(new Pos2i(col * 10,row * 9));
                 }
-                // System.out.println("Grid pos: " + row + ", " + col);
             }
-            // System.out.println("GUI Mouse Position: " + ((int)pMouseX - xPos) + ", " + ((int)pMouseY - yPos));
         }
-
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
-
+    private void calculateAdjacentIndices(int index) {
+        adjacentIndices.clear();
+        int rowAbove = index - gridSearchCols;
+        if(rowAbove > 0) {
+            adjacentIndices.add(rowAbove);
+        }
+        int rowBelow = index + gridSearchCols;
+        if(rowBelow < gridSearchCols * gridSearchRows) {
+            adjacentIndices.add(rowBelow);
+        }
+        int colRight = index + 1;
+        if(index % gridSearchCols != 0) {
+            adjacentIndices.add(colRight);
+        }
+        int colLeft = index - 1;
+        if(colLeft % gridSearchCols != 0) {
+            adjacentIndices.add(colLeft);
+        }
+    }
     private void fillCharList() {
         dnaRandomText = new TextComponent("");
         int max = gridSearchCols * gridSearchRows;
@@ -306,7 +302,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         }
 
         int textWidth = font.width(dnaRandomText) / gridSearchRows;
-        diffX =  textWidth - gridSearchWidth;
+        diffX = textWidth - gridSearchWidth;
         diffY = font.wordWrapHeight(dnaRandomText.getString(), textWidth) - gridSearchHeight;
     }
 }
