@@ -61,6 +61,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 this.traitButton.setWidth(maxWidth);
                 this.traitButton.setMessage(textComponent);
 
+                // TODO: Change to-find-dna-string
             }
         });
         addRenderableWidget(traitButton);
@@ -89,7 +90,6 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         renderEnergyAreaTooltips(pPoseStack, pMouseX, pMouseY, x, y);
-
     }
 
     private void renderEnergyAreaTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
@@ -118,19 +118,10 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 176, 15 + 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());
 
-        Minecraft mc = Minecraft.getInstance();
-        double scale = mc.getWindow().getGuiScale();
-        // 38, 112 to the bottom left position of grid
-        int xPos = (int)(scale * (leftPos + 38));
-        int yPos = mc.getWindow().getHeight() - (int)(scale * topPos) - (int)(scale * imageHeight) + (int)(scale * 112);
-        int width = (int)(scale * gridWidth);
-        int height = (int)(scale * gridHeight);
-        RenderSystem.enableScissor(xPos,  yPos, width, height);
-
-        // drawSearchGridSelectionSquare(pPoseStack);
+        startMaskArea();
         drawHighlightedSquares(pPoseStack);
         drawSearchGrid();
-        RenderSystem.disableScissor();
+        endMaskArea();
     }
     //endregion
 
@@ -167,14 +158,10 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                     selectedIndices.add(index);
                     calculateAdjacentIndices(index);
                 }
-
                 if (adjacentIndices.contains(index) && !selectedIndices.contains(index)) {
                     selectedIndices.add(index);
                     calculateAdjacentIndices(index);
                 }
-
-
-
                 currentSelectedIndex = index;
             }
         }
@@ -296,8 +283,29 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     }
     //endregion
 
+    //region Mask Area
+    private void startMaskArea() {
+        Minecraft mc = Minecraft.getInstance();
+        double scale = mc.getWindow().getGuiScale();
+        // 38, 112 to the bottom left position of grid
+        int xPos = (int)(scale * (leftPos + 38));
+        int yPos = mc.getWindow().getHeight() - (int)(scale * topPos) - (int)(scale * imageHeight) + (int)(scale * 112);
+        int width = (int)(scale * gridWidth);
+        int height = (int)(scale * gridHeight);
+        RenderSystem.enableScissor(xPos,  yPos, width, height);
+    }
+
+    private void endMaskArea() {
+        RenderSystem.disableScissor();
+    }
+    //endregion
+
+    //region Draw Letters
     private void drawSearchGrid() {
         int textWidth = font.width(dnaRandomText)/ gridSize;
         font.drawWordWrap(dnaRandomText, leftPos + 38 + 3 + (int)maskPosX, topPos + 53 + 2 + (int)maskPosY, textWidth, 0xFFFFFFFF);
     }
+
+
+    //end region
 }

@@ -1,8 +1,8 @@
 package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.mobdata.MobData;
-import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
+import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
+import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;

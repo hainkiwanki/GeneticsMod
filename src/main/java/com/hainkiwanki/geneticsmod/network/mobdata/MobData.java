@@ -1,4 +1,4 @@
-package com.hainkiwanki.geneticsmod.mobdata;
+package com.hainkiwanki.geneticsmod.network.mobdata;
 
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.nbt.CompoundTag;

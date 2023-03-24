@@ -1,10 +1,9 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
-import com.hainkiwanki.geneticsmod.mobdata.MobData;
-import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
+import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
+import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
-import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;

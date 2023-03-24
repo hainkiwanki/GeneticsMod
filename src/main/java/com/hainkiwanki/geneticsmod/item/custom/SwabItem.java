@@ -1,6 +1,6 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
-import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
+import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

@@ -6,8 +6,6 @@ import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.gui.slot.ModFuelSlot;
 import com.hainkiwanki.geneticsmod.gui.slot.ModGeneSampleSlot;
 import com.hainkiwanki.geneticsmod.gui.slot.ModResultSlot;
-import com.hainkiwanki.geneticsmod.mobdata.MobData;
-import com.hainkiwanki.geneticsmod.tags.ModTags;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,15 +17,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class GeneIsolatorMenu extends AbstractContainerMenu {
     public final GeneIsolatorBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
-
     private int playerInventoryOffset = 73;
 
     public GeneIsolatorMenu(int windowId, Inventory inv, FriendlyByteBuf extraData) {
@@ -89,6 +84,7 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
          return Utils.getImportantTags(inputSample);
     }
 
+    //region Common Inventory Slots
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
     // must assign a slot number to each of the slots used by the GUI.
     // For this container, we can see both the tile inventory's slots as well as the player inventory slots and the hotbar.
@@ -155,4 +151,5 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
             this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144 + playerInventoryOffset));
         }
     }
+    //endregion
 }

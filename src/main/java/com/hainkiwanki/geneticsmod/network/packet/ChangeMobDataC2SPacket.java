@@ -1,13 +1,12 @@
 package com.hainkiwanki.geneticsmod.network.packet;
 
-import com.hainkiwanki.geneticsmod.mobdata.MobDataProvider;
+import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
