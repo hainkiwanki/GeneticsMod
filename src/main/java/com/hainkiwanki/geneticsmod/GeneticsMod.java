@@ -1,8 +1,8 @@
 package com.hainkiwanki.geneticsmod;
 
+import com.electronwill.nightconfig.core.file.FileConfig;
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
 import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
-import com.hainkiwanki.geneticsmod.config.ClientConfig;
 import com.hainkiwanki.geneticsmod.config.CommonConfig;
 import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.item.ModItemProperties;
@@ -43,7 +43,6 @@ public class GeneticsMod
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC, MOD_ID + "-client.toml");
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, MOD_ID + "-common.toml");
 
         MinecraftForge.EVENT_BUS.register(this);

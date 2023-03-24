@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.gui.renderer;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.config.CommonConfig;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneIsolatorMenu;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.EnergyInfoArea;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.Pos2i;
@@ -34,8 +35,8 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private float mousePosX, mousePosY;
 
     private int currentTraitIndex = 0;
-    private List<Character> dnaRandomChars;
     private TextComponent dnaRandomText;
+    private TextComponent dnaToFindText;
 
     public GeneIsolatorScreen(GeneIsolatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -46,7 +47,11 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     protected void init() {
         super.init();
         assignEnergyInfoArea();
+        createButton();
+        fillCharList();
+    }
 
+    private void createButton() {
         int paddingOffset = 3;
         int maxWidth = 55 + paddingOffset;
         traitButton = new Button(leftPos + 36, topPos + 5, maxWidth, 20, new TextComponent("Trait"), (btn) -> {
@@ -55,9 +60,6 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 currentTraitIndex++;
                 currentTraitIndex = currentTraitIndex % tags.size();
                 TranslatableComponent textComponent = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tags.get(currentTraitIndex));
-                int textWidth = font.width(textComponent) + paddingOffset;
-                if(textWidth > maxWidth)
-                    textWidth = maxWidth;
                 this.traitButton.setWidth(maxWidth);
                 this.traitButton.setMessage(textComponent);
 
@@ -65,9 +67,6 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             }
         });
         addRenderableWidget(traitButton);
-
-        dnaRandomChars = new ArrayList<>();
-        fillCharList();
     }
 
     private void assignEnergyInfoArea() {
@@ -265,7 +264,6 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
         for (int i = 0; i < max; i++) {
             Character cLetter = dnaLetters.get(rand.nextInt(4));
-            dnaRandomChars.add(cLetter);
             if (cLetter == 'G') {
                 dnaRandomText.append(gComp);
             } else if (cLetter == 'T') {
@@ -280,6 +278,18 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         int textWidth = font.width(dnaRandomText) / gridSize;
         diffX = textWidth - gridWidth;
         diffY = font.wordWrapHeight(dnaRandomText.getString(), textWidth) - gridHeight;
+
+        List<? extends List<Integer>> shapeList = CommonConfig.TEST_LIST.get();
+        for (int i = 0; i < shapeList.size(); i++) {
+            for (int j = 0; j < shapeList.get(0).size(); j++) {
+                System.out.println(shapeList.get(i).get(j));
+            }
+        }
+    }
+
+    private void generateToFindDnaString(int[][] shape) {
+        int cols = shape[0].length;
+        int rows = shape.length;
     }
     //endregion
 
