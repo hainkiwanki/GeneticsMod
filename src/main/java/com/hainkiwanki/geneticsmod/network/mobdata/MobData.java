@@ -35,6 +35,24 @@ public class MobData {
     private Map<String, Float> mobDataMap = new HashMap<String, Float>(){};
     private String mobDataType;
 
+    public static String getAttributesAsString() {
+        String str = SIZE + ", " +
+                HEALTH + ", " +
+                ATTACK_DAMAGE + ", " +
+                ATTACK_SPEED + ", " +
+                MOVE_SPEED + ", " +
+                DROPS_MODIFIER + ", " +
+                EXP_MODIFIER + ", " +
+                FERTILITY + ", " +
+                BREATH_UNDER_WATER + ", " +
+                IMMUNE_FIRE + ", " +
+                CAN_LAY_EGG + ", " +
+                CAN_MILK + ", " +
+                MATURING_TIME + ", " +
+                IS_HOSTILE + ", ";
+        return str;
+    }
+
     public void initialize(LivingEntity pEntity) {
         mobDataMap.put(SIZE, 1.0f);
         mobDataMap.put(HEALTH, pEntity.getMaxHealth());
