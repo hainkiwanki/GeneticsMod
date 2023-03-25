@@ -1,6 +1,5 @@
 package com.hainkiwanki.geneticsmod;
 
-import com.electronwill.nightconfig.core.file.FileConfig;
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
 import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.config.CommonConfig;

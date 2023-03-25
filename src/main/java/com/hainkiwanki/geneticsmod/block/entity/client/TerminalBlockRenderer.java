@@ -12,7 +12,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class TerminalBlockRenderer implements BlockEntityRenderer<TerminalBlockEntity> {
     private final Font font;

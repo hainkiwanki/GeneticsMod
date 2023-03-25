@@ -9,10 +9,8 @@ public class CommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.ConfigValue<Integer> EASY_SHAPE_SIZE;
     public static final ForgeConfigSpec.ConfigValue<List<? extends List<String>>> EASY_SHAPES;
-    public static final ForgeConfigSpec.ConfigValue<Integer> MEDIUM_SHAPE_SIZE;
-    public static final ForgeConfigSpec.ConfigValue<List<? extends List<String>>> MEDIUM_SHAPES;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends List<String>>> NORMAL_SHAPES;
 
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> EASY_ATTRIBUTES;
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> NORMAL_ATTRIBUTES;
@@ -36,21 +34,18 @@ public class CommonConfig {
                 .defineList("Nightmare Attributes", List.of(MobData.MATURING_TIME, MobData.EXP_MODIFIER, MobData.DROPS_MODIFIER, MobData.IS_HOSTILE), e -> true);
 
 
-        EASY_SHAPE_SIZE = BUILDER.comment("How big the easy shapes will be").define("Easy Shape Size", 3);
-        EASY_SHAPES = BUILDER.comment("Define your easy shapes here, should be [EASY_SHAPE_SIZE x EASY_SHAPE_SIZE] big")
+        EASY_SHAPES = BUILDER.comment("Define your easy shapes here, should be [3 x 3] big")
                 .defineList("Easy Shapes arrays",
                 List.of(List.of(" ", "x", " ", " ", "x", " ", " ", "x", "x"),
                         List.of("x", "x", " ", " ", "x", "x", " ", " ", " ")), e -> true);
 
-        MEDIUM_SHAPE_SIZE = BUILDER.comment("How big the medium shapes will be").define("Medium Shape Size", 4);
-        MEDIUM_SHAPES = BUILDER.comment("Define your medium shapes here, should be [MEDIUM_SHAPE_SIZE x MEDIUM_SHAPE_SIZE] big")
+        NORMAL_SHAPES = BUILDER.comment("Define your medium shapes here, should be [4 x 4] big")
                 .defineList("Medium Shapes arrays",
                         List.of(List.of(
                                 "x", "x", " ", " ",
                                         "x", " ", " ", "x",
                                         "x", " ", " ", "x",
                                         "x", "x", "x", "x")), e -> true);
-
         BUILDER.pop();
         SPEC = BUILDER.build();
     }

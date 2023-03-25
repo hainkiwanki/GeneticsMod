@@ -1,7 +1,7 @@
 package com.hainkiwanki.geneticsmod.block.entity;
 
-import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
+import com.hainkiwanki.geneticsmod.GeneticsMod;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

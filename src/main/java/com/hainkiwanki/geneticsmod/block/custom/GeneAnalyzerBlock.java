@@ -2,12 +2,10 @@ package com.hainkiwanki.geneticsmod.block.custom;
 
 import com.hainkiwanki.geneticsmod.block.entity.GeneAnalyzerBlockEntity;
 import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
-import com.hainkiwanki.geneticsmod.block.entity.TerminalBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
