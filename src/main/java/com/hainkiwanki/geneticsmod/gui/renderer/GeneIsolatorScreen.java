@@ -296,10 +296,16 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
             gridSizeToFind = 4;
         } else if(CommonConfig.HARD_ATTRIBUTES.get().contains(attribute)) {
+            easyShapes = CommonConfig.HARD_SHAPES.get();
+            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
             gridSizeToFind = 5;
         } else if(CommonConfig.EXPERT_ATTRIBUTES.get().contains(attribute)) {
+            easyShapes = CommonConfig.EXPERT_SHAPES.get();
+            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
             gridSizeToFind = 6;
         } else if(CommonConfig.NIGHTMARE_ATTRIBUTES.get().contains(attribute)) {
+            easyShapes = CommonConfig.NIGHTMARE_SHAPES.get();
+            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
             gridSizeToFind = 7;
         }
 

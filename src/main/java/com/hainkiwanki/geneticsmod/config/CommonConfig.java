@@ -11,6 +11,9 @@ public class CommonConfig {
 
     public static final ForgeConfigSpec.ConfigValue<List<? extends List<String>>> EASY_SHAPES;
     public static final ForgeConfigSpec.ConfigValue<List<? extends List<String>>> NORMAL_SHAPES;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends List<String>>> HARD_SHAPES;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends List<String>>> EXPERT_SHAPES;
+    public static final ForgeConfigSpec.ConfigValue<List<? extends List<String>>> NIGHTMARE_SHAPES;
 
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> EASY_ATTRIBUTES;
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> NORMAL_ATTRIBUTES;
@@ -43,9 +46,40 @@ public class CommonConfig {
                 .defineList("Medium Shapes arrays",
                         List.of(List.of(
                                 "x", "x", " ", " ",
-                                        "x", " ", " ", "x",
-                                        "x", " ", " ", "x",
-                                        "x", "x", "x", "x")), e -> true);
+                                "x", " ", " ", "x",
+                                "x", " ", " ", "x",
+                                "x", "x", "x", "x")), e -> true);
+
+        HARD_SHAPES = BUILDER.comment("Define your hard shapes here, should be [5 x 5] big")
+                .defineList("Hard Shapes arrays",
+                        List.of(List.of(
+                            "x", " ", " ", " ", " ",
+                            "x", " ", " ", " ", " ",
+                            "x", " ", " ", " ", " ",
+                            "x", " ", " ", "x", "x",
+                            "x", "x", "x", "x", " "
+                        )), e -> true);
+        EXPERT_SHAPES = BUILDER.comment("Define your expert shapes here, should be [6 x 6] big")
+                .defineList("Expert Shapes arrays",
+                        List.of(List.of(
+                            "x", " ", " ", " ", " ", "x",
+                            "x", " ", " ", " ", " ", "x",
+                            "x", " ", " ", " ", " ", "x",
+                            "x", " ", " ", "x", "x", "x",
+                            "x", "x", "x", "x", " ", " ",
+                            " ", " ", " ", " ", " ", " "
+                        )), e -> true);
+        NIGHTMARE_SHAPES = BUILDER.comment("Define your nightmare shapes here, should be [7 x 7] big")
+                .defineList("Nightmare Shapes arrays",
+                        List.of(List.of(
+                            "x", " ", " ", " ", " ", "x", " ",
+                            "x", " ", " ", " ", " ", "x", " ",
+                            "x", " ", " ", " ", " ", "x", " ",
+                            "x", " ", " ", "x", "x", "x", " ",
+                            "x", "x", "x", "x", " ", " ", " ",
+                            " ", " ", " ", "x", " ", " ", " ",
+                            "x", "x", "x", "x", " ", " ", " "
+                        )), e -> true);
         BUILDER.pop();
         SPEC = BUILDER.build();
     }
