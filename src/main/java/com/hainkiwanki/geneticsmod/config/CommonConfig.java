@@ -37,21 +37,29 @@ public class CommonConfig {
                 .defineList("Nightmare Attributes", List.of(MobData.MATURING_TIME, MobData.EXP_MODIFIER, MobData.DROPS_MODIFIER, MobData.IS_HOSTILE), e -> true);
 
 
-        EASY_SHAPES = BUILDER.comment("Define your easy shapes here, should be [3 x 3] big")
+        EASY_SHAPES = BUILDER.comment("Define your easy shapes here, should be [2 x 2] big")
                 .defineList("Easy Shapes arrays",
-                List.of(List.of(" ", "x", " ", " ", "x", " ", " ", "x", "x"),
-                        List.of("x", "x", " ", " ", "x", "x", " ", " ", " ")), e -> true);
+                List.of(List.of(" ", "x",
+                                " ", "x"),
+                        List.of("x", "x", " ", " ")), e -> true);
 
-        NORMAL_SHAPES = BUILDER.comment("Define your medium shapes here, should be [4 x 4] big")
+        NORMAL_SHAPES = BUILDER.comment("Define your medium shapes here, should be [3 x 3] big")
                 .defineList("Medium Shapes arrays",
                         List.of(List.of(
-                                "x", "x", " ", " ",
-                                "x", " ", " ", "x",
-                                "x", " ", " ", "x",
-                                "x", "x", "x", "x")), e -> true);
+                                "x", "x", " ",
+                                "x", " ", " ",
+                                "x", " ", " ")), e -> true);
 
-        HARD_SHAPES = BUILDER.comment("Define your hard shapes here, should be [5 x 5] big")
+        HARD_SHAPES = BUILDER.comment("Define your hard shapes here, should be [4 x 4] big")
                 .defineList("Hard Shapes arrays",
+                        List.of(List.of(
+                            "x", " ", " ", " ",
+                            "x", " ", " ", " ",
+                            "x", " ", " ", " ",
+                            "x", " ", " ", "x"
+                        )), e -> true);
+        EXPERT_SHAPES = BUILDER.comment("Define your expert shapes here, should be [5 x 5] big")
+                .defineList("Expert Shapes arrays",
                         List.of(List.of(
                             "x", " ", " ", " ", " ",
                             "x", " ", " ", " ", " ",
@@ -59,26 +67,15 @@ public class CommonConfig {
                             "x", " ", " ", "x", "x",
                             "x", "x", "x", "x", " "
                         )), e -> true);
-        EXPERT_SHAPES = BUILDER.comment("Define your expert shapes here, should be [6 x 6] big")
-                .defineList("Expert Shapes arrays",
+        NIGHTMARE_SHAPES = BUILDER.comment("Define your nightmare shapes here, should be [6 x 6] big")
+                .defineList("Nightmare Shapes arrays",
                         List.of(List.of(
                             "x", " ", " ", " ", " ", "x",
                             "x", " ", " ", " ", " ", "x",
                             "x", " ", " ", " ", " ", "x",
                             "x", " ", " ", "x", "x", "x",
                             "x", "x", "x", "x", " ", " ",
-                            " ", " ", " ", " ", " ", " "
-                        )), e -> true);
-        NIGHTMARE_SHAPES = BUILDER.comment("Define your nightmare shapes here, should be [7 x 7] big")
-                .defineList("Nightmare Shapes arrays",
-                        List.of(List.of(
-                            "x", " ", " ", " ", " ", "x", " ",
-                            "x", " ", " ", " ", " ", "x", " ",
-                            "x", " ", " ", " ", " ", "x", " ",
-                            "x", " ", " ", "x", "x", "x", " ",
-                            "x", "x", "x", "x", " ", " ", " ",
-                            " ", " ", " ", "x", " ", " ", " ",
-                            "x", "x", "x", "x", " ", " ", " "
+                            " ", " ", " ", "x", " ", " "
                         )), e -> true);
         BUILDER.pop();
         SPEC = BUILDER.build();

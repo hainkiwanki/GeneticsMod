@@ -10,6 +10,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -42,6 +43,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     private int randIndex;
     private int restrictedRandIndex;
+    private boolean isMouseOverSearchGrid = false;
 
     public GeneIsolatorScreen(GeneIsolatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -58,14 +60,14 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     }
 
     private void createButton() {
-        traitButton = new Button(leftPos + 37, topPos + 109, 56, 17, new TextComponent("Trait"), (btn) -> {
+        traitButton = new Button(leftPos + 37, topPos + 108, 56, 20, new TextComponent("Trait"), (btn) -> {
             List<String> tags = menu.getSampleTags();
             if(tags != null) {
                 currentTraitIndex++;
                 currentTraitIndex = currentTraitIndex % tags.size();
                 TranslatableComponent textComponent = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tags.get(currentTraitIndex));
                 this.traitButton.setWidth(56);
-                this.traitButton.setHeight(17);
+                this.traitButton.setHeight(20);
                 this.traitButton.setMessage(textComponent);
 
                 generateToFindDnaString(tags.get(currentTraitIndex));
@@ -122,11 +124,14 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 194, 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());
 
+        int xPos = leftPos + gridOffsetX;
+        int yPos = topPos + gridOffsetY;
+        isMouseOverSearchGrid = Utils.isMouseAboveArea(pMouseX, pMouseY, xPos, yPos, 0, 0, 78, 78);
+
         startMaskArea();
         drawHighlightedSquares(pPoseStack);
         drawSearchGrid();
-        // drawGridSquare(pPoseStack, randIndex, 0x77FF0000);
-        drawGridSquare(pPoseStack, restrictedRandIndex, 0x770000FF);
+        // drawGridSquare(pPoseStack, restrictedRandIndex, 0x770000FF);
         endMaskArea();
         drawToFindGrid();
     }
@@ -161,15 +166,25 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 int col = ((int)pMouseX - xPos + Mth.abs((int)maskPosX)) / 10;
                 int index = Utils.Convert2DTo1D(row, col, gridSize);
 
-                if(currentSelectedIndex < 0) {
-                    selectedIndices.add(index);
-                    calculateAdjacentIndices(index);
+                if(selectedIndices.contains(index)) {
+                    int lastIndex = selectedIndices.size() - 1;
+                    if(selectedIndices.get(lastIndex) == index) {
+                        selectedIndices.remove(lastIndex);
+                        if(selectedIndices.size() >= 1) {
+                            calculateAdjacentIndices(selectedIndices.get(selectedIndices.size() - 1));
+                            currentSelectedIndex = selectedIndices.get(selectedIndices.size() - 1);
+                        } else {
+                            adjacentIndices.clear();
+                            currentSelectedIndex = -1;
+                        }
+                    }
+                } else {
+                    if(selectedIndices.size() == 0 || adjacentIndices.contains(index)) {
+                        selectedIndices.add(index);
+                        calculateAdjacentIndices(index);
+                        currentSelectedIndex = index;
+                    }
                 }
-                if (adjacentIndices.contains(index) && !selectedIndices.contains(index)) {
-                    selectedIndices.add(index);
-                    calculateAdjacentIndices(index);
-                }
-                currentSelectedIndex = index;
             }
         }
         return super.mouseClicked(pMouseX, pMouseY, pButton);
@@ -188,7 +203,9 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     private void drawSelectedSquare(PoseStack poseStack) {
         if(currentSelectedIndex < 0) {
-            drawGridSquare(poseStack, convertMousePosTo2DIndex(), 0x7700FF00);
+            if(isMouseOverSearchGrid) {
+                drawGridSquare(poseStack, convertMousePosTo2DIndex(), 0x7700FF00);
+            }
         } else {
             drawGridSquare(poseStack, currentSelectedIndex, 0x7700FF00);
         }
@@ -218,7 +235,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         int size = 9;
         int minX = leftPos + gridOffsetX + (col * gridColWidth) + (int)maskPosX + 1;
         int minY = topPos + gridOffsetY + (row * gridRowHeight) + (int)maskPosY + 1;
-        int maxX = minX + size;
+        int maxX = minX + size + 1;
         int maxY = minY + size;
         fill(poseStack, minX, minY, maxX, maxY, color);
     }
@@ -284,29 +301,29 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     private void generateToFindDnaString(String attribute) {
         Random rand = new Random();
-        gridSizeToFind = 3;
+        gridSizeToFind = 2;
         List<String> randomShape = new ArrayList<>();
         List<? extends List<String>> easyShapes;
         if(CommonConfig.EASY_ATTRIBUTES.get().contains(attribute)) {
             easyShapes = CommonConfig.EASY_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 3;
+            gridSizeToFind = 2;
         } else if(CommonConfig.NORMAL_ATTRIBUTES.get().contains(attribute)) {
             easyShapes = CommonConfig.NORMAL_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 4;
+            gridSizeToFind = 3;
         } else if(CommonConfig.HARD_ATTRIBUTES.get().contains(attribute)) {
             easyShapes = CommonConfig.HARD_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 5;
+            gridSizeToFind = 4;
         } else if(CommonConfig.EXPERT_ATTRIBUTES.get().contains(attribute)) {
             easyShapes = CommonConfig.EXPERT_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 6;
+            gridSizeToFind = 5;
         } else if(CommonConfig.NIGHTMARE_ATTRIBUTES.get().contains(attribute)) {
             easyShapes = CommonConfig.NIGHTMARE_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 7;
+            gridSizeToFind = 6;
         }
 
         randIndex = rand.nextInt(gridSize * gridSize); // 0 to (x*x-1)
@@ -344,7 +361,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         Component tComp = new TextComponent("T ").withStyle(ChatFormatting.GREEN);
         Component gComp = new TextComponent("G ").withStyle(ChatFormatting.RED);
         Component cComp = new TextComponent("C ").withStyle(ChatFormatting.YELLOW);
-        Component spaceComp = new TextComponent("_ ").withStyle(style -> style.withColor(0xFF292929));
+        Component spaceComp = new TextComponent("_ ").withStyle(style -> style.withColor(0x00000000));
         if (c == 'G') {
             textComponent.append(gComp);
         } else if (c == 'T') {
@@ -390,7 +407,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         int height = 56 / 2;
         if(!dnaToFindText.getString().isEmpty() && !dnaToFindText.getString().isBlank()) {
             int textWidth = font.width(dnaToFindText) / gridSizeToFind;
-            int xPos = leftPos + 38 + width - (textWidth / 2);
+            int xPos = leftPos + 38 + width - (textWidth / 2) + 1;
             int yPos = topPos + 49 + height - (gridRowHeight * gridSizeToFind / 2);
             font.drawWordWrap(dnaToFindText, xPos, yPos, textWidth, 0xFFFFFFFF);
         }

@@ -50,7 +50,6 @@ public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        // TODO: Create Gene Analyzer Menu
         return new TerminalMenu(pContainerId, pPlayerInventory, this);
     }
 

@@ -39,6 +39,7 @@ public class GeneIsolatorBlock extends FacingEntityBlock {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof GeneIsolatorBlockEntity) {
                 ((GeneIsolatorBlockEntity) blockEntity).drops();
+                // TODO: Reset energy level
             }
         }
     }
