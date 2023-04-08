@@ -1,7 +1,9 @@
 package com.hainkiwanki.geneticsmod.network.packet;
 
 import com.hainkiwanki.geneticsmod.block.entity.GeneAnalyzerBlockEntity;
+import com.hainkiwanki.geneticsmod.block.entity.GeneIsolatorBlockEntity;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
+import com.hainkiwanki.geneticsmod.gui.menus.GeneIsolatorMenu;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -36,6 +38,14 @@ public class EnergySyncS2CPacket {
                 blockEntity.setEnergyLevel(energy);
 
                 if(Minecraft.getInstance().player.containerMenu instanceof GeneAnalyzerMenu menu &&
+                        menu.blockEntity.getBlockPos().equals(pos)) {
+                    blockEntity.setEnergyLevel(energy);
+                }
+            }
+            else if(Minecraft.getInstance().level.getBlockEntity(pos) instanceof GeneIsolatorBlockEntity blockEntity) {
+                blockEntity.setEnergyLevel(energy);
+
+                if(Minecraft.getInstance().player.containerMenu instanceof GeneIsolatorMenu menu &&
                         menu.blockEntity.getBlockPos().equals(pos)) {
                     blockEntity.setEnergyLevel(energy);
                 }

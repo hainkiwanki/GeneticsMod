@@ -196,8 +196,6 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, GeneAnalyzerBlockEntity blockEntity) {
-        if(level.isClientSide()) return;
-
         // Getting energy
         if(hasFuelInFuelSlot(blockEntity) && !isConsumingFuel(blockEntity)) {
             blockEntity.consumeFuel();

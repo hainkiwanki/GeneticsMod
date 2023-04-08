@@ -26,7 +26,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private static final ResourceLocation TEXTURE = new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/gene_isolator.png");
     private EnergyInfoArea energyInfoArea;
     private Button traitButton;
-    private int gridSize = 16, gridWidth = 131, gridHeight = 76, gridOffsetX = 38, gridOffsetY = 53;
+    private int gridSize = 16, gridWidth = 76, gridHeight = 76, gridOffsetX = 110, gridOffsetY = 48;
     private int gridRowHeight = 9, gridColWidth = 10;
     private ArrayList<Integer> selectedIndices = new ArrayList<>();
     private ArrayList<Integer> adjacentIndices = new ArrayList<>();
@@ -45,7 +45,8 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     public GeneIsolatorScreen(GeneIsolatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        imageHeight = 241;
+        imageHeight = 235;
+        imageWidth = 194;
     }
 
     @Override
@@ -57,15 +58,14 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     }
 
     private void createButton() {
-        int paddingOffset = 3;
-        int maxWidth = 55 + paddingOffset;
-        traitButton = new Button(leftPos + 36, topPos + 5, maxWidth, 20, new TextComponent("Trait"), (btn) -> {
+        traitButton = new Button(leftPos + 37, topPos + 109, 56, 17, new TextComponent("Trait"), (btn) -> {
             List<String> tags = menu.getSampleTags();
             if(tags != null) {
                 currentTraitIndex++;
                 currentTraitIndex = currentTraitIndex % tags.size();
                 TranslatableComponent textComponent = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tags.get(currentTraitIndex));
-                this.traitButton.setWidth(maxWidth);
+                this.traitButton.setWidth(56);
+                this.traitButton.setHeight(17);
                 this.traitButton.setMessage(textComponent);
 
                 generateToFindDnaString(tags.get(currentTraitIndex));
@@ -97,7 +97,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     }
 
     private void renderEnergyAreaTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
-        if(Utils.isMouseAboveArea(pMouseX, pMouseY, x, y, 6, 68, energyInfoArea.DEFAULT_WIDTH, energyInfoArea.DEFAULT_HEIGHT)) {
+        if(Utils.isMouseAboveArea(pMouseX, pMouseY, x, y, 5, 55, energyInfoArea.DEFAULT_WIDTH, energyInfoArea.DEFAULT_HEIGHT)) {
             renderTooltip(pPoseStack, energyInfoArea.getTooltips(),
                     Optional.empty(), pMouseX - x, pMouseY - y);
         }
@@ -114,12 +114,12 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
 
         if(menu.hasFuel()) {
-            blit(pPoseStack, x + 22, y + 107 - menu.getScaledFuelProgress(),
-                    188, 55 - menu.getScaledFuelProgress(),
+            blit(pPoseStack, x + 21, y + 94 - menu.getScaledFuelProgress(),
+                    206, 39 - menu.getScaledFuelProgress(),
                     2, menu.getScaledFuelProgress());
         }
-        this.blit(pPoseStack, x + 6, y + 68 + 39 - menu.getEnergyProgress(),
-                176, 15 + 39 - menu.getEnergyProgress(),
+        this.blit(pPoseStack, x + 5, y + 94 - menu.getEnergyProgress(),
+                194, 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());
 
         startMaskArea();
@@ -154,9 +154,9 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
         if (pButton == 0) {
-            int xPos = leftPos + 38;
-            int yPos = topPos + 53;
-            if(Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, xPos, yPos,0, 0, 133, 78)) {
+            int xPos = leftPos + gridOffsetX;
+            int yPos = topPos + gridOffsetY;
+            if(Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, xPos, yPos,0, 0, 78, 78)) {
                 int row = ((int)pMouseY - yPos + Mth.abs((int)maskPosY)) / 9;
                 int col = ((int)pMouseX - xPos + Mth.abs((int)maskPosX)) / 10;
                 int index = Utils.Convert2DTo1D(row, col, gridSize);
@@ -266,10 +266,10 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         List<Character> dnaLetters = Arrays.asList(new Character[]{'C', 'G', 'T', 'A'});
         Random rand = new Random();
 
-        Component aComp = new TextComponent("A ").withStyle(ChatFormatting.BLUE);
+        /*Component aComp = new TextComponent("A ").withStyle(ChatFormatting.BLUE);
         Component tComp = new TextComponent("T ").withStyle(ChatFormatting.GREEN);
         Component gComp = new TextComponent("G ").withStyle(ChatFormatting.RED);
-        Component cComp = new TextComponent("C ").withStyle(ChatFormatting.YELLOW);
+        Component cComp = new TextComponent("C ").withStyle(ChatFormatting.YELLOW);*/
 
         for (int i = 0; i < max; i++) {
             Character cLetter = dnaLetters.get(rand.nextInt(4));
@@ -363,9 +363,9 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private void startMaskArea() {
         Minecraft mc = Minecraft.getInstance();
         double scale = mc.getWindow().getGuiScale();
-        // 38, 112 to the bottom left position of grid
-        int xPos = (int)(scale * (leftPos + 38));
-        int yPos = mc.getWindow().getHeight() - (int)(scale * topPos) - (int)(scale * imageHeight) + (int)(scale * 112);
+        // 110, 112 to the bottom left position of grid starting from bottom left of inventory gui
+        int xPos = (int)(scale * (leftPos + 110));
+        int yPos = mc.getWindow().getHeight() - (int)(scale * topPos) - (int)(scale * imageHeight) + (int)(scale * 111);
         int width = (int)(scale * gridWidth);
         int height = (int)(scale * gridHeight);
         RenderSystem.enableScissor(xPos,  yPos, width, height);
@@ -379,19 +379,19 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     //region Draw Letters
     private void drawSearchGrid() {
         int textWidth = font.width(dnaRandomTextComp) / gridSize;
-        font.drawWordWrap(dnaRandomTextComp, leftPos + 38 + 3 + (int)maskPosX, topPos + 53 + 2 + (int)maskPosY, textWidth, 0xFFFFFFFF);
+        font.drawWordWrap(dnaRandomTextComp, leftPos + gridOffsetX + 3 + (int)maskPosX, topPos + gridOffsetY + 2 + (int)maskPosY, textWidth, 0xFFFFFFFF);
     }
 
     private void drawToFindGrid() {
         if(dnaToFindText == null) {
             return;
         }
-        int width = 72 / 2;
-        int height = 40 / 2;
+        int width = 56 / 2;
+        int height = 56 / 2;
         if(!dnaToFindText.getString().isEmpty() && !dnaToFindText.getString().isBlank()) {
             int textWidth = font.width(dnaToFindText) / gridSizeToFind;
-            int xPos = leftPos + 98 + width - (textWidth / 2);
-            int yPos = topPos + 8 + height - (gridRowHeight * gridSizeToFind / 2);
+            int xPos = leftPos + 38 + width - (textWidth / 2);
+            int yPos = topPos + 49 + height - (gridRowHeight * gridSizeToFind / 2);
             font.drawWordWrap(dnaToFindText, xPos, yPos, textWidth, 0xFFFFFFFF);
         }
     }

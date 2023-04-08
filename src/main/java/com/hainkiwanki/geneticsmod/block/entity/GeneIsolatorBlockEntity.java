@@ -192,8 +192,6 @@ public class GeneIsolatorBlockEntity extends BlockEntity implements MenuProvider
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, GeneIsolatorBlockEntity blockEntity) {
-        if(level.isClientSide()) return;
-
         // Getting energy
         if(hasFuelInFuelSlot(blockEntity) && !isConsumingFuel(blockEntity)) {
             blockEntity.consumeFuel();
@@ -208,7 +206,6 @@ public class GeneIsolatorBlockEntity extends BlockEntity implements MenuProvider
             }
         }
 
-        // Analyzing gene sample
         if(hasRecipe(blockEntity)) {
             blockEntity.progress++;
             extractEnergy(blockEntity);

@@ -23,7 +23,8 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
     public final GeneIsolatorBlockEntity blockEntity;
     private final Level level;
     private final ContainerData data;
-    private int playerInventoryOffset = 73;
+    private int playerInventoryOffsetY = 67;
+    private int playerInventoryOffsetX = 9;
 
     public GeneIsolatorMenu(int windowId, Inventory inv, FriendlyByteBuf extraData) {
         this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(5));
@@ -40,10 +41,10 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
         addPlayerHotbar(inv);
 
         this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(handler -> {
-            this.addSlot(new ModFuelSlot(handler, 0, 7, 114));
-            this.addSlot(new ModGeneSampleSlot(handler, 1, 7, 7));  // Gene Sample
-            this.addSlot(new ModGeneSampleSlot(handler, 2, 7, 38)); // Vials
-            this.addSlot(new ModResultSlot(handler, 3, 134, 38));
+            this.addSlot(new ModFuelSlot(handler, 0, 6, 101));
+            this.addSlot(new ModGeneSampleSlot(handler, 1, 6, 6));  // Gene Sample
+            this.addSlot(new ModGeneSampleSlot(handler, 2, 6, 26)); // Vials
+            this.addSlot(new ModResultSlot(handler, 3, 172, 6));
         });
 
         addDataSlots(data);
@@ -58,10 +59,6 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
         int progress = this.data.get(2);
         int maxProgress = this.data.get(3);
         return (int) (((float)progress/ (float)maxProgress) * craftingProgressScaled);
-    }
-
-    public boolean isCrafting() {
-        return this.data.get(2) > 0;
     }
 
     public int getEnergyProgress() {
@@ -141,14 +138,14 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; ++i) {
             for (int l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, (86 + i * 18) + playerInventoryOffset));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, (8 + l * 18) + playerInventoryOffsetX, (86 + i * 18) + playerInventoryOffsetY));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 144 + playerInventoryOffset));
+            this.addSlot(new Slot(playerInventory, i, (8 + i * 18) + playerInventoryOffsetX, 144 + playerInventoryOffsetY));
         }
     }
     //endregion

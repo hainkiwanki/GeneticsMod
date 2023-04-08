@@ -61,6 +61,8 @@ public class GeneIsolatorBlock extends FacingEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        if(pBlockEntityType != ModBlockEntities.GENE_ISOLATOR.get()) return null;
+        if(pLevel.isClientSide) return null;
         return createTickerHelper(pBlockEntityType, ModBlockEntities.GENE_ISOLATOR.get(), GeneIsolatorBlockEntity::tick);
     }
 }
