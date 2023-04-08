@@ -60,6 +60,10 @@ public class Utils {
         return tagList;
     }
 
+    public static int Add2DTo1D(Pos2i toAdd, int index, int maxCols) {
+        return index + toAdd.getX() + toAdd.getY() * maxCols;
+    }
+
     public static int Convert2DTo1D(int row, int col, int maxCols) {
         return row * maxCols + col;
     }

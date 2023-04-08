@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu> {
@@ -31,6 +32,8 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private int gridRowHeight = 9, gridColWidth = 10;
     private ArrayList<Integer> selectedIndices = new ArrayList<>();
     private ArrayList<Integer> adjacentIndices = new ArrayList<>();
+    private ArrayList<Pos2i> toFindShapePattern = new ArrayList<>();
+    private ArrayList<Character> toFindShapeString = new ArrayList<>();
     private int currentSelectedIndex = -1;
     private float maskPosX = 0, maskPosY = 0;
     private float mousePosX, mousePosY;
@@ -131,6 +134,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         startMaskArea();
         drawHighlightedSquares(pPoseStack);
         drawSearchGrid();
+        drawTrackedLine(pPoseStack);
         // drawGridSquare(pPoseStack, restrictedRandIndex, 0x770000FF);
         endMaskArea();
         drawToFindGrid();
@@ -187,11 +191,40 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
                 }
             }
         }
+        hasFoundCorrectDnaString();
         return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
     //endregion
 
     //region Draw Highlighted Squares
+    private void drawTrackedLine(PoseStack poseStack) {
+        if(selectedIndices.size() <= 0) return;
+
+        for (int i = 0; i < selectedIndices.size() - 1; i++) {
+            Pos2i first = Utils.Convert1DTo2D(selectedIndices.get(i), gridSize);
+            Pos2i second = Utils.Convert1DTo2D(selectedIndices.get(i + 1), gridSize);
+
+            if(first.getX() == second.getX()) {
+                int x = leftPos + gridOffsetX + (int)maskPosX + first.getX() * gridColWidth + (int)(0.5f * gridColWidth);
+                int y1 = topPos + gridOffsetY + (int)maskPosY + first.getY() * gridRowHeight + (int)(0.5f * gridRowHeight);
+                int y2 = topPos + gridOffsetY + (int)maskPosY + second.getY() * gridRowHeight + (int)(0.5f * gridRowHeight) + 1;
+                if(y2 < y1) {
+                    y1++;
+                    y2--;
+                }
+                vLine(poseStack, x, y1, y2, 0xFFFF0000);
+            } else if(first.getY() == first.getY()) {
+                int x1 = leftPos + gridOffsetX + (int)maskPosX + first.getX() * gridColWidth + (int)(0.5f * gridColWidth);
+                int x2 = leftPos + gridOffsetX + (int)maskPosX + second.getX() * gridColWidth + (int)(0.5f * gridColWidth);
+                int y = topPos + gridOffsetY + (int)maskPosY + first.getY() * gridRowHeight + (int)(0.5f * gridRowHeight);
+                hLine(poseStack, x1, x2, y, 0xFFFF0000);
+            } else {
+                // ERROR
+            }
+
+        }
+    }
+
     private void drawHighlightedSquares(PoseStack poseStack) {
         drawSelectedSquare(poseStack);
         if(selectedIndices.size() >= 1) {
@@ -282,18 +315,11 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         dnaRandomString = "";
         List<Character> dnaLetters = Arrays.asList(new Character[]{'C', 'G', 'T', 'A'});
         Random rand = new Random();
-
-        /*Component aComp = new TextComponent("A ").withStyle(ChatFormatting.BLUE);
-        Component tComp = new TextComponent("T ").withStyle(ChatFormatting.GREEN);
-        Component gComp = new TextComponent("G ").withStyle(ChatFormatting.RED);
-        Component cComp = new TextComponent("C ").withStyle(ChatFormatting.YELLOW);*/
-
         for (int i = 0; i < max; i++) {
             Character cLetter = dnaLetters.get(rand.nextInt(4));
             addCharacterToTextcomponent(cLetter, dnaRandomTextComp);
             dnaRandomString += cLetter;
         }
-
         int textWidth = font.width(dnaRandomTextComp) / gridSize;
         diffX = textWidth - gridWidth;
         diffY = font.wordWrapHeight(dnaRandomTextComp.getString(), textWidth) - gridHeight;
@@ -308,19 +334,23 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             easyShapes = CommonConfig.EASY_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
             gridSizeToFind = 2;
-        } else if(CommonConfig.NORMAL_ATTRIBUTES.get().contains(attribute)) {
+        }
+        else if(CommonConfig.NORMAL_ATTRIBUTES.get().contains(attribute)) {
             easyShapes = CommonConfig.NORMAL_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
             gridSizeToFind = 3;
-        } else if(CommonConfig.HARD_ATTRIBUTES.get().contains(attribute)) {
+        }
+        else if(CommonConfig.HARD_ATTRIBUTES.get().contains(attribute)) {
             easyShapes = CommonConfig.HARD_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
             gridSizeToFind = 4;
-        } else if(CommonConfig.EXPERT_ATTRIBUTES.get().contains(attribute)) {
+        }
+        else if(CommonConfig.EXPERT_ATTRIBUTES.get().contains(attribute)) {
             easyShapes = CommonConfig.EXPERT_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
             gridSizeToFind = 5;
-        } else if(CommonConfig.NIGHTMARE_ATTRIBUTES.get().contains(attribute)) {
+        }
+        else if(CommonConfig.NIGHTMARE_ATTRIBUTES.get().contains(attribute)) {
             easyShapes = CommonConfig.NIGHTMARE_SHAPES.get();
             randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
             gridSizeToFind = 6;
@@ -346,14 +376,53 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
         dnaToFindText = new TextComponent("");
         int rowExtra = 0;
+        toFindShapePattern = new ArrayList<>();
+        toFindShapeString = new ArrayList<>();
         for (int i = 0; i < randomShape.size(); i++) {
             rowExtra = i / gridSizeToFind;
             if(!randomShape.get(i).isBlank() && !randomShape.get(i).isEmpty()) {
-                addCharacterToTextcomponent(dnaRandomString.charAt(restrictedRandIndex + (rowExtra * gridSize) + (i % gridSizeToFind)), dnaToFindText);
+                Character c = dnaRandomString.charAt(restrictedRandIndex + (rowExtra * gridSize) + (i % gridSizeToFind));
+                addCharacterToTextcomponent(c, dnaToFindText);
+                toFindShapePattern.add(Utils.Convert1DTo2D(i, gridSizeToFind));
+                toFindShapeString.add(c);
             } else {
                 addCharacterToTextcomponent(' ', dnaToFindText);
             }
         }
+    }
+
+    private boolean hasFoundCorrectDnaString() {
+        if(selectedIndices.size() == 0 || toFindShapePattern.size() == 0 || toFindShapeString.size() == 0) return false;
+
+        // Check length
+        boolean correctShape = true;
+        boolean correctString = true;
+
+        if(selectedIndices.size() == toFindShapeString.size()) {
+            ArrayList<Integer> sortedList = new ArrayList<>(selectedIndices);
+            Collections.sort(sortedList);
+            // Shape check
+            int firstIndex = sortedList.get(0);
+            for (int i = 0; i < toFindShapePattern.size(); i++) {
+                int toCompare = Utils.Add2DTo1D(toFindShapePattern.get(i), firstIndex, gridSize);
+                if(sortedList.get(i) != toCompare) {
+                    correctShape = false;
+                    break;
+                }
+            }
+            // System.out.println("Found correct shape: " + correctShape);
+
+            // String check
+            for (int i = 0; i < toFindShapeString.size(); i++) {
+                if (toFindShapeString.get(i) != dnaRandomString.charAt(sortedList.get(i))) {
+                    correctString = false;
+                    break;
+                }
+            }
+            // System.out.println("Found correct string: " + correctString);
+
+        }
+        return correctShape && correctString;
     }
 
     private void addCharacterToTextcomponent(char c, TextComponent textComponent) {
@@ -412,5 +481,5 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             font.drawWordWrap(dnaToFindText, xPos, yPos, textWidth, 0xFFFFFFFF);
         }
     }
-    //end region
+    //endregion
 }

@@ -56,7 +56,7 @@ public class CommonConfig {
                             "x", " ", " ", " ",
                             "x", " ", " ", " ",
                             "x", " ", " ", " ",
-                            "x", " ", " ", "x"
+                            "x", "x", "x", " "
                         )), e -> true);
         EXPERT_SHAPES = BUILDER.comment("Define your expert shapes here, should be [5 x 5] big")
                 .defineList("Expert Shapes arrays",
@@ -70,12 +70,12 @@ public class CommonConfig {
         NIGHTMARE_SHAPES = BUILDER.comment("Define your nightmare shapes here, should be [6 x 6] big")
                 .defineList("Nightmare Shapes arrays",
                         List.of(List.of(
-                            "x", " ", " ", " ", " ", "x",
+                            "x", "x", "x", " ", " ", "x",
                             "x", " ", " ", " ", " ", "x",
                             "x", " ", " ", " ", " ", "x",
                             "x", " ", " ", "x", "x", "x",
                             "x", "x", "x", "x", " ", " ",
-                            " ", " ", " ", "x", " ", " "
+                            " ", " ", " ", " ", " ", " "
                         )), e -> true);
         BUILDER.pop();
         SPEC = BUILDER.build();
