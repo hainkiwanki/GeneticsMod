@@ -2,7 +2,6 @@ package com.hainkiwanki.geneticsmod.block.entity;
 
 import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
 import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
-import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.EnergySyncS2CPacket;
 import com.hainkiwanki.geneticsmod.recipe.GeneAnalyzerRecipe;

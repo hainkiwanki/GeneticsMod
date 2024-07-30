@@ -2,7 +2,6 @@ package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
-import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -17,12 +16,10 @@ public class RenderEvents {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
         try {
             LivingEntity livingEntity = e.getEntity();
-            livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(mobData -> {
-                if(mobData.hasStat(EMobStat.SIZE)) {
-                    float s = mobData.getStat(EMobStat.SIZE);
-                    e.getPoseStack().pushPose();
-                    e.getPoseStack().scale(s, s, s);
-                }
+            livingEntity.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(mobData -> {
+                float s = mobData.getSize();
+                e.getPoseStack().pushPose();
+                e.getPoseStack().scale(s, s, s);
             });
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -34,10 +31,8 @@ public class RenderEvents {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
         try {
             LivingEntity livingEntity = e.getEntity();
-            livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(modData -> {
-                if (modData.hasStat(EMobStat.SIZE)) {
-                    e.getPoseStack().popPose();
-                }
+            livingEntity.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(modData -> {
+                e.getPoseStack().popPose();
             });
         } catch (Exception exception) {
             exception.printStackTrace();

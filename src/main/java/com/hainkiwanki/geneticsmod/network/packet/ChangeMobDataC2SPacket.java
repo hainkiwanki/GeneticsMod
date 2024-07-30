@@ -1,6 +1,6 @@
 package com.hainkiwanki.geneticsmod.network.packet;
 
-import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
+import com.hainkiwanki.geneticsmod.GeneticsMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +40,7 @@ public class ChangeMobDataC2SPacket {
             if(!(entity instanceof LivingEntity)) {
                 return;
             }
-            entity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(data -> {
+            entity.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(data -> {
                 data.deserializeNBT(message.statNbt);
                 entity.refreshDimensions();
             });

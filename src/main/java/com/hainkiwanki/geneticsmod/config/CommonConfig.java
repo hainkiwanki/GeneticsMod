@@ -1,7 +1,5 @@
 package com.hainkiwanki.geneticsmod.config;
 
-import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
-import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
 import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.List;

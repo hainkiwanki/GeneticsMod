@@ -1,16 +1,11 @@
 package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.network.ModMessages;
+import com.hainkiwanki.geneticsmod.cap.MobDataImpl;
 import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
-import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
-import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
-import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,7 +18,6 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
 
 
 @Mod.EventBusSubscriber(modid = GeneticsMod.MOD_ID)
@@ -35,12 +29,7 @@ public class ModEvents {
         }
         LivingEntity livingEntity = (LivingEntity) e.getObject();
         if(livingEntity == null) return;
-        e.addCapability(MobDataProvider.RESOURCE_LOCATION, new MobDataProvider(livingEntity));
-    }
-
-    @SubscribeEvent
-    public static void onRegisterCapabilities(RegisterCapabilitiesEvent e) {
-        e.register(MobData.class);
+        e.addCapability(MobDataImpl.Provider.RESOURCE_LOCATION, new MobDataImpl.Provider(livingEntity));
     }
 
     @SubscribeEvent
@@ -50,7 +39,8 @@ public class ModEvents {
         }
         System.out.println("EntityJoinWorldEvent");
         LivingEntity livingEntity = (LivingEntity) e.getEntity();
-        livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(data -> {
+        livingEntity.refreshDimensions();
+        livingEntity.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(data -> {
             data.sync(livingEntity);
         });
     }
@@ -62,10 +52,9 @@ public class ModEvents {
         }
         System.out.println("EntityEvent.EntityConstructing");
         LivingEntity livingEntity = (LivingEntity) e.getEntity();
-        livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(data -> {
-            CompoundTag nbt = new CompoundTag();
-            data.initialize(livingEntity);
-            ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(data.serializeNBT(), e.getEntity().getId()));
+        livingEntity.refreshDimensions();
+        livingEntity.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(data -> {
+            data.sync(livingEntity);
         });
     }
 
@@ -75,11 +64,9 @@ public class ModEvents {
         if(!(e.getEntity() instanceof LivingEntity)) return;
 
         LivingEntity livingEntity = (LivingEntity)e.getEntity();
-        livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(mobData -> {
-            if(mobData.hasStat(EMobStat.SIZE)) {
-                e.setNewSize(e.getNewSize().scale(mobData.getStat(EMobStat.SIZE)));
-                e.setNewEyeHeight(e.getNewEyeHeight() * mobData.getStat(EMobStat.SIZE));
-            }
+        livingEntity.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(mobData -> {
+            e.setNewSize(e.getNewSize().scale(mobData.getSize()));
+            e.setNewEyeHeight(e.getNewEyeHeight() * mobData.getSize());
         });
     }
 

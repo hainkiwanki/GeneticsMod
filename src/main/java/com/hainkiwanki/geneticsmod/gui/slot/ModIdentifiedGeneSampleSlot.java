@@ -1,7 +1,6 @@
 package com.hainkiwanki.geneticsmod.gui.slot;
 
 import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
-import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
