@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "geneticsmod:terminal"
+    "geneticsmod:terminal",
+    "geneticsmod:gene_analyzer"
   ]
 }

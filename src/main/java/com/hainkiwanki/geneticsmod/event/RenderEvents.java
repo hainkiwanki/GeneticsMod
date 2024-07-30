@@ -7,17 +7,19 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = GeneticsMod.MOD_ID)
+@Mod.EventBusSubscriber(modid = GeneticsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RenderEvents {
     @SubscribeEvent
     public static void onPreLivingRender(RenderLivingEvent.Pre<LivingEntity, EntityModel<LivingEntity>> e) {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
         try {
             LivingEntity livingEntity = e.getEntity();
-            livingEntity.getCapability(MobDataProvider.MOB_DATA).ifPresent(mobData -> {
+            LazyOptional<MobData> capability = livingEntity.getCapability(MobDataProvider.MOB_DATA);
+            capability.ifPresent(mobData -> {
                 if(mobData.hasStat(MobData.SIZE)) {
                     float s = mobData.getStat(MobData.SIZE);
                     e.getPoseStack().pushPose();

@@ -29,6 +29,7 @@ public class DebugToolItem extends Item {
                 pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
                     data.setStat(MobData.SIZE, data.getStat(MobData.SIZE) + 0.1f);
                     data.saveNBTData(mobNbt);
+                    System.out.println(mobNbt);
                     ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> pInteractionTarget), new ChangeMobDataC2SPacket(mobNbt, pInteractionTarget.getId()));
                     pPlayer.sendMessage(new TextComponent("Mobsize increased: " + data.getStat(MobData.SIZE)), pPlayer.getUUID());
                 });

@@ -76,6 +76,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
 
     public GeneAnalyzerBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.GENE_ANALYZER.get(), pPos, pBlockState);
+        this.energyHandler.setEnergy(0);
         this.data = new ContainerData() {
             @Override
             public int get(int pIndex) {
@@ -163,6 +164,10 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         maxFuelTime = nbt.getInt("gene_analyzer.maxFuelTime");
         progress = nbt.getInt("gene_analyzer.progress");
         maxProgress = nbt.getInt("gene_analyzer.maxProgress");
+
+        if(!nbt.contains("gene_analyzer.energyStorage")) {
+            energyHandler.setEnergy(0);
+        }
     }
 
     public void drops() {
@@ -171,6 +176,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
             inventory.setItem(i, itemHandler.getStackInSlot(i));
         }
         Containers.dropContents(this.level, this.worldPosition, inventory);
+
     }
 
     public IEnergyStorage getEnergyStorage() {
@@ -305,6 +311,13 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
             }
             entity.resetProgress();
         }
+    }
+
+    public void resetFuelAndEnergy() {
+        this.setEnergyLevel(0);
+        this.fuelTime = 0;
+        this.maxFuelTime = 0;
+        this.setChanged();
     }
 
     //region Fix for empty energy bar after world reload

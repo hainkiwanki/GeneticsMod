@@ -32,7 +32,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void onAttackCapabilitiesMobData(AttachCapabilitiesEvent<Entity> e) {
         if(!(e.getObject() instanceof Mob)) return;
-            e.addCapability(new ResourceLocation(GeneticsMod.MOD_ID, "mobdata"), new MobDataProvider());
+        e.addCapability(new ResourceLocation(GeneticsMod.MOD_ID, "mobdata"), new MobDataProvider());
     }
 
     @SubscribeEvent
@@ -41,18 +41,19 @@ public class ModEvents {
     }
 
     @SubscribeEvent
-    public static void onMobSpawn(LivingSpawnEvent e) {
-        if(e.getEntityLiving() == null || !(e.getEntityLiving() instanceof Mob)) return;
+    public static void onEntityConstructing(EntityEvent.EntityConstructing e) {
+        if (e.getEntity() instanceof LivingEntity livingEntity) {
+            livingEntity.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
+                CompoundTag nbt = new CompoundTag();
+                data.initialize(livingEntity);
+                data.saveNBTData(nbt);
+                ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> livingEntity), new ChangeMobDataC2SPacket(nbt, e.getEntity().getId()));
+            });
+        }
         /*AgeableMob mob = (AgeableMob)e.getEntityLiving();
         if(mob.isBaby()) {
             mob.
         }*/
-        e.getEntityLiving().getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
-            CompoundTag nbt = new CompoundTag();
-            data.initialize(e.getEntityLiving());
-            data.saveNBTData(nbt);
-            ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> e.getEntityLiving()), new ChangeMobDataC2SPacket(nbt, e.getEntity().getId()));
-        });
     }
 
     @SubscribeEvent
