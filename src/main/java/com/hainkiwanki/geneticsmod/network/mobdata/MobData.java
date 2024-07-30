@@ -1,5 +1,7 @@
 package com.hainkiwanki.geneticsmod.network.mobdata;
 
+import com.hainkiwanki.geneticsmod.network.ModMessages;
+import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.AgeableMob;
@@ -10,7 +12,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.network.PacketDistributor;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,5 +118,15 @@ public class MobData implements INBTSerializable<CompoundTag> {
         for(EMobStat mobStat : keys) {
             setStat(mobStat, nbt.getFloat(mobStat.name()));
         }
+    }
+
+    public void sync(@Nonnull LivingEntity livingEntity) {
+        ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(serializeNBT(), livingEntity.getId()));
+    }
+
+    public void setMobDataStat(EMobStat mobStat, float value, @Nonnull LivingEntity livingEntity) {
+        this.setStat(mobStat, value);
+        livingEntity.refreshDimensions();
+        sync(livingEntity);
     }
 }

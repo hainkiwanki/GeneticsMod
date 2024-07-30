@@ -45,15 +45,13 @@ public class ModEvents {
 
     @SubscribeEvent
     public static void onEntityJoinWorldEvent(EntityJoinWorldEvent e) {
-        if(e.getEntity() == null || !(e.getEntity() instanceof LivingEntity)) {
+        if(e.getEntity() == null || !(e.getEntity() instanceof LivingEntity) || e.getWorld().isClientSide()) {
             return;
         }
         System.out.println("EntityJoinWorldEvent");
         LivingEntity livingEntity = (LivingEntity) e.getEntity();
         livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(data -> {
-            if(!data.equals(livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).orElse(new MobData()))) {
-                ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(data.serializeNBT(), e.getEntity().getId()));
-            }
+            data.sync(livingEntity);
         });
     }
 

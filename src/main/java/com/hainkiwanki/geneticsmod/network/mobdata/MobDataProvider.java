@@ -46,14 +46,4 @@ public class MobDataProvider implements ICapabilitySerializable<CompoundTag> {
     public void deserializeNBT(CompoundTag nbt) {
         mobData.deserializeNBT(nbt);
     }
-
-    public void setMobDataStat(EMobStat mobStat, float value, @Nonnull LivingEntity livingEntity) {
-        this.mobData.setStat(mobStat, value);
-        livingEntity.refreshDimensions();
-        sync(livingEntity);
-    }
-
-    public void sync(@Nonnull LivingEntity livingEntity) {
-        ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(serializeNBT(), livingEntity.getId()));
-    }
 }

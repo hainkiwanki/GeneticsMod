@@ -2,13 +2,11 @@ package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
-import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraftforge.client.event.RenderLivingEvent;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -19,8 +17,7 @@ public class RenderEvents {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
         try {
             LivingEntity livingEntity = e.getEntity();
-            LazyOptional<MobData> capability = livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY);
-            capability.ifPresent(mobData -> {
+            livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(mobData -> {
                 if(mobData.hasStat(EMobStat.SIZE)) {
                     float s = mobData.getStat(EMobStat.SIZE);
                     e.getPoseStack().pushPose();
@@ -37,16 +34,13 @@ public class RenderEvents {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
         try {
             LivingEntity livingEntity = e.getEntity();
-            if (livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).isPresent()) {
-                livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(modData -> {
-                    if (modData.hasStat(EMobStat.SIZE)) {
-                        e.getPoseStack().popPose();
-                    }
-                });
-            }
+            livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(modData -> {
+                if (modData.hasStat(EMobStat.SIZE)) {
+                    e.getPoseStack().popPose();
+                }
+            });
         } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
-
 }
