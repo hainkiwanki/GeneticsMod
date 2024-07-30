@@ -1,5 +1,6 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
+import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
 import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.ChatFormatting;
@@ -36,7 +37,7 @@ public class GeneSampleItem extends Item {
                         TranslatableComponent tc = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tag);
                         float fResult = nbtTag.getFloat(tag);
                         String strOutput = fResult + "";
-                        if (tag.equals(MobData.IS_HOSTILE)) {
+                        if (tag.equals(EMobStat.HOSTILITY)) {
                             strOutput = (fResult) > 0.0f ? "Hostile" : (fResult) < 0.0f ? "Friendly" : "Neutral";
                         }
                         tc.append(": ").append(new TextComponent(strOutput).withStyle(ChatFormatting.WHITE));

@@ -9,93 +9,71 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MobData {
-    public static final String SIZE = "size";
-    public static final String HEALTH = "hp";
-    public static final String ATTACK_DAMAGE = "attack_damage";
-    public static final String ATTACK_SPEED = "attack_speed";
-    public static final String MOVE_SPEED = "move_speed";
-    public static final String MOB_TYPE = "mob_type";
-    public static final String DROPS_MODIFIER = "drops_mod";
-    public static final String EXP_MODIFIER = "exp_mod";
-    public static final String FERTILITY = "fertility";
-    public static final String BREATH_UNDER_WATER = "gills";
-    public static final String IMMUNE_FIRE = "fire_immune";
-    public static final String CAN_LAY_EGG = "oviparous";
-    public static final String CAN_MILK = "lactation";
-    public static final String MATURING_TIME = "maturing_time";
-    public static final String IS_HOSTILE = "hostility";
-    public static final String IDENTIFIED = "identified";
-
-    private Map<String, Float> mobDataMap = new HashMap<String, Float>(){};
-    private String mobDataType;
+public class MobData implements INBTSerializable<CompoundTag> {
+    private Map<EMobStat, Float> mobDataMap = new HashMap<>(){};
 
     public static String getAttributesAsString() {
-        String str = SIZE + ", " +
-                HEALTH + ", " +
-                ATTACK_DAMAGE + ", " +
-                ATTACK_SPEED + ", " +
-                MOVE_SPEED + ", " +
-                DROPS_MODIFIER + ", " +
-                EXP_MODIFIER + ", " +
-                FERTILITY + ", " +
-                BREATH_UNDER_WATER + ", " +
-                IMMUNE_FIRE + ", " +
-                CAN_LAY_EGG + ", " +
-                CAN_MILK + ", " +
-                MATURING_TIME + ", " +
-                IS_HOSTILE + ", ";
+        String str = EMobStat.SIZE + ", " +
+                EMobStat.HEALTH + ", " +
+                EMobStat.ATTACK_DAMAGE + ", " +
+                EMobStat.ATTACK_SPEED + ", " +
+                EMobStat.MOVE_SPEED + ", " +
+                EMobStat.DROPS_MOD + ", " +
+                EMobStat.EXP_MOD + ", " +
+                EMobStat.FERTILITY + ", " +
+                EMobStat.GILLS + ", " +
+                EMobStat.FIRE_IMMUNE + ", " +
+                EMobStat.OVIPAROUS + ", " +
+                EMobStat.LACTATION + ", " +
+                EMobStat.MATURING_TIME + ", " +
+                EMobStat.HOSTILITY + ", ";
         return str;
     }
 
     public void initialize(LivingEntity pEntity) {
-        mobDataMap.put(SIZE, 1.0f);
-        mobDataMap.put(HEALTH, pEntity.getMaxHealth());
-        mobDataType = pEntity.getClass().getSimpleName();
+        mobDataMap.put(EMobStat.SIZE, 1.0f);
+        mobDataMap.put(EMobStat.HEALTH, pEntity.getMaxHealth());
 
-        mobDataMap.put(DROPS_MODIFIER, 1.0f);
-        mobDataMap.put(EXP_MODIFIER, 1.0f);
-        mobDataMap.put(FERTILITY, pEntity instanceof AgeableMob ? 1.0f: 0.0f);
+        mobDataMap.put(EMobStat.DROPS_MOD, 1.0f);
+        mobDataMap.put(EMobStat.EXP_MOD, 1.0f);
+        mobDataMap.put(EMobStat.FERTILITY, pEntity instanceof AgeableMob ? 1.0f: 0.0f);
 
         float canBreath = pEntity.canBreatheUnderwater() ? 1.0f : 0.0f;
-        mobDataMap.put(BREATH_UNDER_WATER, canBreath);
+        mobDataMap.put(EMobStat.GILLS, canBreath);
 
         float isImmuneToFire = pEntity.fireImmune() ? 1.0f : 0.0f;
-        mobDataMap.put(IMMUNE_FIRE, isImmuneToFire);
+        mobDataMap.put(EMobStat.FIRE_IMMUNE, isImmuneToFire);
 
         float canLayEggs = 0.0f;
         if(pEntity.getType().is(ModTags.EntityTypeTags.CAN_LAY_EGG))
             canLayEggs = 1.0f;
-        mobDataMap.put(CAN_LAY_EGG, canLayEggs);
+        mobDataMap.put(EMobStat.OVIPAROUS, canLayEggs);
 
         float canMilk = 0.0f;
         if (pEntity.getType().is(ModTags.EntityTypeTags.CAN_MILK))
             canMilk = 1.0f;
-        mobDataMap.put(CAN_MILK, canMilk);
+        mobDataMap.put(EMobStat.OVIPAROUS, canMilk);
 
-            /*Animal animal = (Animal)pEntity;
-            float value = 0.0f;
-            if(animal != null) {
-                value = 24000.0f;
-            }*/
-        mobDataMap.put(MATURING_TIME, 0.0f);
+        mobDataMap.put(EMobStat.MATURING_TIME, 0.0f);
 
         if(NeutralMob.class.isAssignableFrom(pEntity.getClass())) {
-            mobDataMap.put(IS_HOSTILE, 0.0f);
+            mobDataMap.put(EMobStat.HOSTILITY, 0.0f);
         } else if(Enemy.class.isAssignableFrom(pEntity.getClass())) {
-            mobDataMap.put(IS_HOSTILE, 1.0f);
+            mobDataMap.put(EMobStat.HOSTILITY, 1.0f);
         } else {
-            mobDataMap.put(IS_HOSTILE, -1.0f);
+            mobDataMap.put(EMobStat.HOSTILITY, -1.0f);
         }
 
-        mobDataMap.put(ATTACK_DAMAGE, TryGetAttribute(pEntity, Attributes.ATTACK_DAMAGE));
-        mobDataMap.put(ATTACK_SPEED, TryGetAttribute(pEntity, Attributes.ATTACK_SPEED));
-        mobDataMap.put(MOVE_SPEED, TryGetAttribute(pEntity, Attributes.MOVEMENT_SPEED));
+        mobDataMap.put(EMobStat.ATTACK_DAMAGE, TryGetAttribute(pEntity, Attributes.ATTACK_DAMAGE));
+        mobDataMap.put(EMobStat.ATTACK_SPEED, TryGetAttribute(pEntity, Attributes.ATTACK_SPEED));
+        mobDataMap.put(EMobStat.MOVE_SPEED, TryGetAttribute(pEntity, Attributes.MOVEMENT_SPEED));
     }
 
     private float TryGetAttribute(LivingEntity pEntity, Attribute pAttribute) {
@@ -106,34 +84,35 @@ public class MobData {
         return result;
     }
 
-    public float getStat(String stat) {
+    public boolean hasStat(EMobStat stat) {
+        return mobDataMap.containsKey(stat);
+    }
+
+    public float getStat(EMobStat stat) {
         if(!mobDataMap.containsKey(stat)) {
             setStat(stat, 1.0f);
         }
         return mobDataMap.get(stat);
     }
 
-    public boolean hasStat(String stat) {
-        return mobDataMap.containsKey(stat);
-    }
-
-    public void setStat(String stat, float f) {
+    public void setStat(EMobStat stat, float f) {
         mobDataMap.put(stat, f);
     }
 
-    public void saveNBTData(CompoundTag nbt) {
-        if(mobDataMap.isEmpty() || mobDataType.isEmpty()) return;
-        for (Map.Entry<String, Float> entry : mobDataMap.entrySet()) {
-            nbt.putFloat(entry.getKey(), entry.getValue());
+    @Override
+    public CompoundTag serializeNBT() {
+        CompoundTag props = new CompoundTag();
+        for(Map.Entry<EMobStat, Float> entry : mobDataMap.entrySet()) {
+            props.putFloat(entry.getKey().name(), entry.getValue());
         }
-        nbt.putString(MOB_TYPE, mobDataType);
+        return props;
     }
 
-    public void loadNBTData(CompoundTag nbt) {
-        Set<String> allKeys = nbt.getAllKeys();
-        for (String key : allKeys) {
-            setStat(key, nbt.getFloat(key));
+    @Override
+    public void deserializeNBT(CompoundTag nbt) {
+        EMobStat[] keys = EMobStat.values();
+        for(EMobStat mobStat : keys) {
+            setStat(mobStat, nbt.getFloat(mobStat.name()));
         }
-        mobDataType = nbt.getString(MOB_TYPE);
     }
 }

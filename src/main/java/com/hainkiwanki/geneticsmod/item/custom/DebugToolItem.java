@@ -1,5 +1,6 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
+import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
 import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
@@ -24,22 +25,19 @@ public class DebugToolItem extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
         if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
-            CompoundTag mobNbt = new CompoundTag();
             if(Screen.hasShiftDown()) {
-                pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
-                    data.setStat(MobData.SIZE, data.getStat(MobData.SIZE) + 0.1f);
-                    data.saveNBTData(mobNbt);
-                    System.out.println(mobNbt);
-                    ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> pInteractionTarget), new ChangeMobDataC2SPacket(mobNbt, pInteractionTarget.getId()));
-                    pPlayer.sendMessage(new TextComponent("Mobsize increased: " + data.getStat(MobData.SIZE)), pPlayer.getUUID());
+                pInteractionTarget.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
+                    mobDataProvider.setStat(EMobStat.SIZE, mobDataProvider.getStat(EMobStat.SIZE) + 0.1f);
+                    mobDataProvider.serializeNBT();
+                    ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pInteractionTarget), new ChangeMobDataC2SPacket(mobDataProvider.serializeNBT(), pInteractionTarget.getId()));
+                    pPlayer.sendMessage(new TextComponent("Mobsize increased: " + mobDataProvider.getStat(EMobStat.SIZE)), pPlayer.getUUID());
                 });
             } else
             {
-                pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
-                    data.setStat(MobData.SIZE, data.getStat(MobData.SIZE) - 0.1f);
-                    data.saveNBTData(mobNbt);
-                    ModMessages.send(PacketDistributor.TRACKING_ENTITY.with(() -> pInteractionTarget), new ChangeMobDataC2SPacket(mobNbt, pInteractionTarget.getId()));
-                    pPlayer.sendMessage(new TextComponent("Mobsize decreased: " + data.getStat(MobData.SIZE)), pPlayer.getUUID());
+                pInteractionTarget.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
+                    mobDataProvider.setStat(EMobStat.SIZE, mobDataProvider.getStat(EMobStat.SIZE) - 0.1f);
+                    ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> pInteractionTarget), new ChangeMobDataC2SPacket( mobDataProvider.serializeNBT(), pInteractionTarget.getId()));
+                    pPlayer.sendMessage(new TextComponent("Mobsize decreased: " + mobDataProvider.getStat(EMobStat.SIZE)), pPlayer.getUUID());
                 });
             }
         }

@@ -65,9 +65,8 @@ public class SwabItem extends GeneSamplerItem {
 
     @Override
     public void OnUseCorrectTool(LivingEntity pInteractionTarget, Player pPlayer) {
-        pInteractionTarget.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
-            CompoundTag tag = new CompoundTag();
-            data.saveNBTData(tag);
+        pInteractionTarget.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(data -> {
+            CompoundTag tag = data.serializeNBT();
             ItemStack swab = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
             swab.setTag(tag);
         });

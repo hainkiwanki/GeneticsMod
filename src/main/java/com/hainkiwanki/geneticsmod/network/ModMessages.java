@@ -30,8 +30,8 @@ public class ModMessages {
         INSTANCE = net;
 
         net.messageBuilder(ChangeMobDataC2SPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(ChangeMobDataC2SPacket::new)
-                .encoder(ChangeMobDataC2SPacket::toBytes)
+                .decoder(ChangeMobDataC2SPacket::decode)
+                .encoder(ChangeMobDataC2SPacket::encode)
                 .consumer(ChangeMobDataC2SPacket::handle)
                 .add();
 
@@ -46,11 +46,11 @@ public class ModMessages {
         INSTANCE.send(target, message);
     }
 
-    public static void sendToClients(EnergySyncS2CPacket message) {
-        INSTANCE.send(PacketDistributor.ALL.noArg(), message);
-    }
-
     public static void send(PacketDistributor.PacketTarget target, ChangeMobDataC2SPacket message) {
         INSTANCE.send(target, message);
+    }
+
+    public static void sendToServer(Object msg) {
+        INSTANCE.sendToServer(msg);
     }
 }

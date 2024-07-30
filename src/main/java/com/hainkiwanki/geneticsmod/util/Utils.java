@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.util;
 
 import com.hainkiwanki.geneticsmod.gui.renderer.components.Pos2i;
+import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
 import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,11 +47,11 @@ public class Utils {
         if(itemStack.is(ModTags.ItemTags.SAMPLE_ITEM)) {
             tagList = new ArrayList<String>();
             for (String tag : itemStack.getTag().getAllKeys()) {
-                if(tag.equals(MobData.MOB_TYPE) || tag.equals(MobData.IDENTIFIED)) {
+                if(tag.equals(EMobStat.MOB_TYPE) || tag.equals(EMobStat.IDENTIFIED)) {
                     continue;
                 }
                 float fRes = itemStack.getTag().getFloat(tag);
-                if((int)fRes == 0 && !tag.equals(MobData.IS_HOSTILE)) {
+                if((int)fRes == 0 && !tag.equals(EMobStat.HOSTILITY)) {
                     continue;
                 }
                 tagList.add(tag);

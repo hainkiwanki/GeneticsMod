@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
 import com.hainkiwanki.geneticsmod.network.mobdata.MobData;
 import com.hainkiwanki.geneticsmod.network.mobdata.MobDataProvider;
 import net.minecraft.client.model.EntityModel;
@@ -18,10 +19,10 @@ public class RenderEvents {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
         try {
             LivingEntity livingEntity = e.getEntity();
-            LazyOptional<MobData> capability = livingEntity.getCapability(MobDataProvider.MOB_DATA);
+            LazyOptional<MobData> capability = livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY);
             capability.ifPresent(mobData -> {
-                if(mobData.hasStat(MobData.SIZE)) {
-                    float s = mobData.getStat(MobData.SIZE);
+                if(mobData.hasStat(EMobStat.SIZE)) {
+                    float s = mobData.getStat(EMobStat.SIZE);
                     e.getPoseStack().pushPose();
                     e.getPoseStack().scale(s, s, s);
                 }
@@ -36,9 +37,9 @@ public class RenderEvents {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
         try {
             LivingEntity livingEntity = e.getEntity();
-            if (livingEntity.getCapability(MobDataProvider.MOB_DATA).isPresent()) {
-                livingEntity.getCapability(MobDataProvider.MOB_DATA).ifPresent(modData -> {
-                    if (modData.hasStat(MobData.SIZE)) {
+            if (livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).isPresent()) {
+                livingEntity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(modData -> {
+                    if (modData.hasStat(EMobStat.SIZE)) {
                         e.getPoseStack().popPose();
                     }
                 });

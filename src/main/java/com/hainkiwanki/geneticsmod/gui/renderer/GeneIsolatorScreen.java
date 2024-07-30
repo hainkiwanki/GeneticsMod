@@ -330,31 +330,31 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
         gridSizeToFind = 2;
         List<String> randomShape = new ArrayList<>();
         List<? extends List<String>> easyShapes;
-        if(CommonConfig.EASY_ATTRIBUTES.get().contains(attribute)) {
-            easyShapes = CommonConfig.EASY_SHAPES.get();
-            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 2;
-        }
-        else if(CommonConfig.NORMAL_ATTRIBUTES.get().contains(attribute)) {
-            easyShapes = CommonConfig.NORMAL_SHAPES.get();
-            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 3;
-        }
-        else if(CommonConfig.HARD_ATTRIBUTES.get().contains(attribute)) {
-            easyShapes = CommonConfig.HARD_SHAPES.get();
-            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 4;
-        }
-        else if(CommonConfig.EXPERT_ATTRIBUTES.get().contains(attribute)) {
-            easyShapes = CommonConfig.EXPERT_SHAPES.get();
-            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 5;
-        }
-        else if(CommonConfig.NIGHTMARE_ATTRIBUTES.get().contains(attribute)) {
-            easyShapes = CommonConfig.NIGHTMARE_SHAPES.get();
-            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
-            gridSizeToFind = 6;
-        }
+//        if(CommonConfig.EASY_ATTRIBUTES.get().contains(attribute)) {
+//            easyShapes = CommonConfig.EASY_SHAPES.get();
+//            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
+//            gridSizeToFind = 2;
+//        }
+//        else if(CommonConfig.NORMAL_ATTRIBUTES.get().contains(attribute)) {
+//            easyShapes = CommonConfig.NORMAL_SHAPES.get();
+//            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
+//            gridSizeToFind = 3;
+//        }
+//        else if(CommonConfig.HARD_ATTRIBUTES.get().contains(attribute)) {
+//            easyShapes = CommonConfig.HARD_SHAPES.get();
+//            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
+//            gridSizeToFind = 4;
+//        }
+//        else if(CommonConfig.EXPERT_ATTRIBUTES.get().contains(attribute)) {
+//            easyShapes = CommonConfig.EXPERT_SHAPES.get();
+//            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
+//            gridSizeToFind = 5;
+//        }
+//        else if(CommonConfig.NIGHTMARE_ATTRIBUTES.get().contains(attribute)) {
+//            easyShapes = CommonConfig.NIGHTMARE_SHAPES.get();
+//            randomShape = easyShapes.get(rand.nextInt(easyShapes.size()));
+//            gridSizeToFind = 6;
+//        }
 
         randIndex = rand.nextInt(gridSize * gridSize); // 0 to (x*x-1)
         Pos2i gridPos = Utils.Convert1DTo2D(randIndex, gridSize); // 0-based

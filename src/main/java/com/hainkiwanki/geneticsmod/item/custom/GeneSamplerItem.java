@@ -89,9 +89,8 @@ public class GeneSamplerItem extends Item {
     }
 
     public void AddNbtToItem(LivingEntity entity, ItemStack item) {
-        entity.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
-            CompoundTag tag = new CompoundTag();
-            data.saveNBTData(tag);
+        entity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(data -> {
+            CompoundTag tag = data.serializeNBT();
             tag.putInt("identified", 0);
             item.setTag(tag);
         });

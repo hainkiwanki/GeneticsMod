@@ -17,32 +17,34 @@ public class ChangeMobDataC2SPacket {
     private int entityID;
 
     public ChangeMobDataC2SPacket(CompoundTag nbt, int id) {
-        statNbt = nbt;
-        entityID = id;
+        this.statNbt = nbt;
+        this.entityID = id;
     }
 
-    public ChangeMobDataC2SPacket(FriendlyByteBuf buf) {
-        statNbt = buf.readNbt();
-        entityID = buf.readInt();
+    public static void encode(ChangeMobDataC2SPacket msg, FriendlyByteBuf buf) {
+        buf.writeNbt(msg.statNbt);
+        buf.writeInt(msg.entityID);
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
-        buf.writeNbt(statNbt);
-        buf.writeInt(entityID);
+    public static ChangeMobDataC2SPacket decode(FriendlyByteBuf buf) {
+        return new ChangeMobDataC2SPacket(buf.readNbt(), buf.readInt());
     }
 
-    public boolean handle(Supplier<NetworkEvent.Context> supplier) {
-        NetworkEvent.Context context = supplier.get();
-        context.enqueueWork(() -> {
+    public static void handle(final ChangeMobDataC2SPacket message, Supplier<NetworkEvent.Context> ctx) {
+        ctx.get().enqueueWork(() -> {
             ClientLevel world = Minecraft.getInstance().level;
-            if(world == null) return;
-            Entity entity = world.getEntity(entityID);
-            if(entity == null || !(entity instanceof LivingEntity)) return;
-            entity.getCapability(MobDataProvider.MOB_DATA).ifPresent(data -> {
-                data.loadNBTData(statNbt);
+            if(world == null)  {
+                return;
+            }
+            Entity entity = world.getEntity(message.entityID);
+            if(!(entity instanceof LivingEntity)) {
+                return;
+            }
+            entity.getCapability(MobDataProvider.MOB_DATA_CAPABILITY).ifPresent(data -> {
+                data.deserializeNBT(message.statNbt);
                 entity.refreshDimensions();
             });
         });
-        return true;
+        ctx.get().setPacketHandled(true);
     }
 }
