@@ -25,14 +25,14 @@ import java.util.Random;
 public class GeneSamplerItem extends Item {
     // test nbt ingame: /data get entity @s SelectedItem
     protected SoundEvent SOUNDEVENT;
-    protected TagKey<EntityType<?>> ENTITY_CAN_USE_CLIPBONE;
+    protected TagKey<EntityType<?>> CAN_USE_SAMPLER_ON_ENTITY;
     protected HashMap<String, String> DROP_BY_ENTITY;
 
     protected float damageDealt = 0.0f;
 
     public GeneSamplerItem(TagKey<EntityType<?>> tagList, HashMap<String, String> entityDropList, Properties pProperties) {
         super(pProperties);
-        this.ENTITY_CAN_USE_CLIPBONE = tagList;
+        this.CAN_USE_SAMPLER_ON_ENTITY = tagList;
         this.DROP_BY_ENTITY = entityDropList;
     }
 
@@ -53,7 +53,7 @@ public class GeneSamplerItem extends Item {
     @Override
     public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
         if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
-            boolean usedCorrectSampler = pInteractionTarget.getType().is(ENTITY_CAN_USE_CLIPBONE);
+            boolean usedCorrectSampler = pInteractionTarget.getType().is(CAN_USE_SAMPLER_ON_ENTITY);
 
             if(usedCorrectSampler && pInteractionTarget.getHealth() > 0.0f) {
                 pPlayer.getCooldowns().addCooldown(this, 20);
