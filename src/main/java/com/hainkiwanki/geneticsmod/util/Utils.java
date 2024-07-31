@@ -46,6 +46,7 @@ public class Utils {
         if(itemStack.is(ModTags.ItemTags.SAMPLE_ITEM)) {
             tagList = new ArrayList<String>();
             for (String tag : itemStack.getTag().getAllKeys()) {
+                System.out.println("Tag: " + EMobStat.IDENTIFIED + ", " + EMobStat.IDENTIFIED.name());
                 if(tag.equals(EMobStat.MOB_TYPE) || tag.equals(EMobStat.IDENTIFIED)) {
                     continue;
                 }

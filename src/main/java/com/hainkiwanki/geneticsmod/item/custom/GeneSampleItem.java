@@ -24,7 +24,7 @@ public class GeneSampleItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         if(pStack.hasTag()) {
-            if(pStack.getTag().getInt("identified") == 0) {
+            if(pStack.getTag().getInt(EMobStat.IDENTIFIED.name()) == 0) {
                 pTooltipComponents.add(new TranslatableComponent("tooltip.geneticsmod.genesampleitem.unidentified")
                         .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
             }

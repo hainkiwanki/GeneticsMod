@@ -27,13 +27,14 @@ public class DebugToolItem extends Item {
             }
             else if(Screen.hasControlDown()) {
                 pInteractionTarget.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
-                    System.out.println(mobDataProvider.getSize());
+                    mobDataProvider.setSize(mobDataProvider.getSize() - 0.1f);
+
                 });
             }
             else
             {
                 pInteractionTarget.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
-                    mobDataProvider.setSize(mobDataProvider.getSize() - 0.1f);
+                    System.out.println(mobDataProvider.getSize());
                 });
             }
 

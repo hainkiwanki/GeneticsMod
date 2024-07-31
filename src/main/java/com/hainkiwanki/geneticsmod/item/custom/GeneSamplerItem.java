@@ -68,10 +68,7 @@ public class GeneSamplerItem extends Item {
                 return net.minecraft.world.InteractionResult.SUCCESS;
             }
             else {
-                if(pInteractionTarget.getHealth() > 0.0f) {
-                    pPlayer.sendMessage(new TranslatableComponent("message.geneticsmod.on_sample_fail"
-                            + pInteractionTarget.getClass().getSimpleName()), pPlayer.getUUID());
-                }
+                pPlayer.sendMessage(new TranslatableComponent("message.geneticsmod.on_sample_fail"), pPlayer.getUUID());
             }
         }
         return InteractionResult.CONSUME;

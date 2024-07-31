@@ -18,6 +18,7 @@ public class MobDataImpl {
     private static class DefaultImpl implements IMobDataProvider {
         private final LivingEntity livingEntity;
         private float size = 1.0f;
+        private boolean isDirty = true;
 
         private DefaultImpl(LivingEntity livingEntity) {
             this.livingEntity = livingEntity;
@@ -25,7 +26,18 @@ public class MobDataImpl {
 
         @Override
         public void sync(LivingEntity livingEntity) {
+            if(!this.isDirty) {
+                return;
+            }
+            this.isDirty = false;
             ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(serializeNBT(), livingEntity.getId()));
+            livingEntity.refreshDimensions();
+        }
+
+        @Override
+        public void forceSync(LivingEntity livingEntity) {
+            ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(serializeNBT(), livingEntity.getId()));
+            livingEntity.refreshDimensions();
         }
 
         @Override
@@ -35,12 +47,12 @@ public class MobDataImpl {
 
         @Override
         public void setSize(float f) {
+            this.isDirty = true;
             this.size = f;
             livingEntity.refreshDimensions();
             sync(this.livingEntity);
         }
 
-        @Override
         public CompoundTag serializeNBT() {
             CompoundTag tag = new CompoundTag();
             tag.putFloat("size", this.size);

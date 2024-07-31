@@ -1,5 +1,8 @@
 package com.hainkiwanki.geneticsmod.network.mobdata;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum EMobStat {
     SIZE,
     HEALTH,
@@ -17,4 +20,5 @@ public enum EMobStat {
     MATURING_TIME,
     HOSTILITY,
     IDENTIFIED
-}
+};
+

@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = GeneticsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RenderEvents {
     @SubscribeEvent
-    public static void onPreLivingRender(RenderLivingEvent.Pre<LivingEntity, EntityModel<LivingEntity>> e) {
+    public static void onPreLivingRender(RenderLivingEvent.Pre e) {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
         try {
             LivingEntity livingEntity = e.getEntity();
@@ -27,7 +27,7 @@ public class RenderEvents {
     }
 
     @SubscribeEvent
-    public static void onPostLivingRender(RenderLivingEvent.Post<LivingEntity, EntityModel<LivingEntity>> e) {
+    public static void onPostLivingRender(RenderLivingEvent.Post e) {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;
         try {
             LivingEntity livingEntity = e.getEntity();
