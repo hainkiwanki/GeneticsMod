@@ -1,6 +1,6 @@
 package com.hainkiwanki.geneticsmod.gui.slot;
 
-import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
+import com.hainkiwanki.geneticsmod.cap.EMobStat;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -24,7 +24,7 @@ public class ModIdentifiedGeneSampleSlot extends SlotItemHandler {
 
     public static boolean isGeneSample(ItemStack stack) {
         if(stack.hasTag()) {
-            if(stack.getTag().getInt(EMobStat.IDENTIFIED.name()) == 1) {
+            if(stack.getTag().getInt(EMobStat.IDENTIFIED.toStringKey()) == 1) {
                 return stack.is(ModTags.ItemTags.SAMPLE_ITEM);
             }
         }

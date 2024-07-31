@@ -1,7 +1,7 @@
 package com.hainkiwanki.geneticsmod.block.entity;
 
 import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
-import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
+import com.hainkiwanki.geneticsmod.cap.EMobStat;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.EnergySyncS2CPacket;
 import com.hainkiwanki.geneticsmod.recipe.GeneAnalyzerRecipe;
@@ -303,7 +303,7 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
             if(outputItem.getItem() == Items.AIR.asItem()) {
                 ItemStack input = entity.itemHandler.extractItem(1,1, false);
                 resultItem.setTag(input.getTag());
-                resultItem.getTag().putFloat(EMobStat.IDENTIFIED.name(), 1.0f);
+                resultItem.getTag().putFloat(EMobStat.IDENTIFIED.toStringKey(), 1.0f);
                 entity.itemHandler.setStackInSlot(2, resultItem);
             } else if (outputItem.getItem() == resultItem.getItem()){
                 entity.itemHandler.extractItem(1,1, false);

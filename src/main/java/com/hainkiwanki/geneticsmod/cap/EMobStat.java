@@ -1,7 +1,4 @@
-package com.hainkiwanki.geneticsmod.network.mobdata;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.hainkiwanki.geneticsmod.cap;
 
 public enum EMobStat {
     SIZE,
@@ -19,6 +16,10 @@ public enum EMobStat {
     LACTATION,
     MATURING_TIME,
     HOSTILITY,
-    IDENTIFIED
+    IDENTIFIED;
+
+    public String toStringKey() {
+        return this.name().toLowerCase();
+    }
 };
 

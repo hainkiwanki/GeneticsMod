@@ -1,7 +1,7 @@
 package com.hainkiwanki.geneticsmod.util;
 
 import com.hainkiwanki.geneticsmod.gui.renderer.components.Pos2i;
-import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
+import com.hainkiwanki.geneticsmod.cap.EMobStat;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
@@ -46,12 +46,11 @@ public class Utils {
         if(itemStack.is(ModTags.ItemTags.SAMPLE_ITEM)) {
             tagList = new ArrayList<String>();
             for (String tag : itemStack.getTag().getAllKeys()) {
-                System.out.println("Tag: " + EMobStat.IDENTIFIED + ", " + EMobStat.IDENTIFIED.name());
-                if(tag.equals(EMobStat.MOB_TYPE) || tag.equals(EMobStat.IDENTIFIED)) {
+                if(tag.equals(EMobStat.MOB_TYPE.toStringKey()) || tag.equals(EMobStat.IDENTIFIED.toStringKey())) {
                     continue;
                 }
                 float fRes = itemStack.getTag().getFloat(tag);
-                if((int)fRes == 0 && !tag.equals(EMobStat.HOSTILITY)) {
+                if((int)fRes == 0 && !tag.equals(EMobStat.HOSTILITY.toStringKey())) {
                     continue;
                 }
                 tagList.add(tag);

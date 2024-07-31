@@ -1,6 +1,6 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
-import com.hainkiwanki.geneticsmod.network.mobdata.EMobStat;
+import com.hainkiwanki.geneticsmod.cap.EMobStat;
 import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -24,7 +24,7 @@ public class GeneSampleItem extends Item {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         if(pStack.hasTag()) {
-            if(pStack.getTag().getInt(EMobStat.IDENTIFIED.name()) == 0) {
+            if(pStack.getTag().getInt(EMobStat.IDENTIFIED.toStringKey()) == 0) {
                 pTooltipComponents.add(new TranslatableComponent("tooltip.geneticsmod.genesampleitem.unidentified")
                         .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
             }
@@ -36,7 +36,7 @@ public class GeneSampleItem extends Item {
                         TranslatableComponent tc = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tag);
                         float fResult = nbtTag.getFloat(tag);
                         String strOutput = fResult + "";
-                        if (tag.equals(EMobStat.HOSTILITY)) {
+                        if (tag.equals(EMobStat.HOSTILITY.toStringKey())) {
                             strOutput = (fResult) > 0.0f ? "Hostile" : (fResult) < 0.0f ? "Friendly" : "Neutral";
                         }
                         tc.append(": ").append(new TextComponent(strOutput).withStyle(ChatFormatting.WHITE));

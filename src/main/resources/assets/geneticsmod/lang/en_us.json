@@ -63,7 +63,7 @@
 
   "tooltip.geneticsmod.genesampleitem.unidentified" : "Unidentified sample...",
   "tooltip.geneticsmod.genesampleitem.size" : "Size",
-  "tooltip.geneticsmod.genesampleitem.hp" : "Health",
+  "tooltip.geneticsmod.genesampleitem.health" : "Health",
   "tooltip.geneticsmod.genesampleitem.attack_damage" : "Damage",
   "tooltip.geneticsmod.genesampleitem.attack_speed" : "Attack Speed",
   "tooltip.geneticsmod.genesampleitem.hostility" : "Hostility",

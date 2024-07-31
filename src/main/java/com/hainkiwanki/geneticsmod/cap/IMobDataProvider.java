@@ -12,4 +12,8 @@ public interface IMobDataProvider extends INBTSerializable<CompoundTag> {
     float getSize();
 
     void setSize(float f);
+
+    float getStat(EMobStat stat);
+
+    void setStat(EMobStat stat, float f);
 }
