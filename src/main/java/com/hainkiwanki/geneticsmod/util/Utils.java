@@ -46,7 +46,7 @@ public class Utils {
         if(itemStack.is(ModTags.ItemTags.SAMPLE_ITEM)) {
             tagList = new ArrayList<String>();
             for (String tag : itemStack.getTag().getAllKeys()) {
-                if(tag.equals(EMobStat.MOB_TYPE.toStringKey()) || tag.equals(EMobStat.IDENTIFIED.toStringKey())) {
+                if(tag.equals(EMobStat.IDENTIFIED.toStringKey())) {
                     continue;
                 }
                 float fRes = itemStack.getTag().getFloat(tag);

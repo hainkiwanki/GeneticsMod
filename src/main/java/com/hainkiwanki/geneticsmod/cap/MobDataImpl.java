@@ -4,6 +4,7 @@ import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
+import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -27,9 +28,8 @@ import java.util.Map;
 public class MobDataImpl {
     private static class DefaultImpl implements IMobDataProvider {
         private final LivingEntity livingEntity;
-        private float size = 1.0f;
         private boolean isDirty = true;
-        private Map<String, Float> mobDataMap = new HashMap<>(){};
+        private final Map<String, Float> mobDataMap = new HashMap<>(){};
 
         private DefaultImpl(LivingEntity livingEntity) {
             this.livingEntity = livingEntity;
@@ -53,29 +53,32 @@ public class MobDataImpl {
 
         @Override
         public float getSize() {
-            return this.size;
+            return getStat(EMobStat.SIZE);
         }
 
         @Override
         public void setSize(float f) {
             this.isDirty = true;
-            this.size = f;
+            setStat(EMobStat.SIZE, f);
             livingEntity.refreshDimensions();
             sync(this.livingEntity);
         }
 
         @Override
         public float getStat(EMobStat stat) {
-            String key = stat.name().toLowerCase();
+            String key = stat.toStringKey();
             if(!mobDataMap.containsKey(key)) {
                 initializeMap();
             }
-            return mobDataMap.get(key);
+            if(mobDataMap.get(key) == null) {
+                System.out.println(key + " is null" + mobDataMap);
+            }
+            return mobDataMap.get(key) == null ? 0.0f : mobDataMap.get(key);
         }
 
         @Override
         public void setStat(EMobStat stat, float f) {
-            String key = stat.name().toLowerCase();
+            String key = stat.toStringKey();
             if(!mobDataMap.containsKey(key)) {
                 initializeMap();
             }
@@ -85,7 +88,7 @@ public class MobDataImpl {
         @Override
         public CompoundTag serializeNBT() {
             CompoundTag tag = new CompoundTag();
-            EMobStat[] statList = EMobStat.values();
+            EMobStat[] statList = EMobStat.getFilteredStats();
             for (EMobStat stat: statList) {
                 tag.putFloat(stat.toStringKey(), getStat(stat));
             }
@@ -94,7 +97,7 @@ public class MobDataImpl {
 
         @Override
         public void deserializeNBT(CompoundTag nbt) {
-            EMobStat[] statList = EMobStat.values();
+            EMobStat[] statList = EMobStat.getFilteredStats();
             for (EMobStat stat: statList) {
                 setStat(stat, nbt.getFloat(stat.toStringKey()));
             }
