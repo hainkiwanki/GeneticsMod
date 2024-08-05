@@ -3,7 +3,9 @@ package com.hainkiwanki.geneticsmod.gui;
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneIsolatorMenu;
+import com.hainkiwanki.geneticsmod.gui.menus.ResearchTableMenu;
 import com.hainkiwanki.geneticsmod.gui.menus.TerminalMenu;
+import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
@@ -26,6 +28,8 @@ public class ModMenuTypes {
     public static final RegistryObject<MenuType<GeneIsolatorMenu>> GENE_ISOLATOR_MENU =
             registerMenuType(GeneIsolatorMenu::new, "gene_isolator_menu");
 
+    public static final RegistryObject<MenuType<ResearchTableMenu>> RESEARCH_TABLE_MENU =
+            registerMenuType(ResearchTableMenu::new, "research_table_menu");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory,String name) {
         return MENUS.register(name, () -> IForgeMenuType.create(factory));

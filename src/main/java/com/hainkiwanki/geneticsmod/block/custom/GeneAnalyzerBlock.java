@@ -1,7 +1,7 @@
 package com.hainkiwanki.geneticsmod.block.custom;
 
 import com.hainkiwanki.geneticsmod.block.entity.GeneAnalyzerBlockEntity;
-import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
+import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;

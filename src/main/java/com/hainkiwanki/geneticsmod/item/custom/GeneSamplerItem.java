@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class GeneSamplerItem extends Item {
-    // test nbt ingame: /data get entity @s SelectedItem
+        // test nbt ingame: /data get entity @s SelectedItem
     protected SoundEvent SOUNDEVENT;
     protected TagKey<EntityType<?>> CAN_USE_SAMPLER_ON_ENTITY;
     protected HashMap<String, String> DROP_BY_ENTITY;

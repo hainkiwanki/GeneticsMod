@@ -37,6 +37,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private int currentSelectedIndex = -1;
     private float maskPosX = 0, maskPosY = 0;
     private float mousePosX, mousePosY;
+    // TODO: make mouse dragging only works inside little window
 
     private int currentTraitIndex = 0;
     private TextComponent dnaRandomTextComp;
@@ -95,7 +96,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 73, 4210752);
+        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX + 9, (float)this.inventoryLabelY + 69, 4210752);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         renderEnergyAreaTooltips(pPoseStack, pMouseX, pMouseY, x, y);

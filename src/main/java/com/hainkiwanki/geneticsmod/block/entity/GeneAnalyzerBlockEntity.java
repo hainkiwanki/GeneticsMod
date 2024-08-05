@@ -1,5 +1,6 @@
 package com.hainkiwanki.geneticsmod.block.entity;
 
+import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
 import com.hainkiwanki.geneticsmod.cap.EMobStat;
 import com.hainkiwanki.geneticsmod.network.ModMessages;

@@ -1,7 +1,7 @@
 package com.hainkiwanki.geneticsmod;
 
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
-import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
+import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.cap.IMobDataProvider;
 import com.hainkiwanki.geneticsmod.cap.MobDataImpl;
 import com.hainkiwanki.geneticsmod.config.CommonConfig;

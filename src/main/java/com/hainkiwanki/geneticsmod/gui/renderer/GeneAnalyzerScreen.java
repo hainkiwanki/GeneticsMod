@@ -39,12 +39,10 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
 
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        // super.renderLabels(pPoseStack, pMouseX, pMouseY);
-        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 12, 4210752);
+        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 14, 4210752);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         renderEnergyAreaTooltips(pPoseStack, pMouseX, pMouseY, x, y);
-
     }
 
     private void renderEnergyAreaTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {

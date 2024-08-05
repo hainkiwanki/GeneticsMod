@@ -1,7 +1,7 @@
 package com.hainkiwanki.geneticsmod.block.entity;
 
 import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
-import com.hainkiwanki.geneticsmod.gui.menus.TerminalMenu;
+import com.hainkiwanki.geneticsmod.gui.menus.ResearchTableMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
-public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
+public class ResearchTableBlockEntity extends BlockEntity implements MenuProvider {
 
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
@@ -36,19 +36,19 @@ public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public TerminalBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.TERMINAL.get(), pPos, pBlockState);
+    public ResearchTableBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(ModBlockEntities.RESEARCH_TABLE.get(), pPos, pBlockState);
     }
 
     @Override
     public Component getDisplayName() {
-        return new TranslatableComponent("gui.geneticsmod.terminal_block");
+        return new TranslatableComponent("gui.geneticsmod.research_table");
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new TerminalMenu(pContainerId, pPlayerInventory, this);
+        return new ResearchTableMenu(pContainerId, pPlayerInventory, this);
     }
 
     @Nonnull
@@ -92,37 +92,4 @@ public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
 
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
-
-    /*public static void tick(Level pLevel, BlockPos pPos, BlockState pState, TerminalBlockEntity pBlockEntity) {
-        ItemStack item = pBlockEntity.itemHandler.extractItem(0, 1, true);
-        if(currentItem == null || !item.sameItem(currentItem) && !item.is(Items.AIR)) {
-            currentItem = item;
-
-            System.out.println(ForgeRegistries.ITEMS.getKey(currentItem.getItem()).getPath());
-        }
-
-        // Custom Code
-        //if(hasRecipe(pBlockEntity) && hasNotReachedStackLimit(pBlockEntity)) {
-            //craftItem(pBlockEntity);
-        //}
-    }*/
-
-    /*private static void craftItem(CobaltBlasterBlockEntity entity) {
-        entity.itemHandler.extractItem(0, 1, false);
-        entity.itemHandler.extractItem(1, 1, false);
-
-        entity.itemHandler.setStackInSlot(3, new ItemStack(ModItems.COBALT_INGOT.get(),
-                entity.itemHandler.getStackInSlot(3).getCount() + 1));
-    }
-
-    private static boolean hasRecipe(CobaltBlasterBlockEntity entity) {
-        boolean hasItemInSecondSlot = entity.itemHandler.getStackInSlot(0).getItem() == ModItems.COAL_SLIVER.get();
-        boolean hasItemInFirstSlot = entity.itemHandler.getStackInSlot(1).getItem() == ModItems.RAW_COBALT.get();
-
-        return hasItemInFirstSlot && hasItemInSecondSlot;
-    }
-
-    private static boolean hasNotReachedStackLimit(CobaltBlasterBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(3).getCount() < entity.itemHandler.getStackInSlot(3).getMaxStackSize();
-    }*/
 }

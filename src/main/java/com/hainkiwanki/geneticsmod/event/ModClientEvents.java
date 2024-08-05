@@ -1,11 +1,12 @@
 package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.block.entity.ModBlockEntities;
+import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.block.entity.client.TerminalBlockRenderer;
 import com.hainkiwanki.geneticsmod.gui.renderer.GeneAnalyzerScreen;
 import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.gui.renderer.GeneIsolatorScreen;
+import com.hainkiwanki.geneticsmod.gui.renderer.ResearchTableScreen;
 import com.hainkiwanki.geneticsmod.gui.renderer.TerminalScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,5 +26,6 @@ public class ModClientEvents {
         MenuScreens.register(ModMenuTypes.TERMINAL_MENU.get(), TerminalScreen::new);
         MenuScreens.register(ModMenuTypes.GENE_ANALYZER_MENU.get(), GeneAnalyzerScreen::new);
         MenuScreens.register(ModMenuTypes.GENE_ISOLATOR_MENU.get(), GeneIsolatorScreen::new);
+        MenuScreens.register(ModMenuTypes.RESEARCH_TABLE_MENU.get(), ResearchTableScreen::new);
     }
 }

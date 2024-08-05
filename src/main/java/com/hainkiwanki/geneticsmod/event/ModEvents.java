@@ -19,6 +19,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -77,16 +78,13 @@ public class ModEvents {
     // Any mobs that are added in the EntityJoinWorldEvent are here updated again
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if(!entitiesToUpdate.isEmpty()) {
 //            System.out.println("Updating some mobs: " + entitiesToUpdate.size());
-            if (event.phase == TickEvent.Phase.END) {
-                for (LivingEntity entity : entitiesToUpdate) {
-                    entity.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(data -> {
-                        data.forceSync(entity);
-                    });
-                }
-                entitiesToUpdate.clear();
+        if (!entitiesToUpdate.isEmpty()) {
+            List<LivingEntity> entitiesToUpdateCopy = new ArrayList<>(entitiesToUpdate);
+            for (LivingEntity entity : entitiesToUpdateCopy) {
+                entity.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(data -> data.forceSync(entity));
             }
+            entitiesToUpdate.clear();
         }
     }
 

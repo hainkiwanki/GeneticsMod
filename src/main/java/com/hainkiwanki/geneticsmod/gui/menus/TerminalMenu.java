@@ -26,7 +26,7 @@ public class TerminalMenu extends AbstractContainerMenu {
     public TerminalMenu(int windowId, Inventory inv, BlockEntity entity) {
         super(ModMenuTypes.TERMINAL_MENU.get(), windowId);
         checkContainerSize(inv, 4);
-        blockEntity = ((TerminalBlockEntity) entity);
+        blockEntity = (TerminalBlockEntity) entity;
         this.level = inv.player.level;
 
         addPlayerInventory(inv);

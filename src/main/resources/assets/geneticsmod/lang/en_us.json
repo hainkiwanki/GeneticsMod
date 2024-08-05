@@ -53,6 +53,7 @@
   "block.geneticsmod.terminal": "Terminal",
   "block.geneticsmod.gene_analyzer": "Gene Analyzer",
   "block.geneticsmod.gene_isolator": "Gene Isolator",
+  "block.geneticsmod.research_table": "Research Table",
 
   "itemGroup.geneticsmodtab": "Genetics Mod",
 
@@ -84,6 +85,7 @@
   "gui.geneticsmod.terminal_block" : "Terminal",
   "gui.geneticsmod.gene_analyzer_block" : "Gene Analyzer",
   "gui.geneticsmod.gene_isolator_block": "Gene Isolator",
+  "gui.geneticsmod.research_table": "Research Table",
 
   "message.geneticsmod.on_sample_fail" : "Used wrong sampler on mob: "
 }
