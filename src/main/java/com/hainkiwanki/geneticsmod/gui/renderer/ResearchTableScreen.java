@@ -4,6 +4,7 @@ import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.gui.menus.ResearchTableMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -56,16 +57,15 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         RenderSystem.applyModelViewMatrix();
         // begin draw contents
 
+        Minecraft mc = Minecraft.getInstance();
+        double scale = mc.getWindow().getGuiScale();
+        int xPos = (int) (scale * (leftPos + 9));
+        int yPos = (int) (scale * (topPos + 10));
+        int width = (int)(scale * 234);
+        int height = (int)(scale * 113);
+        RenderSystem.enableScissor(xPos, yPos, width, height);
+
         pPoseStack.pushPose();
-        pPoseStack.translate(0.0D, 0.0D, 950.0D);
-        RenderSystem.enableDepthTest();
-        RenderSystem.colorMask(false, false, false, false);
-        fill(pPoseStack, 4680, 2260, -4680, -2260, -16777216);
-        RenderSystem.colorMask(true, true, true, true);
-        pPoseStack.translate(0.0D, 0.0D, -950.0D);
-        RenderSystem.depthFunc(518);
-        fill(pPoseStack, 234, 113, 0, 0, -16777216);
-        RenderSystem.depthFunc(515);
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, BG_TEXTURE);
         int i = Mth.floor(0);
@@ -78,6 +78,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
                 blit(pPoseStack, k + 16 * i1, l + 16 * j1, 0.0F, 0.0F, 16, 16, 16, 16);
             }
         }
+
+        RenderSystem.disableScissor();
 
         // end draw contents
         posestack.popPose();
