@@ -1,7 +1,7 @@
 package com.hainkiwanki.geneticsmod.util;
 
 import com.hainkiwanki.geneticsmod.gui.renderer.components.Pos2i;
-import com.hainkiwanki.geneticsmod.cap.EMobStat;
+import com.hainkiwanki.geneticsmod.cap.mobdata.EMobStat;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;

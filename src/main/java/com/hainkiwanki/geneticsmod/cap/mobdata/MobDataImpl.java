@@ -1,10 +1,9 @@
-package com.hainkiwanki.geneticsmod.cap;
+package com.hainkiwanki.geneticsmod.cap.mobdata;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
-import com.hainkiwanki.geneticsmod.util.Utils;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +14,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.PacketDistributor;
@@ -22,10 +23,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MobDataImpl {
+    public static Capability<IMobDataProvider> MOB_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+
     private static class DefaultImpl implements IMobDataProvider {
         private final LivingEntity livingEntity;
         private boolean isDirty = true;
@@ -41,13 +43,13 @@ public class MobDataImpl {
                 return;
             }
             this.isDirty = false;
-            ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(serializeNBT(), livingEntity.getId()));
+            ModMessages.sendToClients(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(serializeNBT(), livingEntity.getId()));
             livingEntity.refreshDimensions();
         }
 
         @Override
         public void forceSync(LivingEntity livingEntity) {
-            ModMessages.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(serializeNBT(), livingEntity.getId()));
+            ModMessages.sendToClients(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> livingEntity), new ChangeMobDataC2SPacket(serializeNBT(), livingEntity.getId()));
             livingEntity.refreshDimensions();
         }
 
@@ -164,7 +166,7 @@ public class MobDataImpl {
 
         @Override
         public <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction facing) {
-            if (capability == GeneticsMod.MOB_DATA_CAPABILITY) {
+            if (capability == MobDataImpl.MOB_DATA_CAPABILITY) {
                 return cap.cast();
             }
             return LazyOptional.empty();

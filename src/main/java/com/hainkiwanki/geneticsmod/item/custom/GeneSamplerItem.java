@@ -1,6 +1,7 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.cap.mobdata.MobDataImpl;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -86,7 +87,7 @@ public class GeneSamplerItem extends Item {
     }
 
     public void AddNbtToItem(LivingEntity entity, ItemStack item) {
-        entity.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(data -> {
+        entity.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(data -> {
             CompoundTag tag = data.serializeNBT();
             tag.putInt("identified", 0);
             item.setTag(tag);

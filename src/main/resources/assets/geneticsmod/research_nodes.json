@@ -1,0 +1,16 @@
+{
+  "nodes": [
+    {
+      "id": "basic_research",
+      "name": "Basic Research",
+      "description": "Unlocks basic crafting recipes.",
+      "prerequisites": []
+    },
+    {
+      "id": "advanced_research",
+      "name": "Advanced Research",
+      "description": "Unlocks advanced crafting recipes.",
+      "prerequisites": ["basic_research"]
+    }
+  ]
+}
