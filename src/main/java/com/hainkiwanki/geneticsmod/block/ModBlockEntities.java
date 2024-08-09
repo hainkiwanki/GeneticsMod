@@ -14,11 +14,6 @@ import net.minecraftforge.registries.RegistryObject;
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, GeneticsMod.MOD_ID);
 
-    public static void register(IEventBus eventBus) {
-        BLOCK_ENTITIES.register(eventBus);
-        System.out.println("Blocks Entities registered, geneticsmod");
-    }
-
     public static final RegistryObject<BlockEntityType<TerminalBlockEntity>> TERMINAL =
             BLOCK_ENTITIES.register("terminal", () ->
                     BlockEntityType.Builder.of(TerminalBlockEntity::new,
@@ -39,4 +34,7 @@ public class ModBlockEntities {
                     BlockEntityType.Builder.of(ResearchTableBlockEntity::new,
                             ModBlocks.RESEARCH_TABLE.get()).build(null));
 
+    public static void register(IEventBus eventBus) {
+        BLOCK_ENTITIES.register(eventBus);
+    }
 }

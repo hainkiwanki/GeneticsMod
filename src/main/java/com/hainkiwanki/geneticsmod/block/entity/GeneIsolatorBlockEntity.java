@@ -5,7 +5,7 @@ import com.hainkiwanki.geneticsmod.gui.menus.GeneIsolatorMenu;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.EnergySyncS2CPacket;
 import com.hainkiwanki.geneticsmod.recipe.GeneIsolatorRecipe;
-import com.hainkiwanki.geneticsmod.cap.energy.EnergyStorageCapability;
+import com.hainkiwanki.geneticsmod.util.capabilities.EnergyStorageCapability;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

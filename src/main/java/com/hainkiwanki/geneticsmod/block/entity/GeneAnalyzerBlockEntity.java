@@ -2,11 +2,11 @@ package com.hainkiwanki.geneticsmod.block.entity;
 
 import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
-import com.hainkiwanki.geneticsmod.cap.mobdata.EMobStat;
+import com.hainkiwanki.geneticsmod.cap.EMobStat;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.EnergySyncS2CPacket;
 import com.hainkiwanki.geneticsmod.recipe.GeneAnalyzerRecipe;
-import com.hainkiwanki.geneticsmod.cap.energy.EnergyStorageCapability;
+import com.hainkiwanki.geneticsmod.util.capabilities.EnergyStorageCapability;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

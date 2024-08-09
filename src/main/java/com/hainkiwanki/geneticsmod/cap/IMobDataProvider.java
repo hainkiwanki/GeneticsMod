@@ -1,4 +1,4 @@
-package com.hainkiwanki.geneticsmod.cap.mobdata;
+package com.hainkiwanki.geneticsmod.cap;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;

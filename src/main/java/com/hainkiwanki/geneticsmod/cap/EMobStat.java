@@ -1,6 +1,7 @@
-package com.hainkiwanki.geneticsmod.cap.mobdata;
+package com.hainkiwanki.geneticsmod.cap;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 public enum EMobStat {
     SIZE,
