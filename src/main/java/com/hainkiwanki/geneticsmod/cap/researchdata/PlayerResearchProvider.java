@@ -1,9 +1,11 @@
-package com.hainkiwanki.geneticsmod.cap.research;
+package com.hainkiwanki.geneticsmod.cap.researchdata;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -15,16 +17,17 @@ import org.jetbrains.annotations.Nullable;
 
 public class PlayerResearchProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static Capability<PlayerResearchData> PLAYER_RESEARCH_DATA = CapabilityManager.get(new CapabilityToken<>() { });
-    public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(GeneticsMod.MOD_ID, "playerResearchData");
+    public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(GeneticsMod.MOD_ID, "researchdata");
 
     public PlayerResearchData researchData = null;
-    private final LazyOptional<PlayerResearchData> optional = LazyOptional.of(this::createPlayerResearchData);
+    private final LazyOptional<PlayerResearchData> optional;
 
-    private PlayerResearchData createPlayerResearchData() {
+    public PlayerResearchProvider(LivingEntity entity) {
         if(this.researchData == null) {
             this.researchData = new PlayerResearchData();
+            this.researchData.setPlayerId(entity.getId());
         }
-        return this.researchData;
+        optional = LazyOptional.of(() -> this.researchData);
     }
 
     @NotNull
@@ -38,11 +41,17 @@ public class PlayerResearchProvider implements ICapabilityProvider, INBTSerializ
 
     @Override
     public CompoundTag serializeNBT() {
-        return this.researchData.serialize();
+        PlayerResearchData data = this.researchData;
+        return data.serialize();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        this.researchData.deserialize(nbt);
+        PlayerResearchData data = this.researchData;
+        data.deserialize(nbt);
+    }
+
+    public void sync(LivingEntity entity) {
+
     }
 }

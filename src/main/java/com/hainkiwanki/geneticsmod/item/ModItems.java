@@ -9,18 +9,12 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, GeneticsMod.MOD_ID);
-
-    public static final Map<Item, String> ITEMS_REQUIRE_RESEARCH = new HashMap<>();
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
-
     public static final RegistryObject<Item> DEBUG_TOOL =
             ITEMS.register("debug_tool", () -> new DebugToolItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
 
@@ -79,7 +73,7 @@ public class ModItems {
     public static final RegistryObject<Item> SQUID_TENTACLE = ITEMS.register("squid_tentacle", () -> new GeneSampleItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
 
     public static final RegistryObject<Item> STRIDER_HAIR = ITEMS.register("strider_hair", () -> new GeneSampleItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
-    public static final RegistryObject<Item> HOGLIN_HAIR =  ITEMS.register("hoglin_hair", () -> new GeneSampleItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
+    public static final RegistryObject<Item> HOLGIN_HAIR =  ITEMS.register("hoglin_hair", () -> new GeneSampleItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
     public static final RegistryObject<Item> PUFFERFISH_SPIKES = ITEMS.register("pufferfish_spikes", () -> new GeneSampleItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
     public static final RegistryObject<Item> SCALES_PUFFERFISH = ITEMS.register("scales_pufferfish", () -> new GeneSampleItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));
     public static final RegistryObject<Item> SCALES_COD = ITEMS.register("scales_cod", () -> new GeneSampleItem(new Item.Properties().tab(ModCreativeModeTabs.GENETICS_TAB)));

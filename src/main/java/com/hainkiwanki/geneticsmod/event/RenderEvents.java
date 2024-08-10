@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = GeneticsMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class RenderEventsHandler {
+public class RenderEvents {
     @SubscribeEvent
     public static void onPreLivingRender(RenderLivingEvent.Pre e) {
         if(e.getEntity() == null && !(e.getEntity() instanceof Mob)) return;

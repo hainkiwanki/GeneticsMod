@@ -2,7 +2,7 @@ package com.hainkiwanki.geneticsmod;
 
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
 import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
-import com.hainkiwanki.geneticsmod.cap.research.ResearchNodeLoader;
+import com.hainkiwanki.geneticsmod.cap.mobdata.MobDataImpl;
 import com.hainkiwanki.geneticsmod.config.CommonConfig;
 import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.item.ModItemProperties;
@@ -12,7 +12,9 @@ import com.hainkiwanki.geneticsmod.recipe.ModRecipes;
 import com.hainkiwanki.geneticsmod.sound.ModSounds;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -34,9 +36,6 @@ public class GeneticsMod
     public GeneticsMod()
     {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-
-        System.out.println("GeneticsMod, geneticsmod start");
-
         ModItems.register(eventBus);
         ModBlocks.register(eventBus);
         ModBlockEntities.register(eventBus);
@@ -44,26 +43,16 @@ public class GeneticsMod
         ModMenuTypes.register(eventBus);
         ModRecipes.register(eventBus);
 
-        System.out.println("GeneticsMod, geneticsmod mid");
-
         eventBus.addListener(this::setup);
         eventBus.addListener(this::clientSetup);
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, MOD_ID + "-common.toml");
 
         MinecraftForge.EVENT_BUS.register(this);
-
-        System.out.println("GeneticsMod, geneticsmod end");
-
-//        ResearchNodeLoader.loadResearchNodes();
     }
-
-
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        System.out.println("GeneticsMod, setup start");
-
         ModItems.DNA_SAMPLER_SYRINGE.get().SetSoundEvent(ModSounds.SYRINGE_SUCK.get());
         ModItems.DNA_SAMPLER_SWAB.get().SetSoundEvent(ModSounds.SWAB.get());
         ModItems.DNA_SAMPLER_KNIFE.get().SetSoundEvent(ModSounds.KNIFE_STAB.get());
@@ -75,7 +64,6 @@ public class GeneticsMod
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        System.out.println("GeneticsMod, clientSetup start");
         ModItemProperties.addCustomItemProperties();
     }
 }

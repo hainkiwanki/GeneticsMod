@@ -1,4 +1,5 @@
-package com.hainkiwanki.geneticsmod.cap.research;
+package com.hainkiwanki.geneticsmod.cap.researchdata;
+
 
 import com.google.gson.*;
 

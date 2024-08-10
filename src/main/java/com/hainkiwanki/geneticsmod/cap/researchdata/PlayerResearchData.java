@@ -1,23 +1,31 @@
-package com.hainkiwanki.geneticsmod.cap.research;
+package com.hainkiwanki.geneticsmod.cap.researchdata;
 
+import com.hainkiwanki.geneticsmod.network.ModMessages;
+import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
+import com.hainkiwanki.geneticsmod.network.packet.SyncPlayerResearchDataPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class PlayerResearchData {
     private final String UNLOCKED_RESEARCH = "unlocked_research";
     private final String RESEARCH_POINTS = "research_points";
     private final String PLAYER_ID = "player_id";
 
-    private final Set<String> unlockedNodes = new HashSet<>();
+    private Set<String> unlockedNodes = new HashSet<>();
     private int researchPoints;
     private int playerId;
 
     public void setPlayerId(int id) {
         this.playerId = id;
+        serialize();
     }
 
     public int getPlayerId() {
@@ -32,6 +40,10 @@ public class PlayerResearchData {
         return this.researchPoints;
     }
 
+    public void increaseResearchPoints(int amount) {
+        this.researchPoints += amount;
+    }
+
     public boolean isNodeUnlocked(String nodeId) {
         return unlockedNodes.contains(nodeId);
     }
@@ -40,6 +52,12 @@ public class PlayerResearchData {
         if(!unlockedNodes.contains(nodeId)) {
             unlockedNodes.add(nodeId);
         }
+    }
+
+    public void copy(PlayerResearchData data) {
+        this.playerId = data.getPlayerId();
+        this.researchPoints = data.getResearchPoints();
+        this.unlockedNodes = new HashSet<>(data.unlockedNodes);
     }
 
     public CompoundTag serialize() {

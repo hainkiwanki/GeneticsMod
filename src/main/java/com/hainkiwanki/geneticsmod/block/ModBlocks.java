@@ -25,7 +25,6 @@ public class ModBlocks {
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
-        System.out.println("Blocks registered, geneticsmod");
     }
 
     public static final RegistryObject<Block> TERMINAL = registerBlock("terminal", () ->
