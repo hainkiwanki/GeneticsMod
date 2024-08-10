@@ -1,4 +1,4 @@
-package com.hainkiwanki.geneticsmod.util.capabilities;
+package com.hainkiwanki.geneticsmod.cap.energy;
 
 import net.minecraftforge.energy.EnergyStorage;
 

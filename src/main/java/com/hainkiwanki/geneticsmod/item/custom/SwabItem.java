@@ -1,6 +1,6 @@
 package com.hainkiwanki.geneticsmod.item.custom;
 
-import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.cap.mobdata.MobDataImpl;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -65,7 +65,7 @@ public class SwabItem extends GeneSamplerItem {
 
     @Override
     public void OnUseCorrectTool(LivingEntity pInteractionTarget, Player pPlayer) {
-        pInteractionTarget.getCapability(GeneticsMod.MOB_DATA_CAPABILITY).ifPresent(data -> {
+        pInteractionTarget.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(data -> {
             CompoundTag tag = data.serializeNBT();
             ItemStack swab = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
             swab.setTag(tag);
