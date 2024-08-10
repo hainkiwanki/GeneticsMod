@@ -3,7 +3,6 @@ package com.hainkiwanki.geneticsmod.cap.researchdata;
 
 import com.google.gson.*;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ public class ResearchNodeLoader {
     private static final Map<String, ResearchNode> researchNodeCache = new HashMap<>();
 
     public static void loadResearchNodes() {
-        try (Reader reader = new InputStreamReader(ResearchNodeLoader.class.getResourceAsStream("/assets/geneticsmod/research_nodes.json"))) {
+        try (Reader reader = new InputStreamReader(ResearchNodeLoader.class.getResourceAsStream("/assets/geneticsmod/genetics/research_nodes.json"))) {
 
             JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
             JsonArray nodesArray = json.getAsJsonArray("nodes");

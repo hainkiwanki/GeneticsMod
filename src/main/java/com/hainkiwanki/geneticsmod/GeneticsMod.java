@@ -3,6 +3,7 @@ package com.hainkiwanki.geneticsmod;
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
 import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.cap.mobdata.MobDataImpl;
+import com.hainkiwanki.geneticsmod.cap.researchdata.ResearchNodeLoader;
 import com.hainkiwanki.geneticsmod.config.CommonConfig;
 import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.item.ModItemProperties;
@@ -49,6 +50,8 @@ public class GeneticsMod
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, MOD_ID + "-common.toml");
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        ResearchNodeLoader.loadResearchNodes();
     }
 
     private void setup(final FMLCommonSetupEvent event)

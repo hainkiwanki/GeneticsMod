@@ -28,7 +28,6 @@ import net.minecraftforge.network.PacketDistributor;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Mod.EventBusSubscriber(modid = GeneticsMod.MOD_ID)
 public class ModEvents {
     @SubscribeEvent

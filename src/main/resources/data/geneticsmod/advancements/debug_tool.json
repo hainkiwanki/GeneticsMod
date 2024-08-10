@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "geneticsmod:debug_tool"
+    },
+    "title": "Debug Tool",
+    "description": "This helps the dev and curious people.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "geneticsmod:geneticsmod",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "geneticsmod:debug_tool"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

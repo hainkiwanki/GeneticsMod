@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "geneticsmod:debug_tool"
+    },
+    "title": "Genetics Mod Mod",
+    "description": "The Power is in the Genes",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "geneticsmod:textures/gui/bg.png"
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "geneticsmod:research_table"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
