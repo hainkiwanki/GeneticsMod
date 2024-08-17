@@ -1,4 +1,4 @@
-package com.hainkiwanki.geneticsmod.cap.researchdata;
+package com.hainkiwanki.geneticsmod.research;
 
 
 import com.google.gson.*;
@@ -13,6 +13,14 @@ import java.util.Map;
 public class ResearchNodeLoader {
     private static final Gson GSON = new GsonBuilder().create();
     private static final Map<String, ResearchNode> researchNodeCache = new HashMap<>();
+
+    public static ResearchNode getNodeById(String id) {
+        return researchNodeCache.get(id);
+    }
+
+    public static List<ResearchNode> GetAllNodes() {
+        return researchNodeCache.values().stream().toList();
+    }
 
     public static void loadResearchNodes() {
         try (Reader reader = new InputStreamReader(ResearchNodeLoader.class.getResourceAsStream("/assets/geneticsmod/genetics/research_nodes.json"))) {

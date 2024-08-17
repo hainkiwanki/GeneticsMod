@@ -1,4 +1,4 @@
-package com.hainkiwanki.geneticsmod.cap.researchdata;
+package com.hainkiwanki.geneticsmod.research;
 
 import java.util.List;
 

@@ -2,10 +2,10 @@ package com.hainkiwanki.geneticsmod.gui.renderer;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.gui.menus.ResearchTableMenu;
+import com.hainkiwanki.geneticsmod.gui.renderer.components.ResearchNodeButton;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -25,10 +25,9 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     public ResearchTableScreen(ResearchTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        this.imageHeight = 140;
+        this.imageHeight = 177;
         this.imageWidth = 252;
     }
-
 
     @Override
     protected void init() {
@@ -61,23 +60,12 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         double scale = mc.getWindow().getGuiScale();
         int xPos = (int) (scale * (leftPos + 9));
         int yPos = (int) (scale * (topPos + 10));
-        int width = (int)(scale * 234);
-        int height = (int)(scale * 113);
+        int width = (int)(scale * 140);
+        int height = (int)(scale * 150);
         RenderSystem.enableScissor(xPos, yPos, width, height);
 
-        pPoseStack.pushPose();
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderTexture(0, BG_TEXTURE);
-        int i = Mth.floor(0);
-        int j = Mth.floor(0);
-        int k = i % 16;
-        int l = j % 16;
-
-        for(int i1 = -1; i1 <= 15; ++i1) {
-            for (int j1 = -1; j1 <= 8; ++j1) {
-                blit(pPoseStack, k + 16 * i1, l + 16 * j1, 0.0F, 0.0F, 16, 16, 16, 16);
-            }
-        }
+        this.renderCustomBackground(pPoseStack);
+        this.renderPlayerNodes(pPoseStack);
 
         RenderSystem.disableScissor();
 
@@ -86,6 +74,37 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         RenderSystem.applyModelViewMatrix();
         RenderSystem.depthFunc(515);
         RenderSystem.disableDepthTest();
+    }
+
+    private void renderCustomBackground(PoseStack pPoseStack) {
+        pPoseStack.pushPose();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderTexture(0, BG_TEXTURE);
+        int i = Mth.floor(0);
+        int j = Mth.floor(0);
+        int k = i % 16;
+        int l = j % 16;
+
+        for(int i1 = -1; i1 <= 16; ++i1) {
+            for (int j1 = -1; j1 <= 9; ++j1) {
+                blit(pPoseStack, k + 16 * i1, l + 16 * j1, 0.0F, 0.0F, 16, 16, 16, 16);
+            }
+        }
+        pPoseStack.popPose();
+    }
+
+    private void renderPlayerNodes(PoseStack pPoseStack) {
+//        pPoseStack.pushPose();
+//        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+//        RenderSystem.setShaderTexture(0, TEXTURE);
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageHeight) / 2;
+        ResearchNodeButton button = new ResearchNodeButton(x, y, (btn) -> {
+            System.out.println("Something");
+        });
+        addRenderableWidget(button);
+//        this.blit(pPoseStack, x, y, 0, 228, 28, 28);
+//        pPoseStack.popPose();
     }
 
     private void renderWindow(PoseStack pPoseStack) {

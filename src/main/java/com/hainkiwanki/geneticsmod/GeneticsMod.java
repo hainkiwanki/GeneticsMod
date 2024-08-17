@@ -2,8 +2,7 @@ package com.hainkiwanki.geneticsmod;
 
 import com.hainkiwanki.geneticsmod.block.ModBlocks;
 import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
-import com.hainkiwanki.geneticsmod.cap.mobdata.MobDataImpl;
-import com.hainkiwanki.geneticsmod.cap.researchdata.ResearchNodeLoader;
+import com.hainkiwanki.geneticsmod.research.ResearchNodeLoader;
 import com.hainkiwanki.geneticsmod.config.CommonConfig;
 import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.item.ModItemProperties;
@@ -13,9 +12,7 @@ import com.hainkiwanki.geneticsmod.recipe.ModRecipes;
 import com.hainkiwanki.geneticsmod.sound.ModSounds;
 import com.mojang.logging.LogUtils;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -50,6 +47,8 @@ public class GeneticsMod
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC, MOD_ID + "-common.toml");
 
         MinecraftForge.EVENT_BUS.register(this);
+
+//        CraftingHelper.register(new ResearchUnlockCondition.Serializer());
 
         ResearchNodeLoader.loadResearchNodes();
     }
