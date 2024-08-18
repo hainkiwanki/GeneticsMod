@@ -4,27 +4,24 @@ import com.hainkiwanki.geneticsmod.GeneticsMod;
 import com.hainkiwanki.geneticsmod.research.ResearchNode;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 
-public class ResearchNodeButton extends Button {
+public class ResearchNodeButton extends GuiComponent {
     ResourceLocation buttonTexture = new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/research_table.png");
-    private boolean isSelected = false;
+    private boolean isSelected;
+    private boolean isHovered;
     private ResearchNode researchNode = null;
 
-    private int u = 228, v = 0;
-    private final int textureWidth = 28;
-
-    public ResearchNodeButton(ResearchNode node, int x, int y, Button.OnPress pOnPress) {
-        super(x, y, 28, 28, TextComponent.EMPTY, pOnPress);
+    public ResearchNodeButton(ResearchNode node) {
         this.researchNode = node;
     }
 
-    @Override
-    public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
+    public void draw(PoseStack pPoseStack, int x, int y) {
         pPoseStack.pushPose();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, buttonTexture);
@@ -32,7 +29,7 @@ public class ResearchNodeButton extends Button {
                 this.blit(pPoseStack, x, y, 0, 178, 26, 26);
         } else {
             if (this.isHovered) {
-            this.blit(pPoseStack, x, y, 0, 204, 26, 26);
+                this.blit(pPoseStack, x, y, 0, 204, 26, 26);
             } else {
                 this.blit(pPoseStack, x, y, 0, 230, 26, 26);
             }
@@ -40,24 +37,13 @@ public class ResearchNodeButton extends Button {
         pPoseStack.popPose();
     }
 
-    @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if(pButton == 0) {
-            this.isSelected = this.clicked(pMouseX, pMouseY);
-        }
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
     }
 
-    public void isSelected() {
-        this.isSelected = true;
+    public void setHovered(boolean hovered) {
+        this.isHovered = hovered;
     }
 
-    public void deselect() {
-        this.isSelected = false;
-    }
 
-    @Override
-    public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
-
-    }
 }

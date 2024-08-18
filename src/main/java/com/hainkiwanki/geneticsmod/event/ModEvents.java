@@ -67,7 +67,7 @@ public class ModEvents {
             e.addCapability(MobDataImpl.Provider.RESOURCE_LOCATION, new MobDataImpl.Provider((LivingEntity) e.getObject()));
         }
 
-        if (e.getObject() instanceof ServerPlayer) {
+        if (e.getObject() instanceof Player) {
             e.addCapability(PlayerResearchProvider.RESOURCE_LOCATION, new PlayerResearchProvider((Player) e.getObject()));
         }
     }

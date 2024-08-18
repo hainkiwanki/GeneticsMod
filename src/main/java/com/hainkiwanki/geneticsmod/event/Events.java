@@ -7,6 +7,7 @@ import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.ModifyPlayerResearchDataPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,8 +21,12 @@ public class Events {
         @SubscribeEvent
         public static void onKeyInput(InputEvent.KeyInputEvent e) {
             if(e.getKey() == GLFW.GLFW_KEY_J && e.getAction() == GLFW.GLFW_RELEASE) {
-                if(Minecraft.getInstance().player != null) {
-                    ModMessages.sendToServer(new ModifyPlayerResearchDataPacket(1));
+                Player player = Minecraft.getInstance().player;
+                if(player != null) {
+                    player.getCapability(PlayerResearchProvider.PLAYER_RESEARCH_DATA).ifPresent(researchCap -> {
+                        researchCap.increaseResearchPoints(1);
+                        ModMessages.sendToServer(new ModifyPlayerResearchDataPacket(1));
+                    });
                 }
             }
         }

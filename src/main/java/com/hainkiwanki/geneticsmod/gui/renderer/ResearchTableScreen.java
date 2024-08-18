@@ -5,6 +5,7 @@ import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchData;
 import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchProvider;
 import com.hainkiwanki.geneticsmod.gui.menus.ResearchTableMenu;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.ResearchNodeButton;
+import com.hainkiwanki.geneticsmod.research.ResearchButtonManager;
 import com.hainkiwanki.geneticsmod.research.ResearchNode;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -30,19 +31,31 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private boolean dragging = false;
     private int dragX = 0;
     private int dragY = 0;
-    private List<ResearchNodeButton> nodeButtons;
-    private ResearchNodeButton selectedButton = null;
+    private final ResearchButtonManager researchButtonManager;
 
     public ResearchTableScreen(ResearchTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageHeight = 177;
         this.imageWidth = 252;
-        this.nodeButtons = new ArrayList<>();
+        this.researchButtonManager = new ResearchButtonManager();
     }
 
     @Override
     protected void init() {
         super.init();
+
+        this.researchButtonManager.buttons.clear();
+        Player player = Minecraft.getInstance().player;
+        if(player != null) {
+            player.getCapability(PlayerResearchProvider.PLAYER_RESEARCH_DATA).ifPresent(data -> {
+                List<ResearchNode> playerDataNodes = data.getResearchNodes();
+                for(int i = 0; i < playerDataNodes.size(); i++) {
+                    ResearchNode node = playerDataNodes.get(i);
+                    ResearchNodeButton button = new ResearchNodeButton(node);
+                    this.researchButtonManager.registerButton(button);
+                }
+            });
+        }
     }
 
     @Override
@@ -53,11 +66,11 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
         this.renderBackground(pPoseStack);
-        this.renderInside(pPoseStack);
+        this.renderInside(pPoseStack, pMouseX, pMouseY);
         this.renderWindow(pPoseStack);
     }
 
-    private void renderInside(PoseStack pPoseStack) {
+    private void renderInside(PoseStack pPoseStack, int pMouseX, int pMouseY) {
         int pOffsetX = (width - imageWidth) / 2;
         int pOffsetY = (height - imageHeight) / 2;
         PoseStack posestack = RenderSystem.getModelViewStack();
@@ -72,12 +85,12 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         int yPos = (int) (scale * (topPos + 10));
         int width = (int)(scale * 140);
         int height = (int)(scale * 150);
-        RenderSystem.enableScissor(xPos, yPos, width, height);
 
+        RenderSystem.enableScissor(xPos, yPos, width, height);
         this.renderCustomBackground(pPoseStack);
+        RenderSystem.disableScissor();
         this.renderPlayerNodes(pPoseStack);
 
-        RenderSystem.disableScissor();
 
         // end draw contents
         posestack.popPose();
@@ -95,8 +108,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         int k = i % 16;
         int l = j % 16;
 
-        for(int i1 = -1; i1 <= 16; ++i1) {
-            for (int j1 = -1; j1 <= 9; ++j1) {
+        for(int i1 = -1; i1 <= 17; ++i1) {
+            for (int j1 = -1; j1 <= 10; ++j1) {
                 blit(pPoseStack, k + 16 * i1, l + 16 * j1, 0.0F, 0.0F, 16, 16, 16, 16);
             }
         }
@@ -104,28 +117,11 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     private void renderPlayerNodes(PoseStack pPoseStack) {
-        Player player = Minecraft.getInstance().player;
-        System.out.println(player.getId());
-        player.getCapability(PlayerResearchProvider.PLAYER_RESEARCH_DATA).ifPresent(data -> {
-            System.out.println(data.getResearchPoints());
-        });
-//        List<ResearchNode> playerDataNodes = this.menu.getPlayerResearchData().getResearchNodes();
-//        int x = (width - imageWidth) / 2;
-//        int y = (height - imageHeight) / 2;
-//        for(int i = 0; i < playerDataNodes.size(); i++) {
-//            ResearchNode node = playerDataNodes.get(i);
-//            ResearchNodeButton button = new ResearchNodeButton(node, x + i * 30, y, (btn) -> {
-//                ResearchNodeButton rbtn = (ResearchNodeButton) btn;
-//                if(this.selectedButton != null && this.selectedButton != rbtn) {
-//                    this.selectedButton.deselect();
-//                }
-//                this.selectedButton = rbtn;
-//                this.selectedButton.isSelected();
-//            });
-//            this.nodeButtons.add(button);
-//            addRenderableWidget(button);
-//        }
-
+        for(int i = 0; i < this.researchButtonManager.buttons.size(); i++) {
+            int xPos = i*30;
+            ResearchNodeButton button = this.researchButtonManager.buttons.get(i);
+            button.draw(pPoseStack, xPos, 0);
+        }
     }
 
     private void renderWindow(PoseStack pPoseStack) {
@@ -140,6 +136,12 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
+    }
+
+    @Override
+    public void mouseMoved(double pMouseX, double pMouseY) {
+        super.mouseMoved(pMouseX, pMouseY);
+
     }
 
     @Override
