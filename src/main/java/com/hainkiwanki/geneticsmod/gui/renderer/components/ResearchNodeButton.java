@@ -5,33 +5,36 @@ import com.hainkiwanki.geneticsmod.research.ResearchNode;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class ResearchNodeButton extends GuiComponent {
     ResourceLocation buttonTexture = new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/research_table.png");
     private boolean isSelected;
     private boolean isHovered;
-    private ResearchNode researchNode = null;
+    public ResearchNode researchNode = null;
+    private int x, y, offsetX, offsetY;
 
-    public ResearchNodeButton(ResearchNode node) {
+    public ResearchNodeButton(ResearchNode node, int offsetX, int offsetY) {
         this.researchNode = node;
+        this.offsetX = offsetX + 9;
+        this.offsetY = offsetY + 18;
     }
 
     public void draw(PoseStack pPoseStack, int x, int y) {
         pPoseStack.pushPose();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, buttonTexture);
+        this.x = x;
+        this.y = y;
+
         if (this.isSelected) {
-                this.blit(pPoseStack, x, y, 0, 178, 26, 26);
+                this.blit(pPoseStack, this.x, this.y, 0, 178, 26, 26);
         } else {
             if (this.isHovered) {
-                this.blit(pPoseStack, x, y, 0, 204, 26, 26);
+                this.blit(pPoseStack,this.x, this.y, 0, 204, 26, 26);
             } else {
-                this.blit(pPoseStack, x, y, 0, 230, 26, 26);
+                this.blit(pPoseStack, this.x, this.y, 0, 230, 26, 26);
             }
         }
         pPoseStack.popPose();
@@ -41,9 +44,15 @@ public class ResearchNodeButton extends GuiComponent {
         this.isSelected = selected;
     }
 
-    public void setHovered(boolean hovered) {
-        this.isHovered = hovered;
+    public boolean getHovered() {
+        return this.isHovered;
     }
 
-
+    public void mouseMoved(double pMouseX, double pMouseY, int size, int uOffset, int vOffset) {
+        int left = this.x + this.offsetX + uOffset;
+        int right = left + size;
+        int top = this.y + this.offsetY + vOffset;
+        int bottom = top + size;
+        this.isHovered = pMouseX >= left && pMouseY >= top && pMouseX < right && pMouseY < bottom;
+    }
 }

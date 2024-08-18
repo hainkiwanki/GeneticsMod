@@ -7,6 +7,7 @@ import com.hainkiwanki.geneticsmod.gui.menus.ResearchTableMenu;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.ResearchNodeButton;
 import com.hainkiwanki.geneticsmod.research.ResearchButtonManager;
 import com.hainkiwanki.geneticsmod.research.ResearchNode;
+import com.hainkiwanki.geneticsmod.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
@@ -49,9 +50,11 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         if(player != null) {
             player.getCapability(PlayerResearchProvider.PLAYER_RESEARCH_DATA).ifPresent(data -> {
                 List<ResearchNode> playerDataNodes = data.getResearchNodes();
+                int offsetX = (this.width - this.imageWidth) / 2;
+                int offsetY = (this.height - this.imageHeight) / 2;
                 for(int i = 0; i < playerDataNodes.size(); i++) {
                     ResearchNode node = playerDataNodes.get(i);
-                    ResearchNodeButton button = new ResearchNodeButton(node);
+                    ResearchNodeButton button = new ResearchNodeButton(node, offsetX, offsetY);
                     this.researchButtonManager.registerButton(button);
                 }
             });
@@ -60,7 +63,7 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        font.draw(pPoseStack, title.getString(), 8, 6, 4210752);
+        this.font.draw(pPoseStack, this.title.getString(), 8, 6, 4210752);
     }
 
     @Override
@@ -71,8 +74,8 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     private void renderInside(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        int pOffsetX = (width - imageWidth) / 2;
-        int pOffsetY = (height - imageHeight) / 2;
+        int pOffsetX = (this.width - this.imageWidth) / 2;
+        int pOffsetY = (this.height - this.imageHeight) / 2;
         PoseStack posestack = RenderSystem.getModelViewStack();
         posestack.pushPose();
         posestack.translate((double)(pOffsetX + 9), (double)(pOffsetY + 18), 0.0D);
@@ -81,15 +84,15 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
         Minecraft mc = Minecraft.getInstance();
         double scale = mc.getWindow().getGuiScale();
-        int xPos = (int) (scale * (leftPos + 9));
-        int yPos = (int) (scale * (topPos + 10));
+        int xPos = (int) (scale * (this.leftPos + 9));
+        int yPos = (int) (scale * (this.topPos + 10));
         int width = (int)(scale * 140);
         int height = (int)(scale * 150);
 
         RenderSystem.enableScissor(xPos, yPos, width, height);
         this.renderCustomBackground(pPoseStack);
-        RenderSystem.disableScissor();
         this.renderPlayerNodes(pPoseStack);
+        RenderSystem.disableScissor();
 
 
         // end draw contents
@@ -118,9 +121,10 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     private void renderPlayerNodes(PoseStack pPoseStack) {
         for(int i = 0; i < this.researchButtonManager.buttons.size(); i++) {
-            int xPos = i*30;
+            int xPos = i * 30 + this.xOffset;
+            int yPos = this.yOffset;
             ResearchNodeButton button = this.researchButtonManager.buttons.get(i);
-            button.draw(pPoseStack, xPos, 0);
+            button.draw(pPoseStack, xPos, yPos);
         }
     }
 
@@ -140,16 +144,23 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
 
     @Override
     public void mouseMoved(double pMouseX, double pMouseY) {
-        super.mouseMoved(pMouseX, pMouseY);
-
+        for(int i = 0; i < this.researchButtonManager.buttons.size(); i++) {
+            this.researchButtonManager.buttons.get(i).mouseMoved(pMouseX, pMouseY, 24, 1, 1);
+        }
     }
 
     @Override
     public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if(pButton == 0) {
-            this.dragging = true;
-            this.dragX = (int)pMouseX - xOffset;
-            this.dragY = (int)pMouseY - yOffset;
+        if(this.isAboveWindow(pMouseX, pMouseY) && pButton == 0) {
+            this.dragging = !this.isAboveNode();
+            this.dragX = (int)pMouseX - this.xOffset;
+            this.dragY = (int)pMouseY - this.yOffset;
+            for (int i = 0; i < this.researchButtonManager.buttons.size(); i++) {
+                ResearchNodeButton btn = this.researchButtonManager.buttons.get(i);
+                if (btn.getHovered()) {
+                    this.researchButtonManager.selectButton(btn);
+                }
+            }
         }
 
         return super.mouseClicked(pMouseX, pMouseY, pButton);
@@ -160,7 +171,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         if(pButton == 0) {
             this.dragging = false;
         }
-
         return super.mouseReleased(pMouseX, pMouseY, pButton);
     }
 
@@ -171,7 +181,22 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
             this.yOffset = (int)pMouseY - this.dragY;
             return true;
         }
-
         return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
+    }
+
+    private boolean isAboveWindow(double pMouseX, double pMouseY) {
+        int x = (this.width - this.imageWidth) / 2;
+        int y = (this.height - this.imageHeight) / 2;
+        return Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, x, y, 9 ,18, 140, 150);
+    }
+
+    private boolean isAboveNode() {
+        for(int i = 0; i < this.researchButtonManager.buttons.size(); i++) {
+            ResearchNodeButton btn = this.researchButtonManager.buttons.get(i);
+            if(btn.getHovered()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

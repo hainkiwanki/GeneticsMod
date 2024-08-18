@@ -17,8 +17,13 @@ public class ResearchButtonManager {
         if (selectedButton != null) {
             selectedButton.setSelected(false);
         }
+        if(selectedButton == button) {
+            selectedButton = null;
+            return;
+        }
+
         selectedButton = button;
-        if(button != null) {
+        if(selectedButton != null) {
             selectedButton.setSelected(true);
         }
     }
