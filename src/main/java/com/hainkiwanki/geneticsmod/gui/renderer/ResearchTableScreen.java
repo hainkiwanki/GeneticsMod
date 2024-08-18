@@ -1,8 +1,11 @@
 package com.hainkiwanki.geneticsmod.gui.renderer;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
+import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchData;
+import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchProvider;
 import com.hainkiwanki.geneticsmod.gui.menus.ResearchTableMenu;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.ResearchNodeButton;
+import com.hainkiwanki.geneticsmod.research.ResearchNode;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
@@ -12,6 +15,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/research_table.png");
@@ -22,11 +30,14 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private boolean dragging = false;
     private int dragX = 0;
     private int dragY = 0;
+    private List<ResearchNodeButton> nodeButtons;
+    private ResearchNodeButton selectedButton = null;
 
     public ResearchTableScreen(ResearchTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageHeight = 177;
         this.imageWidth = 252;
+        this.nodeButtons = new ArrayList<>();
     }
 
     @Override
@@ -37,7 +48,6 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     @Override
     protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
         font.draw(pPoseStack, title.getString(), 8, 6, 4210752);
-
     }
 
     @Override
@@ -94,17 +104,28 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     }
 
     private void renderPlayerNodes(PoseStack pPoseStack) {
-//        pPoseStack.pushPose();
-//        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-//        RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-        ResearchNodeButton button = new ResearchNodeButton(x, y, (btn) -> {
-            System.out.println("Something");
+        Player player = Minecraft.getInstance().player;
+        System.out.println(player.getId());
+        player.getCapability(PlayerResearchProvider.PLAYER_RESEARCH_DATA).ifPresent(data -> {
+            System.out.println(data.getResearchPoints());
         });
-        addRenderableWidget(button);
-//        this.blit(pPoseStack, x, y, 0, 228, 28, 28);
-//        pPoseStack.popPose();
+//        List<ResearchNode> playerDataNodes = this.menu.getPlayerResearchData().getResearchNodes();
+//        int x = (width - imageWidth) / 2;
+//        int y = (height - imageHeight) / 2;
+//        for(int i = 0; i < playerDataNodes.size(); i++) {
+//            ResearchNode node = playerDataNodes.get(i);
+//            ResearchNodeButton button = new ResearchNodeButton(node, x + i * 30, y, (btn) -> {
+//                ResearchNodeButton rbtn = (ResearchNodeButton) btn;
+//                if(this.selectedButton != null && this.selectedButton != rbtn) {
+//                    this.selectedButton.deselect();
+//                }
+//                this.selectedButton = rbtn;
+//                this.selectedButton.isSelected();
+//            });
+//            this.nodeButtons.add(button);
+//            addRenderableWidget(button);
+//        }
+
     }
 
     private void renderWindow(PoseStack pPoseStack) {

@@ -18,7 +18,7 @@ public class ResearchNodeLoader {
         return researchNodeCache.get(id);
     }
 
-    public static List<ResearchNode> GetAllNodes() {
+    public static List<ResearchNode> getAllNodes() {
         return researchNodeCache.values().stream().toList();
     }
 

@@ -36,6 +36,7 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     }
 
     public PlayerResearchData getPlayerResearchData() {
+        System.out.println(this.playerResearchData);
         return this.playerResearchData;
     }
 

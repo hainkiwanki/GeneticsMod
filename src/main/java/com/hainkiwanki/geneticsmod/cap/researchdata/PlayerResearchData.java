@@ -3,6 +3,8 @@ package com.hainkiwanki.geneticsmod.cap.researchdata;
 import com.hainkiwanki.geneticsmod.network.ModMessages;
 import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
 import com.hainkiwanki.geneticsmod.network.packet.SyncPlayerResearchDataPacket;
+import com.hainkiwanki.geneticsmod.research.ResearchNode;
+import com.hainkiwanki.geneticsmod.research.ResearchNodeLoader;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -10,9 +12,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.PacketDistributor;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PlayerResearchData {
     private final String UNLOCKED_RESEARCH = "unlocked_research";
@@ -46,6 +47,12 @@ public class PlayerResearchData {
 
     public boolean isNodeUnlocked(String nodeId) {
         return unlockedNodes.contains(nodeId);
+    }
+
+    public List<ResearchNode> getResearchNodes() {
+       return ResearchNodeLoader.getAllNodes().stream()
+               .filter(node -> this.unlockedNodes.contains(node.id))
+               .toList();
     }
 
     public void unlockNode(String nodeId) {
