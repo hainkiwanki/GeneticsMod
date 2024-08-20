@@ -10,21 +10,23 @@ public class ResearchButtonManager {
     public List<ResearchNodeButton> buttons = new ArrayList<>();
 
     public void registerButton(ResearchNodeButton button) {
-        buttons.add(button);
+        this.buttons.add(button);
+    }
+
+    public ResearchNode getSelectedNode() {
+        if(this.selectedButton == null) {
+            return null;
+        }
+        return this.selectedButton.researchNode;
     }
 
     public void selectButton(ResearchNodeButton button) {
-        if (selectedButton != null) {
-            selectedButton.setSelected(false);
+        if (this.selectedButton != null) {
+            this.selectedButton.setSelected(false);
         }
-        if(selectedButton == button) {
-            selectedButton = null;
-            return;
-        }
-
-        selectedButton = button;
-        if(selectedButton != null) {
-            selectedButton.setSelected(true);
+        this.selectedButton = button;
+        if(this.selectedButton != null) {
+            this.selectedButton.setSelected(true);
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.hainkiwanki.geneticsmod.gui.renderer;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchData;
 import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchProvider;
 import com.hainkiwanki.geneticsmod.gui.menus.ResearchTableMenu;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.ResearchNodeButton;
@@ -20,7 +19,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMenu> {
@@ -33,6 +31,13 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     private int dragX = 0;
     private int dragY = 0;
     private final ResearchButtonManager researchButtonManager;
+
+    // Node Information
+    private final int nodeInfoTop = 12;
+    private final int nodeIntoLeft = 150;
+    private final int nodeInfoWidth = 99;
+    private final int nodeInfoHeight = 158;
+    private final int nodeInfoNameHeight = 12;
 
     public ResearchTableScreen(ResearchTableMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -69,34 +74,33 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
     @Override
     protected void renderBg(PoseStack pPoseStack, float pPartialTick, int pMouseX, int pMouseY) {
         this.renderBackground(pPoseStack);
-        this.renderInside(pPoseStack, pMouseX, pMouseY);
+        this.renderInside(pPoseStack);
         this.renderWindow(pPoseStack);
+        this.renderUnlockButton(pPoseStack);
+        this.renderNodeInformation(pPoseStack);
     }
 
-    private void renderInside(PoseStack pPoseStack, int pMouseX, int pMouseY) {
+    private void renderInside(PoseStack pPoseStack) {
         int pOffsetX = (this.width - this.imageWidth) / 2;
         int pOffsetY = (this.height - this.imageHeight) / 2;
-        PoseStack posestack = RenderSystem.getModelViewStack();
-        posestack.pushPose();
-        posestack.translate((double)(pOffsetX + 9), (double)(pOffsetY + 18), 0.0D);
+        pPoseStack.pushPose();
+        pPoseStack.translate((double)(pOffsetX + 9), (double)(pOffsetY + 18), 0.0D);
         RenderSystem.applyModelViewMatrix();
         // begin draw contents
-
         Minecraft mc = Minecraft.getInstance();
         double scale = mc.getWindow().getGuiScale();
         int xPos = (int) (scale * (this.leftPos + 9));
         int yPos = (int) (scale * (this.topPos + 10));
-        int width = (int)(scale * 140);
-        int height = (int)(scale * 150);
+        int maskWidth = (int)(scale * 140);
+        int maskHeight = (int)(scale * 150);
 
-        RenderSystem.enableScissor(xPos, yPos, width, height);
+        RenderSystem.enableScissor(xPos, yPos, maskWidth, maskHeight);
         this.renderCustomBackground(pPoseStack);
         this.renderPlayerNodes(pPoseStack);
         RenderSystem.disableScissor();
 
-
         // end draw contents
-        posestack.popPose();
+        pPoseStack.popPose();
         RenderSystem.applyModelViewMatrix();
         RenderSystem.depthFunc(515);
         RenderSystem.disableDepthTest();
@@ -134,12 +138,120 @@ public class ResearchTableScreen extends AbstractContainerScreen<ResearchTableMe
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
 
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-        this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
+        int x = (this.width - this.imageWidth) / 2;
+        int y = (this.height - this.imageHeight) / 2;
+        this.blit(pPoseStack, x, y, 0, 0, this.imageWidth, this.imageHeight);
 
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
+    }
+
+    private void renderUnlockButton(PoseStack pPoseStack) {
+
+    }
+
+    private void renderNodeInformation(PoseStack pPoseStack) {
+        ResearchNode node = this.researchButtonManager.getSelectedNode();
+        if(node == null) {
+            return;
+        }
+        this.renderNodeName(node, pPoseStack);
+
+    }
+
+    private void renderNodeName(ResearchNode node, PoseStack pPoseStack) {
+        int onScreenWidth = 99 - 10; // 99 = actual this.width, 10 = 5 px offset both sides
+        int nameWidth = this.font.width(node.name);
+        List<String> results = new ArrayList<>();
+
+        if(nameWidth > onScreenWidth) {
+            String[] splitName = node.name.split(" ");
+            int wordWidth = 0;
+            StringBuilder name = new StringBuilder();
+            for(int i = 0; i < splitName.length; i++) {
+                int splitWordLength = this.font.width(splitName[i]);
+                wordWidth += splitWordLength;
+                if(wordWidth < onScreenWidth) {
+                    name.append(splitName[i]);
+                } else {
+                    if(name.charAt(name.length() - 1) == ' ') {
+                        name.deleteCharAt(name.length() - 1);
+                    }
+                    results.add(name.toString());
+                    name.setLength(0);
+                    name.append(splitName[i]);
+                    wordWidth = splitWordLength;
+                }
+                if(wordWidth + 1 < onScreenWidth && i != splitName.length - 1) {
+                    wordWidth++;
+                    name.append(" ");
+                }
+                if (i == splitName.length - 1){
+                    results.add(name.toString());
+                }
+            }
+
+        } else {
+            results.add(node.name);
+        }
+
+        int x = (this.width - this.imageWidth) / 2;
+        int y = (this.height - this.imageHeight) / 2;
+        int titleOffsetX = 5;
+        int titleOffsetY = this.nodeInfoNameHeight / 2;
+        int titleHeight = results.size() * this.nodeInfoNameHeight + titleOffsetY;
+        int informationOffsetY = this.nodeInfoNameHeight / 2;
+
+        // Information background,
+        this.render9Splice(pPoseStack,
+                x + this.nodeIntoLeft,
+                y + this.nodeInfoTop + titleHeight - 2 - informationOffsetY, // 1 empty pixel in texture on both sides
+                this.nodeInfoHeight - titleHeight + 4 + informationOffsetY, // 1 empty pixel in texture on both sides
+                this.nodeInfoWidth,
+                234, 234, 8, 22, 22);
+
+        // Title background
+        this.render9Splice(pPoseStack,
+                x + this.nodeIntoLeft - titleOffsetX,
+                y + this.nodeInfoTop,
+                results.size() * this.nodeInfoNameHeight + titleOffsetY * 2,
+                this.nodeInfoWidth + titleOffsetX * 2,
+                234, 190, 8, 22, 22);
+
+        for(int j = 0; j < results.size(); j++) {
+            int fontWidth = this.font.width(results.get(j));
+            int left = 155 + ((onScreenWidth - fontWidth) / 2);
+            int top = this.nodeInfoNameHeight + titleOffsetY + 2 + j * this.nodeInfoNameHeight;
+            this.font.draw(pPoseStack, results.get(j), x + left, y + top, 0xffffff);
+        }
+    }
+
+    private void render9Splice(PoseStack pPoseStack, int left, int top, int pHeight, int pWidth, int pUOffset, int pVOffset, int pPadding, int pUWidth, int pVHeight) {
+        // Top Strip
+        this.blit(pPoseStack, left, top, pUOffset, pVOffset, pPadding, pPadding);
+        this.renderRepeating(pPoseStack, left + pPadding, top, pWidth - pPadding - pPadding, pPadding, pUOffset + pPadding, pVOffset, pUWidth - pPadding - pPadding, pVHeight);
+        this.blit(pPoseStack, left + pWidth - pPadding, top, pUOffset + pUWidth - pPadding, pVOffset, pPadding, pPadding);
+        // Bottom Strip
+        this.blit(pPoseStack, left, top + pHeight - pPadding, pUOffset, pVOffset + pVHeight - pPadding, pPadding, pPadding);
+        this.renderRepeating(pPoseStack, left + pPadding, top + pHeight - pPadding, pWidth - pPadding - pPadding, pPadding, pUOffset + pPadding, pVOffset + pVHeight - pPadding, pUWidth - pPadding - pPadding, pVHeight);
+        this.blit(pPoseStack, left + pWidth - pPadding, top + pHeight - pPadding, pUOffset + pUWidth - pPadding, pVOffset + pVHeight - pPadding, pPadding, pPadding);
+        // Center Strip
+        this.renderRepeating(pPoseStack, left, top + pPadding, pPadding, pHeight - pPadding - pPadding, pUOffset, pVOffset + pPadding, pUWidth, pVHeight - pPadding - pPadding);
+        this.renderRepeating(pPoseStack, left + pPadding, top + pPadding, pWidth - pPadding - pPadding, pHeight - pPadding - pPadding, pUOffset + pPadding, pVOffset + pPadding, pUWidth - pPadding - pPadding, pVHeight - pPadding - pPadding);
+        this.renderRepeating(pPoseStack, left + pWidth - pPadding, top + pPadding, pPadding, pHeight - pPadding - pPadding, pUOffset + pUWidth - pPadding, pVOffset + pPadding, pUWidth, pVHeight - pPadding - pPadding);
+    }
+
+    protected void renderRepeating(PoseStack pPoseStack, int pX, int pY, int pBorderToU, int pBorderToV, int pUOffset, int pVOffset, int pUWidth, int pVHeight) {
+        for(int i = 0; i < pBorderToU; i += pUWidth) {
+            int j = pX + i;
+            int k = Math.min(pUWidth, pBorderToU - i);
+
+            for(int l = 0; l < pBorderToV; l += pVHeight) {
+                int i1 = pY + l;
+                int j1 = Math.min(pVHeight, pBorderToV - l);
+                this.blit(pPoseStack, j, i1, pUOffset, pVOffset, k, j1);
+            }
+        }
     }
 
     @Override
