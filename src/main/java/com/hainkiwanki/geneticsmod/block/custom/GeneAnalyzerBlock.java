@@ -39,29 +39,37 @@ public class GeneAnalyzerBlock extends FacingEntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof GeneAnalyzerBlockEntity) {
-                ((GeneAnalyzerBlockEntity) blockEntity).drops();
-                ((GeneAnalyzerBlockEntity) blockEntity).resetFuelAndEnergy();
+    public void onRemove(BlockState state, Level level, BlockPos pos,
+                         BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
+            if (blockEntity instanceof GeneAnalyzerBlockEntity entity) {
+                entity.drops();
+                entity.resetFuelAndEnergy();
             }
+
+            super.onRemove(state, level, pos, newState, isMoving);
         }
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
-                                 Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if(entity instanceof GeneAnalyzerBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)pPlayer), (GeneAnalyzerBlockEntity)entity, pPos);
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
+    public InteractionResult use(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hit
+    ) {
+        if (!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(pos);
+
+            if (entity instanceof GeneAnalyzerBlockEntity geneAnalyzer) {
+                NetworkHooks.openGui((ServerPlayer) player, geneAnalyzer, pos);
             }
         }
 
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Nullable

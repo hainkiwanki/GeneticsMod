@@ -37,6 +37,7 @@ public class TerminalBlock extends FacingEntityBlock {
             if (blockEntity instanceof TerminalBlockEntity) {
                 ((TerminalBlockEntity) blockEntity).drops();
             }
+            super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
         }
     }
 

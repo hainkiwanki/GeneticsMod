@@ -37,8 +37,6 @@ public class ResearchTableBlock extends BaseEntityBlock {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof  ResearchTableBlockEntity) {
                 NetworkHooks.openGui(((ServerPlayer)pPlayer), (ResearchTableBlockEntity)entity, pPos);
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
             }
         }
         return InteractionResult.sidedSuccess(pLevel.isClientSide());

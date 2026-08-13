@@ -42,6 +42,7 @@ public class GeneIsolatorBlock extends FacingEntityBlock {
                 // TODO: Reset energy level
             }
         }
+        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
     }
 
     @Override
@@ -51,8 +52,6 @@ public class GeneIsolatorBlock extends FacingEntityBlock {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if(entity instanceof GeneIsolatorBlockEntity) {
                 NetworkHooks.openGui(((ServerPlayer)pPlayer), (GeneIsolatorBlockEntity)entity, pPos);
-            } else {
-                throw new IllegalStateException("Our Container provider is missing!");
             }
         }
 
