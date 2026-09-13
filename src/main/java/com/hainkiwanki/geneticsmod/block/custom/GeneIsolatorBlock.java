@@ -18,51 +18,67 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class GeneIsolatorBlock extends FacingEntityBlock {
-    public GeneIsolatorBlock(Properties pProperties) {
-        super(pProperties);
+    public GeneIsolatorBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new GeneIsolatorBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new GeneIsolatorBlockEntity(pos, state);
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+    public void onRemove(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            BlockState newState,
+            boolean isMoving
+    ) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof GeneIsolatorBlockEntity) {
                 ((GeneIsolatorBlockEntity) blockEntity).drops();
                 // TODO: Reset energy level
             }
         }
-        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        super.onRemove(state, level, pos, newState, isMoving);
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
-                                 Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
+    public InteractionResult use(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult
+    ) {
+        if (!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof GeneIsolatorBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)pPlayer), (GeneIsolatorBlockEntity)entity, pPos);
+                NetworkHooks.openGui(((ServerPlayer)player), (GeneIsolatorBlockEntity)entity, pos);
             }
         }
 
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pBlockEntityType != ModBlockEntities.GENE_ISOLATOR.get()) return null;
-        if(pLevel.isClientSide) return null;
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.GENE_ISOLATOR.get(), GeneIsolatorBlockEntity::tick);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if(blockEntityType != ModBlockEntities.GENE_ISOLATOR.get()) {
+            return null;
+        }
+        if(level.isClientSide) {
+            return null;
+        }
+        return createTickerHelper(blockEntityType, ModBlockEntities.GENE_ISOLATOR.get(), GeneIsolatorBlockEntity::tick);
     }
 }

@@ -3,8 +3,8 @@ package com.hainkiwanki.geneticsmod.block.entity;
 import com.hainkiwanki.geneticsmod.block.ModBlockEntities;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneAnalyzerMenu;
 import com.hainkiwanki.geneticsmod.cap.mobdata.EMobStat;
-import com.hainkiwanki.geneticsmod.network.ModMessages;
-import com.hainkiwanki.geneticsmod.network.packet.EnergySyncS2CPacket;
+import com.hainkiwanki.geneticsmod.research.network.ModMessages;
+import com.hainkiwanki.geneticsmod.research.network.packet.EnergySyncS2CPacket;
 import com.hainkiwanki.geneticsmod.recipe.GeneAnalyzerRecipe;
 import com.hainkiwanki.geneticsmod.cap.energy.EnergyStorageCapability;
 import net.minecraft.core.BlockPos;
@@ -44,8 +44,6 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider {
-
-
     private final ItemStackHandler itemHandler = new ItemStackHandler(4) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -75,8 +73,8 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
     private int brunRate = 8;
     private static int receivedEnergy = 128;
 
-    public GeneAnalyzerBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.GENE_ANALYZER.get(), pPos, pBlockState);
+    public GeneAnalyzerBlockEntity(BlockPos pos, BlockState blockState) {
+        super(ModBlockEntities.GENE_ANALYZER.get(), pos, blockState);
         this.energyHandler.setEnergy(0);
         this.data = new ContainerData() {
             @Override
@@ -114,8 +112,8 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new GeneAnalyzerMenu(pContainerId, pPlayerInventory, this, this.data);
+    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+        return new GeneAnalyzerMenu(containerId, inventory, this, this.data);
     }
 
     @Nonnull
@@ -202,7 +200,12 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
-    public static void tick(Level level, BlockPos blockPos, BlockState blockState, GeneAnalyzerBlockEntity blockEntity) {
+    public static void tick(
+            Level level,
+            BlockPos blockPos,
+            BlockState blockState,
+            GeneAnalyzerBlockEntity blockEntity
+    ) {
         // Getting energy
         if(hasFuelInFuelSlot(blockEntity) && !isConsumingFuel(blockEntity)) {
             blockEntity.consumeFuel();
@@ -233,8 +236,8 @@ public class GeneAnalyzerBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
-    private static void extractEnergy(GeneAnalyzerBlockEntity pEntity) {
-        pEntity.energyHandler.extractEnergy(pEntity.energyPerTick, false);
+    private static void extractEnergy(GeneAnalyzerBlockEntity entity) {
+        entity.energyHandler.extractEnergy(entity.energyPerTick, false);
     }
 
     private static boolean hasFuelInFuelSlot(GeneAnalyzerBlockEntity entity) {

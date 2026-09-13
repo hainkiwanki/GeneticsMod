@@ -1,7 +1,7 @@
-package com.hainkiwanki.geneticsmod.network.packet;
+package com.hainkiwanki.geneticsmod.research.network.packet;
 
 import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchProvider;
-import com.hainkiwanki.geneticsmod.network.ModMessages;
+import com.hainkiwanki.geneticsmod.research.network.ModMessages;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;

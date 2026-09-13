@@ -39,7 +39,7 @@ public class KnifeItem extends GeneSamplerItem {
         entityDrops.put("minecraft:zombified_piglin", GeneticsMod.MOD_ID + ":zombie_flesh");
     }
 
-    public KnifeItem(TagKey<EntityType<?>> tagList, Properties pProperties) {
-        super(tagList, entityDrops, pProperties);
+    public KnifeItem(TagKey<EntityType<?>> tagList, Properties properties) {
+        super(tagList, entityDrops, properties);
     }
 }

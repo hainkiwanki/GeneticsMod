@@ -30,53 +30,53 @@ public class GeneSamplerItem extends Item {
 
     protected float damageDealt = 0.0f;
 
-    public GeneSamplerItem(TagKey<EntityType<?>> tagList, HashMap<String, String> entityDropList, Properties pProperties) {
-        super(pProperties);
+    public GeneSamplerItem(TagKey<EntityType<?>> tagList, HashMap<String, String> entityDropList, Properties properties) {
+        super(properties);
         this.CAN_USE_SAMPLER_ON_ENTITY = tagList;
         this.DROP_BY_ENTITY = entityDropList;
     }
 
-    public void SetSoundEvent(SoundEvent pSoundEvent) {
-        this.SOUNDEVENT = pSoundEvent;
+    public void SetSoundEvent(SoundEvent soundEvent) {
+        this.SOUNDEVENT = soundEvent;
     }
 
-    public void OnUseCorrectTool(LivingEntity pInteractionTarget, Player pPlayer) {
-        var entityType = pInteractionTarget.getType();
+    public void OnUseCorrectTool(LivingEntity interactionTarget, Player player) {
+        var entityType = interactionTarget.getType();
         var mobPath = ForgeRegistries.ENTITIES.getKey(entityType).toString();
         if (DROP_BY_ENTITY.containsKey(mobPath)) {
             ItemStack item = CreateItemStack(DROP_BY_ENTITY.get(mobPath));
-            AddNbtToItem(pInteractionTarget, item);
-            SpawnSampledItem(pInteractionTarget, item);
+            AddNbtToItem(interactionTarget, item);
+            SpawnSampledItem(interactionTarget, item);
         }
     }
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
-        if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
-            boolean usedCorrectSampler = pInteractionTarget.getType().is(CAN_USE_SAMPLER_ON_ENTITY);
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand interactionHand) {
+        if(!player.level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND) {
+            boolean usedCorrectSampler = interactionTarget.getType().is(CAN_USE_SAMPLER_ON_ENTITY);
 
-            if(usedCorrectSampler && pInteractionTarget.getHealth() > 0.0f) {
-                pPlayer.getCooldowns().addCooldown(this, 20);
-                OnUseCorrectTool(pInteractionTarget, pPlayer);
+            if(usedCorrectSampler && interactionTarget.getHealth() > 0.0f) {
+                player.getCooldowns().addCooldown(this, 20);
+                OnUseCorrectTool(interactionTarget, player);
 
                 // Play Sound
-                pPlayer.getLevel().playSound(null, pPlayer.blockPosition(), SOUNDEVENT, SoundSource.BLOCKS, 1f, 1f);
+                player.getLevel().playSound(null, player.blockPosition(), SOUNDEVENT, SoundSource.BLOCKS, 1f, 1f);
                 if(damageDealt > 0) {
-                    pInteractionTarget.hurt(DamageSource.GENERIC, damageDealt);
+                    interactionTarget.hurt(DamageSource.GENERIC, damageDealt);
                 }
-                pStack.hurtAndBreak(1, pPlayer, (p) -> p.broadcastBreakEvent(p.getUsedItemHand()));
+                stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(p.getUsedItemHand()));
                 return net.minecraft.world.InteractionResult.SUCCESS;
             }
             else {
-                pPlayer.sendMessage(new TranslatableComponent("message.geneticsmod.on_sample_fail"), pPlayer.getUUID());
+                player.sendMessage(new TranslatableComponent("message.geneticsmod.on_sample_fail"), player.getUUID());
             }
         }
         return InteractionResult.CONSUME;
     }
 
     @Override
-    public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
-        super.inventoryTick(pStack, pLevel, pEntity, pSlotId, pIsSelected);
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        super.inventoryTick(stack, level, entity, slotId, isSelected);
     }
 
     public ItemStack CreateItemStack(String resLocation) {

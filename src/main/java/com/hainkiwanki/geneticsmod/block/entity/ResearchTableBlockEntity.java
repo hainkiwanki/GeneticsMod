@@ -26,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 
 public class ResearchTableBlockEntity extends BlockEntity implements MenuProvider {
-
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -47,8 +46,8 @@ public class ResearchTableBlockEntity extends BlockEntity implements MenuProvide
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new ResearchTableMenu(pContainerId, pPlayerInventory, this);
+    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+        return new ResearchTableMenu(containerId, inventory, this);
     }
 
     @Nonnull

@@ -23,24 +23,29 @@ import java.util.Collections;
 import java.util.List;
 
 public class GeneAnalyzerBlock extends FacingEntityBlock {
-    public GeneAnalyzerBlock(Properties pProperties) {
-        super(pProperties);
+    public GeneAnalyzerBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new GeneAnalyzerBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new GeneAnalyzerBlockEntity(pos, state);
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos,
-                         BlockState newState, boolean isMoving) {
+    public void onRemove(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            BlockState newState,
+            boolean isMoving
+    ) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof GeneAnalyzerBlockEntity entity) {
@@ -74,16 +79,20 @@ public class GeneAnalyzerBlock extends FacingEntityBlock {
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        if(pBlockEntityType != ModBlockEntities.GENE_ANALYZER.get()) return null;
-        if(pLevel.isClientSide) return null;
-        return createTickerHelper(pBlockEntityType, ModBlockEntities.GENE_ANALYZER.get(), GeneAnalyzerBlockEntity::tick);
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+        if(blockEntityType != ModBlockEntities.GENE_ANALYZER.get()) {
+            return null;
+        }
+        if(level.isClientSide) {
+            return null;
+        }
+        return createTickerHelper(blockEntityType, ModBlockEntities.GENE_ANALYZER.get(), GeneAnalyzerBlockEntity::tick);
     }
 
     @Override
-    public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 
-        List<ItemStack> dropsOriginal = super.getDrops(pState, pBuilder);
+        List<ItemStack> dropsOriginal = super.getDrops(state, builder);
         if(!dropsOriginal.isEmpty()) {
             return dropsOriginal;
         }

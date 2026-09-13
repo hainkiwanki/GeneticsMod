@@ -59,34 +59,34 @@ public class SwabItem extends GeneSamplerItem {
         entityDrops.put("minecraft:wolf", "");
     }
 
-    public SwabItem(TagKey<EntityType<?>> tagList, Properties pProperties) {
-        super(tagList, entityDrops, pProperties);
+    public SwabItem(TagKey<EntityType<?>> tagList, Properties properties) {
+        super(tagList, entityDrops, properties);
     }
 
     @Override
-    public void OnUseCorrectTool(LivingEntity pInteractionTarget, Player pPlayer) {
-        pInteractionTarget.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(data -> {
+    public void OnUseCorrectTool(LivingEntity interactionTarget, Player player) {
+        interactionTarget.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(data -> {
             CompoundTag tag = data.serializeNBT();
-            ItemStack swab = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+            ItemStack swab = player.getItemInHand(InteractionHand.MAIN_HAND);
             swab.setTag(tag);
         });
     }
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
-        ItemStack swab = pPlayer.getItemInHand(InteractionHand.MAIN_HAND);
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand interactionHand) {
+        ItemStack swab = player.getItemInHand(InteractionHand.MAIN_HAND);
         if(swab.hasTag())
             return InteractionResult.CONSUME;
 
-        return super.interactLivingEntity(pStack, pPlayer, pInteractionTarget, pUsedHand);
+        return super.interactLivingEntity(stack, player, interactionTarget, interactionHand);
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        if(pStack.hasTag()) {
-            pTooltipComponents.add(new TranslatableComponent("tooltip.geneticsmod.genesampleritem.unidentified").withStyle(ChatFormatting.GRAY));
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponent, TooltipFlag isAdvanced) {
+        if(stack.hasTag()) {
+            tooltipComponent.add(new TranslatableComponent("tooltip.geneticsmod.genesampleritem.unidentified").withStyle(ChatFormatting.GRAY));
         }
 
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        super.appendHoverText(stack, level, tooltipComponent, isAdvanced);
     }
 }

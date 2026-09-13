@@ -30,7 +30,12 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
         this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(5));
     }
 
-    public GeneIsolatorMenu(int windowId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public GeneIsolatorMenu(
+            int windowId,
+            Inventory inv,
+            BlockEntity entity,
+            ContainerData data
+    ) {
         super(ModMenuTypes.GENE_ISOLATOR_MENU.get(), windowId);
         checkContainerSize(inv, 5);
         blockEntity = ((GeneIsolatorBlockEntity) entity);
@@ -130,9 +135,9 @@ public class GeneIsolatorMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.GENE_ISOLATOR.get());
+                player, ModBlocks.GENE_ISOLATOR.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

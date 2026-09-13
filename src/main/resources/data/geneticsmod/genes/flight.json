@@ -1,0 +1,21 @@
+{
+  "category": "ability",
+  "add_tags": [
+    "aerial",
+    "flying"
+  ],
+  "remove_tags": [],
+  "required_genes": [],
+
+  "required_tags": [],
+  "compatibility_tags": [
+    "avian_body",
+    "avian_biology",
+    "aerial",
+    "flying"
+  ],
+  "incompatibility_tags": [
+    "gelatinous",
+    "slime"
+  ]
+}

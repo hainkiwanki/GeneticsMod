@@ -1,4 +1,4 @@
-package com.hainkiwanki.geneticsmod.network.packet;
+package com.hainkiwanki.geneticsmod.research.network.packet;
 
 import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchData;
 import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchProvider;
@@ -6,10 +6,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.UUID;
 import java.util.function.Supplier;
 
 public class SyncPlayerResearchDataPacket {

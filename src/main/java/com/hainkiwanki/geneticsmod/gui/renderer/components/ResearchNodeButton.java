@@ -21,23 +21,23 @@ public class ResearchNodeButton extends GuiComponent {
         this.offsetY = offsetY + 18;
     }
 
-    public void draw(PoseStack pPoseStack, int x, int y) {
-        pPoseStack.pushPose();
+    public void draw(PoseStack poseStack, int x, int y) {
+        poseStack.pushPose();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderTexture(0, buttonTexture);
         this.x = x;
         this.y = y;
 
         if (this.isSelected) {
-                this.blit(pPoseStack, this.x, this.y, 0, 178, 26, 26);
+                this.blit(poseStack, this.x, this.y, 0, 178, 26, 26);
         } else {
             if (this.isHovered) {
-                this.blit(pPoseStack,this.x, this.y, 0, 204, 26, 26);
+                this.blit(poseStack,this.x, this.y, 0, 204, 26, 26);
             } else {
-                this.blit(pPoseStack, this.x, this.y, 0, 230, 26, 26);
+                this.blit(poseStack, this.x, this.y, 0, 230, 26, 26);
             }
         }
-        pPoseStack.popPose();
+        poseStack.popPose();
     }
 
     public void setSelected(boolean selected) {

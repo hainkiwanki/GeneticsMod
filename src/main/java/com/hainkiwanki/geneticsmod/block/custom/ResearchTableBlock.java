@@ -16,29 +16,36 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class ResearchTableBlock extends BaseEntityBlock {
-    public ResearchTableBlock(Properties pProperties) {
-        super(pProperties);
+    public ResearchTableBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new ResearchTableBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new ResearchTableBlockEntity(pos, state);
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if(!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
+    public InteractionResult use(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult
+    ) {
+        if(!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof  ResearchTableBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)pPlayer), (ResearchTableBlockEntity)entity, pPos);
+                NetworkHooks.openGui(((ServerPlayer)player), (ResearchTableBlockEntity)entity, pos);
             }
         }
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 }

@@ -1,7 +1,6 @@
 package com.hainkiwanki.geneticsmod.gui.renderer;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.config.CommonConfig;
 import com.hainkiwanki.geneticsmod.gui.menus.GeneIsolatorMenu;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.EnergyInfoArea;
 import com.hainkiwanki.geneticsmod.gui.renderer.components.Pos2i;
@@ -10,7 +9,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
@@ -21,7 +19,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu> {
@@ -49,8 +46,8 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
     private int restrictedRandIndex;
     private boolean isMouseOverSearchGrid = false;
 
-    public GeneIsolatorScreen(GeneIsolatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public GeneIsolatorScreen(GeneIsolatorMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
         imageHeight = 235;
         imageWidth = 194;
     }
@@ -88,54 +85,54 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     //region Render Functions
     @Override
-    public void render(PoseStack pPoseStack, int mouseX, int mouseY, float delta) {
-        renderBackground(pPoseStack);
-        super.render(pPoseStack, mouseX, mouseY, delta);
-        renderTooltip(pPoseStack, mouseX, mouseY);
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+        renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, delta);
+        renderTooltip(poseStack, mouseX, mouseY);
     }
 
     @Override
-    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX + 9, (float)this.inventoryLabelY + 69, 4210752);
+    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+        this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX + 9, (float)this.inventoryLabelY + 69, 4210752);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        renderEnergyAreaTooltips(pPoseStack, pMouseX, pMouseY, x, y);
+        renderEnergyAreaTooltips(poseStack, mouseX, mouseY, x, y);
     }
 
-    private void renderEnergyAreaTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
-        if(Utils.isMouseAboveArea(pMouseX, pMouseY, x, y, 5, 55, energyInfoArea.DEFAULT_WIDTH, energyInfoArea.DEFAULT_HEIGHT)) {
+    private void renderEnergyAreaTooltips(PoseStack pPoseStack, int mouseX, int mouseY, int x, int y) {
+        if(Utils.isMouseAboveArea(mouseX, mouseY, x, y, 5, 55, energyInfoArea.DEFAULT_WIDTH, energyInfoArea.DEFAULT_HEIGHT)) {
             renderTooltip(pPoseStack, energyInfoArea.getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+                    Optional.empty(), mouseX - x, mouseY - y);
         }
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
+    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
+        this.blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
 
         if(menu.hasFuel()) {
-            blit(pPoseStack, x + 21, y + 94 - menu.getScaledFuelProgress(),
+            blit(poseStack, x + 21, y + 94 - menu.getScaledFuelProgress(),
                     206, 39 - menu.getScaledFuelProgress(),
                     2, menu.getScaledFuelProgress());
         }
-        this.blit(pPoseStack, x + 5, y + 94 - menu.getEnergyProgress(),
+        this.blit(poseStack, x + 5, y + 94 - menu.getEnergyProgress(),
                 194, 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());
 
         int xPos = leftPos + gridOffsetX;
         int yPos = topPos + gridOffsetY;
-        isMouseOverSearchGrid = Utils.isMouseAboveArea(pMouseX, pMouseY, xPos, yPos, 0, 0, 78, 78);
+        isMouseOverSearchGrid = Utils.isMouseAboveArea(mouseX, mouseY, xPos, yPos, 0, 0, 78, 78);
 
         startMaskArea();
-        drawHighlightedSquares(pPoseStack);
+        drawHighlightedSquares(poseStack);
         drawSearchGrid();
-        drawTrackedLine(pPoseStack);
+        drawTrackedLine(poseStack);
         // drawGridSquare(pPoseStack, restrictedRandIndex, 0x770000FF);
         endMaskArea();
         drawToFindGrid();
@@ -144,31 +141,31 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
 
     //region Mouse Events
     @Override
-    public void mouseMoved(double pMouseX, double pMouseY) {
-        super.mouseMoved(pMouseX, pMouseY);
-        mousePosX = (float)pMouseX;
-        mousePosY = (float)pMouseY;
+    public void mouseMoved(double mouseX, double mouseY) {
+        super.mouseMoved(mouseX, mouseY);
+        mousePosX = (float)mouseX;
+        mousePosY = (float)mouseY;
     }
 
     @Override
-    public boolean mouseDragged(double pMouseX, double pMouseY, int pButton, double pDragX, double pDragY) {
-        if(pButton == 1 && gridSize >= 16) {
-            maskPosX += pDragX;
+    public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+        if(button == 1 && gridSize >= 16) {
+            maskPosX += dragX;
             maskPosX = Mth.clamp(maskPosX, -diffX - 3, 0);
-            maskPosY += pDragY;
+            maskPosY += dragY;
             maskPosY = Mth.clamp(maskPosY, -diffY - 2, 0);
         }
-        return super.mouseDragged(pMouseX, pMouseY, pButton, pDragX, pDragY);
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
     }
 
     @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        if (pButton == 0) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button == 0) {
             int xPos = leftPos + gridOffsetX;
             int yPos = topPos + gridOffsetY;
-            if(Utils.isMouseAboveArea((int)pMouseX, (int)pMouseY, xPos, yPos,0, 0, 78, 78)) {
-                int row = ((int)pMouseY - yPos + Mth.abs((int)maskPosY)) / 9;
-                int col = ((int)pMouseX - xPos + Mth.abs((int)maskPosX)) / 10;
+            if(Utils.isMouseAboveArea((int)mouseX, (int)mouseY, xPos, yPos,0, 0, 78, 78)) {
+                int row = ((int)mouseY - yPos + Mth.abs((int)maskPosY)) / 9;
+                int col = ((int)mouseX - xPos + Mth.abs((int)maskPosX)) / 10;
                 int index = Utils.Convert2DTo1D(row, col, gridSize);
 
                 if(selectedIndices.contains(index)) {
@@ -193,7 +190,7 @@ public class GeneIsolatorScreen extends AbstractContainerScreen<GeneIsolatorMenu
             }
         }
         hasFoundCorrectDnaString();
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
     //endregion
 

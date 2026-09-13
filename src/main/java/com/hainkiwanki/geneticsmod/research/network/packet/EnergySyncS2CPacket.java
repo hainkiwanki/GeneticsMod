@@ -1,4 +1,4 @@
-package com.hainkiwanki.geneticsmod.network.packet;
+package com.hainkiwanki.geneticsmod.research.network.packet;
 
 import com.hainkiwanki.geneticsmod.block.entity.GeneAnalyzerBlockEntity;
 import com.hainkiwanki.geneticsmod.block.entity.GeneIsolatorBlockEntity;

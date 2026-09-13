@@ -27,7 +27,12 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
         this(windowId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(4));
     }
 
-    public GeneAnalyzerMenu(int windowId, Inventory inv, BlockEntity entity, ContainerData data) {
+    public GeneAnalyzerMenu(
+            int windowId,
+            Inventory inv,
+            BlockEntity entity,
+            ContainerData data
+    ) {
         super(ModMenuTypes.GENE_ANALYZER_MENU.get(), windowId);
         checkContainerSize(inv, 4);
         blockEntity = ((GeneAnalyzerBlockEntity) entity);
@@ -124,9 +129,9 @@ public class GeneAnalyzerMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.GENE_ANALYZER.get());
+                player, ModBlocks.GENE_ANALYZER.get());
     }
 
     private void addPlayerInventory(Inventory playerInventory) {

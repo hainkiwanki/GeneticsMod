@@ -15,44 +15,56 @@ import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class TerminalBlock extends FacingEntityBlock {
-    public TerminalBlock(Properties pProperties) {
-        super(pProperties);
+    public TerminalBlock(Properties properties) {
+        super(properties);
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState pState) {
+    public RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new TerminalBlockEntity(pPos, pState);
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new TerminalBlockEntity(pos, state);
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-        if (pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+    public void onRemove(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            BlockState newState,
+            boolean isMoving
+    ) {
+        if (state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof TerminalBlockEntity) {
                 ((TerminalBlockEntity) blockEntity).drops();
             }
-            super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+            super.onRemove(state, level, pos, newState, isMoving);
         }
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
-                                 Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
+    public InteractionResult use(
+            BlockState state,
+            Level level,
+            BlockPos pos,
+            Player player,
+            InteractionHand hand,
+            BlockHitResult hitResult
+    ) {
+        if (!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof TerminalBlockEntity) {
-                NetworkHooks.openGui(((ServerPlayer)pPlayer), (TerminalBlockEntity)entity, pPos);
+                NetworkHooks.openGui(((ServerPlayer)player), (TerminalBlockEntity)entity, pos);
             } else {
                 throw new IllegalStateException("Our Container provider is missing!");
             }
         }
 
-        return InteractionResult.sidedSuccess(pLevel.isClientSide());
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 }

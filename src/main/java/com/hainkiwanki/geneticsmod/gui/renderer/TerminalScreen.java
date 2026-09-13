@@ -14,8 +14,8 @@ public class TerminalScreen extends AbstractContainerScreen<TerminalMenu> {
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/terminal.png");
 
-    public TerminalScreen(TerminalMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public TerminalScreen(TerminalMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
     }
 
     @Override
@@ -24,20 +24,20 @@ public class TerminalScreen extends AbstractContainerScreen<TerminalMenu> {
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
+    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
+        this.blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int mouseX, int mouseY, float delta) {
-        renderBackground(pPoseStack);
-        super.render(pPoseStack, mouseX, mouseY, delta);
-        renderTooltip(pPoseStack, mouseX, mouseY);
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+        renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, delta);
+        renderTooltip(poseStack, mouseX, mouseY);
     }
 }

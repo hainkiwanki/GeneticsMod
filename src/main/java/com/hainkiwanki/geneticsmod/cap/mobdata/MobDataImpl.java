@@ -1,8 +1,8 @@
 package com.hainkiwanki.geneticsmod.cap.mobdata;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.network.ModMessages;
-import com.hainkiwanki.geneticsmod.network.packet.ChangeMobDataC2SPacket;
+import com.hainkiwanki.geneticsmod.research.network.ModMessages;
+import com.hainkiwanki.geneticsmod.research.network.packet.ChangeMobDataC2SPacket;
 import com.hainkiwanki.geneticsmod.tags.ModTags;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

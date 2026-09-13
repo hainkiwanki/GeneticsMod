@@ -1,12 +1,10 @@
 package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchData;
 import com.hainkiwanki.geneticsmod.cap.researchdata.PlayerResearchProvider;
-import com.hainkiwanki.geneticsmod.network.ModMessages;
-import com.hainkiwanki.geneticsmod.network.packet.ModifyPlayerResearchDataPacket;
+import com.hainkiwanki.geneticsmod.research.network.ModMessages;
+import com.hainkiwanki.geneticsmod.research.network.packet.ModifyPlayerResearchDataPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

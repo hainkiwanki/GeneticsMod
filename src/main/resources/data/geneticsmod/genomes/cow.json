@@ -1,0 +1,14 @@
+{
+  "entity": "minecraft:cow",
+  "tags": [
+    "organic",
+    "quadruped",
+    "mammal",
+    "terrestrial",
+    "walking"
+  ],
+  "genes": [
+    "geneticsmod:udder",
+    "geneticsmod:milkable"
+  ]
+}

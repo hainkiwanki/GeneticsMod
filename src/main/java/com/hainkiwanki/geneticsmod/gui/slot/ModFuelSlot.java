@@ -17,8 +17,8 @@ public class ModFuelSlot extends SlotItemHandler {
     }
 
     @Override
-    public int getMaxStackSize(ItemStack pStack) {
-        return ModFuelSlot.isBucket(pStack) ? 1 : super.getMaxStackSize(pStack);
+    public int getMaxStackSize(ItemStack stack) {
+        return ModFuelSlot.isBucket(stack) ? 1 : super.getMaxStackSize(stack);
     }
 
     public static boolean isBucket(ItemStack stack) {

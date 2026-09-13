@@ -19,7 +19,7 @@ public class SyringeItem extends GeneSamplerItem {
         entityDrops.put("minecraft:vex", GeneticsMod.MOD_ID + ":vex_ectoplasm");
     }
 
-    public SyringeItem(TagKey<EntityType<?>> tagList, Properties pProperties) {
-        super(tagList, entityDrops, pProperties);
+    public SyringeItem(TagKey<EntityType<?>> tagList, Properties properties) {
+        super(tagList, entityDrops, properties);
     }
 }

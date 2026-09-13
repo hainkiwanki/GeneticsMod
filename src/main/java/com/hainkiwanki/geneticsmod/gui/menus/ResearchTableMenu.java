@@ -26,8 +26,8 @@ public class ResearchTableMenu extends AbstractContainerMenu {
     }
 
     @Override
-    public boolean stillValid(Player pPlayer) {
+    public boolean stillValid(Player player) {
         return stillValid(ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
-                pPlayer, ModBlocks.RESEARCH_TABLE.get());
+                player, ModBlocks.RESEARCH_TABLE.get());
     }
 }

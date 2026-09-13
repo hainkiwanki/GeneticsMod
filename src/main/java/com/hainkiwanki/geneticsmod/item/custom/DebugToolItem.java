@@ -16,22 +16,22 @@ public class DebugToolItem extends Item {
     }
 
     @Override
-    public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pInteractionTarget, InteractionHand pUsedHand) {
-        if(!pPlayer.level.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND) {
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity interactionTarget, InteractionHand interactionHand) {
+        if(!player.level.isClientSide() && interactionHand == InteractionHand.MAIN_HAND) {
             if(Screen.hasShiftDown()) {
-                pInteractionTarget.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
+                interactionTarget.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
                     mobDataProvider.setSize(mobDataProvider.getSize() + 0.1f);
                 });
             }
             else if(Screen.hasControlDown()) {
-                pInteractionTarget.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
+                interactionTarget.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
                     mobDataProvider.setSize(mobDataProvider.getSize() - 0.1f);
 
                 });
             }
             else
             {
-                pInteractionTarget.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
+                interactionTarget.getCapability(MobDataImpl.MOB_DATA_CAPABILITY).ifPresent(mobDataProvider -> {
                     System.out.println(mobDataProvider.getSize());
                 });
             }

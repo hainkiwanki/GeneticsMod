@@ -1,0 +1,14 @@
+{
+  "category": "anatomy",
+  "add_tags": [],
+  "remove_tags": [],
+  "required_genes": [],
+
+  "required_tags": [
+    "organic"
+  ],
+  "compatibility_tags": [
+    "mammal"
+  ],
+  "incompatibility_tags": []
+}

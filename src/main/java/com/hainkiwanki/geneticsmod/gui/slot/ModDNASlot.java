@@ -15,7 +15,7 @@ public class ModDNASlot extends SlotItemHandler {
     }
 
     @Override
-    public int getMaxStackSize(ItemStack pStack) {
+    public int getMaxStackSize(ItemStack stack) {
         return 1;
         //return ModDNASlot.isDna(pStack) ? 1 : super.getMaxStackSize(pStack);
     }

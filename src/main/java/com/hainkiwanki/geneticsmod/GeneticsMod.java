@@ -7,7 +7,7 @@ import com.hainkiwanki.geneticsmod.config.CommonConfig;
 import com.hainkiwanki.geneticsmod.gui.ModMenuTypes;
 import com.hainkiwanki.geneticsmod.item.ModItemProperties;
 import com.hainkiwanki.geneticsmod.item.ModItems;
-import com.hainkiwanki.geneticsmod.network.ModMessages;
+import com.hainkiwanki.geneticsmod.research.network.ModMessages;
 import com.hainkiwanki.geneticsmod.recipe.ModRecipes;
 import com.hainkiwanki.geneticsmod.sound.ModSounds;
 import com.mojang.logging.LogUtils;

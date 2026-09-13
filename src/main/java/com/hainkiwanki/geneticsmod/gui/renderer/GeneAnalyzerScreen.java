@@ -9,7 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -20,8 +19,8 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
             new ResourceLocation(GeneticsMod.MOD_ID, "textures/gui/gene_analyzer.png");
     private EnergyInfoArea energyInfoArea;
 
-    public GeneAnalyzerScreen(GeneAnalyzerMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public GeneAnalyzerScreen(GeneAnalyzerMenu menu, Inventory inventory, Component title) {
+        super(menu, inventory, title);
         imageHeight = 180;
     }
 
@@ -38,49 +37,49 @@ public class GeneAnalyzerScreen extends AbstractContainerScreen<GeneAnalyzerMenu
     }
 
     @Override
-    protected void renderLabels(PoseStack pPoseStack, int pMouseX, int pMouseY) {
-        this.font.draw(pPoseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 14, 4210752);
+    protected void renderLabels(PoseStack poseStack, int mouseX, int mouseY) {
+        this.font.draw(poseStack, this.playerInventoryTitle, (float)this.inventoryLabelX, (float)this.inventoryLabelY + 14, 4210752);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        renderEnergyAreaTooltips(pPoseStack, pMouseX, pMouseY, x, y);
+        renderEnergyAreaTooltips(poseStack, mouseX, mouseY, x, y);
     }
 
-    private void renderEnergyAreaTooltips(PoseStack pPoseStack, int pMouseX, int pMouseY, int x, int y) {
-        if(Utils.isMouseAboveArea(pMouseX, pMouseY, x, y, 6, 6, energyInfoArea.DEFAULT_WIDTH, energyInfoArea.DEFAULT_HEIGHT)) {
-            renderTooltip(pPoseStack, energyInfoArea.getTooltips(),
-                    Optional.empty(), pMouseX - x, pMouseY - y);
+    private void renderEnergyAreaTooltips(PoseStack poseStack, int mouseX, int mouseY, int x, int y) {
+        if(Utils.isMouseAboveArea(mouseX, mouseY, x, y, 6, 6, energyInfoArea.DEFAULT_WIDTH, energyInfoArea.DEFAULT_HEIGHT)) {
+            renderTooltip(poseStack, energyInfoArea.getTooltips(),
+                    Optional.empty(), mouseX - x, mouseY - y);
         }
     }
 
     @Override
-    protected void renderBg(PoseStack pPoseStack, float pPartialTicks, int pMouseX, int pMouseY) {
+    protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        this.blit(pPoseStack, x, y, 0, 0, imageWidth, imageHeight);
+        this.blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
 
         if(menu.isCrafting()) {
-            blit(pPoseStack, x + 52, y + 33,
+            blit(poseStack, x + 52, y + 33,
                     176, 0,
                     14, menu.getCraftingProgress());
         }
         if(menu.hasFuel()) {
-            blit(pPoseStack, x + 22, y + 45 - menu.getScaledFuelProgress(),
+            blit(poseStack, x + 22, y + 45 - menu.getScaledFuelProgress(),
                     188, 55 - menu.getScaledFuelProgress(),
                     2, menu.getScaledFuelProgress());
         }
-        this.blit(pPoseStack, x + 6, y + 6 + 39 - menu.getEnergyProgress(),
+        this.blit(poseStack, x + 6, y + 6 + 39 - menu.getEnergyProgress(),
                 176, 16 + 39 - menu.getEnergyProgress(),
                 12, menu.getEnergyProgress());
     }
 
     @Override
-    public void render(PoseStack pPoseStack, int mouseX, int mouseY, float delta) {
-        renderBackground(pPoseStack);
-        super.render(pPoseStack, mouseX, mouseY, delta);
-        renderTooltip(pPoseStack, mouseX, mouseY);
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+        renderBackground(poseStack);
+        super.render(poseStack, mouseX, mouseY, delta);
+        renderTooltip(poseStack, mouseX, mouseY);
     }
 }

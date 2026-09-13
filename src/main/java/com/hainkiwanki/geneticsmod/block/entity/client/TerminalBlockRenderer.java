@@ -26,15 +26,21 @@ public class TerminalBlockRenderer implements BlockEntityRenderer<TerminalBlockE
     }
 
     @Override
-    public void render(TerminalBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
-
-        pPoseStack.pushPose();
-        Direction facingDir = pBlockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getClockWise().getCounterClockWise();
-        Quaternion rot = Vector3f.YN.rotationDegrees(pBlockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180.0f);
+    public void render(
+            TerminalBlockEntity blockEntity,
+            float partialTick,
+            PoseStack poseStack,
+            MultiBufferSource bufferSource,
+            int packedLight,
+            int packedOverlay
+    ) {
+        poseStack.pushPose();
+        Direction facingDir = blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).getClockWise().getCounterClockWise();
+        Quaternion rot = Vector3f.YN.rotationDegrees(blockEntity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180.0f);
         float scale = -0.005f;
         int textWidth = 128;
 
-        pPoseStack.mulPose(rot);
+        poseStack.mulPose(rot);
         Vector3f translation;
         switch (facingDir) {
             default:
@@ -51,13 +57,13 @@ public class TerminalBlockRenderer implements BlockEntityRenderer<TerminalBlockE
                 translation = new Vector3f(-0.0625f, 0.9375f, -0.001f);
                 break;
         }
-        pPoseStack.translate(translation.x(), translation.y(), translation.z());
+        poseStack.translate(translation.x(), translation.y(), translation.z());
 
-        pPoseStack.scale(scale, scale, 1f);
+        poseStack.scale(scale, scale, 1f);
         font.drawInBatch(font.plainSubstrByWidth(
                 "testabcdefghijklmnopqrstuvw", textWidth),
                 0f, 0f, 0xffffff, false,
-                pPoseStack.last().pose(), pBufferSource, false, 0, 140);
-        pPoseStack.popPose();
+                poseStack.last().pose(), bufferSource, false, 0, 140);
+        poseStack.popPose();
     }
 }

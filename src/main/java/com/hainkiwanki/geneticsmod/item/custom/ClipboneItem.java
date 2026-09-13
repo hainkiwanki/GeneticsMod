@@ -44,8 +44,8 @@ public class ClipboneItem extends GeneSamplerItem {
         entityDrops.put("minecraft:zombified_piglin", GeneticsMod.MOD_ID + ":piglin_tusk");
     }
 
-    public ClipboneItem(TagKey<EntityType<?>> tagList, Properties pProperties) {
-        super(tagList, entityDrops, pProperties);
+    public ClipboneItem(TagKey<EntityType<?>> tagList, Properties properties) {
+        super(tagList, entityDrops, properties);
         damageDealt = 4.0f;
     }
 }

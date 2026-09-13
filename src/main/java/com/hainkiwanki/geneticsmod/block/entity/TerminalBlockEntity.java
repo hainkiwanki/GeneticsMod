@@ -26,7 +26,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 
 public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
-
     private final ItemStackHandler itemHandler = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -36,8 +35,8 @@ public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
 
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public TerminalBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.TERMINAL.get(), pPos, pBlockState);
+    public TerminalBlockEntity(BlockPos pos, BlockState blockState) {
+        super(ModBlockEntities.TERMINAL.get(), pos, blockState);
     }
 
     @Override
@@ -47,8 +46,8 @@ public class TerminalBlockEntity extends BlockEntity implements MenuProvider {
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new TerminalMenu(pContainerId, pPlayerInventory, this);
+    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+        return new TerminalMenu(containerId, inventory, this);
     }
 
     @Nonnull

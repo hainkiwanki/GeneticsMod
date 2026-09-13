@@ -15,8 +15,8 @@ public class ModCreativeModeTabs {
         }
 
         @Override
-        public void fillItemList(NonNullList<ItemStack> pItems) {
-            super.fillItemList(pItems);
+        public void fillItemList(NonNullList<ItemStack> itemStacks) {
+            super.fillItemList(itemStacks);
         }
     };
 }

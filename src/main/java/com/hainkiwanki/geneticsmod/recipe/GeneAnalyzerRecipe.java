@@ -27,11 +27,11 @@ public class GeneAnalyzerRecipe implements Recipe<SimpleContainer> {
 
     private static final String RECIPE_TYPE = "gene_analyzing";
 
-    public GeneAnalyzerRecipe(ResourceLocation pId, ItemStack pResult, int pTime, float pSuccessRate) {
-        id = pId;
-        output = pResult;
-        analyzeTime = pTime;
-        successRate = pSuccessRate;
+    public GeneAnalyzerRecipe(ResourceLocation id, ItemStack result, int time, float successRate) {
+        this.id = id;
+        output = result;
+        analyzeTime = time;
+        this.successRate = successRate;
     }
 
     public int getAnalyzeTime() {
@@ -43,21 +43,21 @@ public class GeneAnalyzerRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public boolean matches(SimpleContainer pContainer, Level pLevel) {
-        if(pLevel.isClientSide()) {
+    public boolean matches(SimpleContainer container, Level level) {
+        if(level.isClientSide()) {
             return false;
         }
 
-        return pContainer.getItem(1).is(output.getItem());
+        return container.getItem(1).is(output.getItem());
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer pContainer) {
+    public ItemStack assemble(SimpleContainer container) {
         return output;
     }
 
     @Override
-    public boolean canCraftInDimensions(int pWidth, int pHeight) {
+    public boolean canCraftInDimensions(int width, int height) {
         return true;
     }
 

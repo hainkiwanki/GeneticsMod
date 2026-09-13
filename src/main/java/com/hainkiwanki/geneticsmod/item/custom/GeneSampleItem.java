@@ -22,16 +22,16 @@ public class GeneSampleItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        if(pStack.hasTag()) {
-            if(pStack.getTag().getInt(EMobStat.IDENTIFIED.toStringKey()) == 0) {
-                pTooltipComponents.add(new TranslatableComponent("tooltip.geneticsmod.genesampleitem.unidentified")
+    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponent, TooltipFlag isAdvanced) {
+        if(stack.hasTag()) {
+            if(stack.getTag().getInt(EMobStat.IDENTIFIED.toStringKey()) == 0) {
+                tooltipComponent.add(new TranslatableComponent("tooltip.geneticsmod.genesampleitem.unidentified")
                         .withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
             }
             else {
                 if(Screen.hasShiftDown()) {
-                    CompoundTag nbtTag = pStack.getTag();
-                    List<String> tagKeys = Utils.getImportantTags(pStack);
+                    CompoundTag nbtTag = stack.getTag();
+                    List<String> tagKeys = Utils.getImportantTags(stack);
                     for (String tag : tagKeys) {
                         TranslatableComponent tc = new TranslatableComponent("tooltip.geneticsmod.genesampleitem." + tag);
                         float fResult = nbtTag.getFloat(tag);
@@ -40,17 +40,17 @@ public class GeneSampleItem extends Item {
                             strOutput = (fResult) > 0.0f ? "Hostile" : (fResult) < 0.0f ? "Friendly" : "Neutral";
                         }
                         tc.append(": ").append(new TextComponent(strOutput).withStyle(ChatFormatting.WHITE));
-                        pTooltipComponents.add(tc.withStyle(ChatFormatting.GREEN));
+                        tooltipComponent.add(tc.withStyle(ChatFormatting.GREEN));
                     }
                 }
                 else {
-                    pTooltipComponents.add(
+                    tooltipComponent.add(
                             new TranslatableComponent("tooltip.geneticsmod.genesampleitem.hold").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)
                                     .append(new TranslatableComponent("tooltip.geneticsmod.genesampleitem.shift").withStyle(ChatFormatting.RED, ChatFormatting.ITALIC))
                                     .append(new TranslatableComponent("tooltip.geneticsmod.genesampleitem.details").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC)));
                 }
             }
         }
-        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+        super.appendHoverText(stack, level, tooltipComponent, isAdvanced);
     }
 }

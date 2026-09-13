@@ -1,8 +1,8 @@
 package com.hainkiwanki.geneticsmod.event;
 
 import com.hainkiwanki.geneticsmod.GeneticsMod;
-import com.hainkiwanki.geneticsmod.network.ModMessages;
-import com.hainkiwanki.geneticsmod.network.packet.ModifyPlayerResearchDataPacket;
+import com.hainkiwanki.geneticsmod.research.network.ModMessages;
+import com.hainkiwanki.geneticsmod.research.network.packet.ModifyPlayerResearchDataPacket;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;

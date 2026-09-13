@@ -17,7 +17,7 @@ public class ModGeneSampleSlot extends SlotItemHandler {
     }
 
     @Override
-    public int getMaxStackSize(ItemStack pStack) {
+    public int getMaxStackSize(ItemStack stack) {
         return 1;
     }
 
